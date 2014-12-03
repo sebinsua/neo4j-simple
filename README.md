@@ -34,7 +34,7 @@ var example3 = new Node({
   id: "some-id-goes-here-3"
 });
 
-var exampleRelationship = new OfferRelationship({
+var exampleRelationship = new Relationship({
   description: "It's true",
 }, [example1.id, example2.id], relationship.DIRECTION_RIGHT);
 
