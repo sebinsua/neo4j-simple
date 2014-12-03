@@ -19,7 +19,7 @@ relationship.NO_DIRECTION = null;
 
 relationship.generate = function (relationshipDefinition) {
   var type = relationshipDefinition.type || '',
-  name  = type + Relationship.name;
+      name  = type + Relationship.name;
 
   var ChildRelationship;
   var _ChildRelationshipGenerator = function (nodeEnvironment) {
@@ -97,8 +97,8 @@ Relationship.prototype._validate = function (data) {
   var schema = this.constructor.schema;
 
   var deferred = Q.defer(),
-  validationOptions = { stripUnknown: true },
-  validationErrors = Joi.validate(data, schema, validationOptions);
+      validationOptions = { stripUnknown: true },
+      validationErrors = Joi.validate(data, schema, validationOptions);
 
   if (validationErrors.error) {
     debug("There was an error validating the relationship: %s", validationErrors.message);
@@ -139,11 +139,10 @@ Relationship.prototype.save = function (options) {
     return function resetRelationshipOfId(data) {
       var _relationship = getRelationship(type, direction);
       var query = ['START a=node:node_auto_index(id={ aId }),',
-      '      b=node:node_auto_index(id={ bId })',
-      'CREATE UNIQUE a' + _relationship + 'b',
-      'SET r = { data }',
-      'RETURN r'
-      ].join('\n');
+                   '      b=node:node_auto_index(id={ bId })',
+                   'CREATE UNIQUE a' + _relationship + 'b',
+                   'SET r = { data }',
+                   'RETURN r'].join('\n');
 
       data.id = uuid.v1();
       data.created = Date.now();
@@ -174,11 +173,11 @@ Relationship.prototype.save = function (options) {
 
       var _relationship = getRelationship(type, direction);
       var _query = ['START a=node:node_auto_index(id={ aId }),',
-      '       b=node:node_auto_index(id={ bId })',
-      'CREATE UNIQUE a' + _relationship + 'b'],
-      _setters = _getSetters(data),
-      _return = ["RETURN r"],
-      query = _query.concat(_setters, _return).join('\n');
+                    '      b=node:node_auto_index(id={ bId })',
+                    'CREATE UNIQUE a' + _relationship + 'b'],
+          _setters = _getSetters(data),
+          _return = ["RETURN r"],
+          query = _query.concat(_setters, _return).join('\n');
 
       data.aId = ids[0];
       data.bId = ids[1];
@@ -187,23 +186,23 @@ Relationship.prototype.save = function (options) {
   };
 
   var ids = this.ids,
-  type = this.constructor.type,
-  direction = this.direction,
-  data = this.data;
-  options.replace = options.replace || false;
+      type = this.constructor.type,
+      direction = this.direction,
+      data = this.data;
+      options.replace = options.replace || false;
 
   var performUpdate = options.replace ? resetRelationship : updateRelationship;
   return this._validate(data).__savePromise
-  .then(performUpdate(ids, type, direction));
+             .then(performUpdate(ids, type, direction));
 };
 
 // A relationship is best referred to with the two nodes
 // that are connected by it.
 Relationship.prototype.delete = function () {
   var query = ['MATCH (a)-[r]-(b)',
-  'WHERE a.id = { aId } AND b.id = { bId }',
-  'DELETE r',
-  'RETURN count(r) AS count'].join('\n');
+               'WHERE a.id = { aId } AND b.id = { bId }',
+               'DELETE r',
+               'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
   return db.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(misc.getCount);

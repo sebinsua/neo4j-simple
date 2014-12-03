@@ -15,8 +15,8 @@ var node = module.exports = {};
 
 node.generate = function (nodeDefinition) {
   var label = _.isArray(nodeDefinition.label) ?
-  _.first(nodeDefinition.label)   : nodeDefinition.label || '',
-  name = label + Node.name;
+      _.first(nodeDefinition.label) : nodeDefinition.label || '',
+      name = label + Node.name;
 
   var ChildNode;
   var _ChildNodeGenerator = function (nodeEnvironment) {
@@ -90,8 +90,8 @@ Node.prototype._validate = function (data) {
   var schema = this.schema;
 
   var deferred = Q.defer(),
-  validationOptions = { stripUnknown: true },
-  validationErrors = Joi.validate(data, schema, validationOptions);
+      validationOptions = { stripUnknown: true },
+      validationErrors = Joi.validate(data, schema, validationOptions);
 
   if (validationErrors.error) {
     debug("There was an error validating the node: %s", validationErrors.message);
@@ -115,10 +115,10 @@ Node.prototype.save = function (options) {
 
   var createNode = function (id) {
     return function createNodeOfLabelAndId(data) {
-      var labelsString = _.isArray(label)     ?
-      ":" + label.join(':') : (label ? ':' + label : ''),
-      query = ["CREATE (n" + labelsString + " {data})",
-      "SET n.created = timestamp()"].join('\n');
+      var labelsString = _.isArray(label) ?
+                         ":" + label.join(':') : (label ? ':' + label : ''),
+          query = ["CREATE (n" + labelsString + " {data})",
+                   "SET n.created = timestamp()"].join('\n');
 
       data.id = id;
       return db.queryAsync(query, {
@@ -134,8 +134,8 @@ Node.prototype.save = function (options) {
   var resetNode = function (id) {
     return function resetNodeOfId(data) {
       var query = ["MATCH (n { id: { id } }) ",
-      "SET n = { data }",
-      "RETURN n"].join('\n');
+                   "SET n = { data }",
+                   "RETURN n"].join('\n');
 
       data.id = id;
       return db.queryAsync(query, {
@@ -191,9 +191,9 @@ Node.prototype.save = function (options) {
 // This method requires `node_auto_index` to be setup, as the `id` key must be indexed.
 Node.prototype.delete = function () {
   var query = ['START n=node:node_auto_index(id={ id })',
-  'OPTIONAL MATCH n-[r]->()',
-  'DELETE n',
-  'RETURN count(n) AS count'].join('\n');
+               'OPTIONAL MATCH n-[r]->()',
+               'DELETE n',
+               'RETURN count(n) AS count'].join('\n');
 
   var id = this.id;
   return db.queryAsync(query, { id: id }).then(misc.getCount);
