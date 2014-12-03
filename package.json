@@ -4,7 +4,7 @@
   "description": "A Neo4j API that provides nodes and relationships in the form of promises on top of Cypher.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,19 @@
   "bugs": {
     "url": "https://github.com/sebinsua/neo4j-promised/issues"
   },
-  "homepage": "https://github.com/sebinsua/neo4j-promised"
+  "homepage": "https://github.com/sebinsua/neo4j-promised",
+  "dependencies": {
+    "neo4j": "^1.1.1",
+    "joi": "^4.7.0",
+    "bluebird": "^2.3.6",
+    "lodash": "^2.4.1",
+    "node-uuid": "^1.4.1",
+    "debug": "^2.1.0"
+  },
+  "devDependencies": {
+    "jshint": "latest",
+    "chai": "^1.9.1",
+    "mocha": "^2.0.0",
+    "sinon": "^1.10.3"
+  }
 }
