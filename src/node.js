@@ -1,15 +1,15 @@
 /*jshint -W054 */
 "use strict";
 
-var db = require('../core/database'),
-misc = require('../core/misc');
+var db = require('./database'),
+    misc = require('./response-parser');
 
 var _ = require('lodash'),
-Joi = require('joi'),
-Q = require('bluebird'),
-util = require('util'),
-uuid = require('node-uuid'),
-debug = require('debug')('neo4j-promised:core:node');
+    Joi = require('joi'),
+    Q = require('bluebird'),
+    util = require('util'),
+    uuid = require('node-uuid'),
+    debug = require('debug')('neo4j-promised:core:node');
 
 var node = module.exports = {};
 

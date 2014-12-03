@@ -1,7 +1,7 @@
 "use strict";
 
 var _ = require('lodash'),
-debug = require('debug')('neo4j-promised:core:misc');
+    debug = require('debug')('neo4j-promised:core:misc');
 
 var misc = module.exports = {};
 

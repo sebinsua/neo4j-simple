@@ -1,10 +1,10 @@
 "use strict";
 
-var defaults = require('../config/defaults'),
-_ = require('lodash'),
-neo4j = require('neo4j'),
-Q = require('bluebird'),
-debug = require('debug')('neo4j-promised:core:database');
+var defaults = require('./default-config'),
+    _ = require('lodash'),
+    neo4j = require('neo4j'),
+    Q = require('bluebird'),
+    debug = require('debug')('neo4j-promised:core:database');
 
 var config = _.defaults({
   'neo4j': process.env.NEO4J_URL || process.env.GRAPHENEDB_URL
