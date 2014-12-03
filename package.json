@@ -1,0 +1,26 @@
+{
+  "name": "neo4j-promised",
+  "version": "0.0.1",
+  "description": "A Neo4j API that provides nodes and relationships in the form of promises on top of Cypher.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/sebinsua/neo4j-promised"
+  },
+  "keywords": [
+    "neo4j",
+    "graph",
+    "database",
+    "promises",
+    "cypher"
+  ],
+  "author": "Seb Insua",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebinsua/neo4j-promised/issues"
+  },
+  "homepage": "https://github.com/sebinsua/neo4j-promised"
+}
