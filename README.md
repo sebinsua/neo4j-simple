@@ -1,6 +1,8 @@
 neo4j-promised
 ==============
 
+**WIP**
+
 A [Neo4j](http://neo4j.com/) API for Node.js that provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) using the [Cypher query langauge](http://neo4j.com/developer/cypher-query-language/).
 
 I know there are plenty of other modules that can be used to do this but when I looked none of them were very good.
