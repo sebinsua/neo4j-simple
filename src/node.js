@@ -1,8 +1,7 @@
 /*jshint -W054 */
 "use strict";
 
-var db = require('./database'),
-    misc = require('./response-parser');
+var misc = require('./response-parser');
 
 var _ = require('lodash'),
     Joi = require('joi'),
@@ -11,7 +10,9 @@ var _ = require('lodash'),
     uuid = require('node-uuid'),
     debug = require('debug')('neo4j-promised:core:node');
 
-var node = module.exports = {};
+var node = module.exports = function (database) {
+  this.database = database;
+};
 
 node.generate = function (nodeDefinition) {
   var label = _.isArray(nodeDefinition.label) ?
@@ -121,7 +122,7 @@ Node.prototype.save = function (options) {
                    "SET n.created = timestamp()"].join('\n');
 
       data.id = id;
-      return db.queryAsync(query, {
+      return this.database.client.queryAsync(query, {
         data: data
       }).then(function (results) {
         return {
@@ -138,7 +139,7 @@ Node.prototype.save = function (options) {
                    "RETURN n"].join('\n');
 
       data.id = id;
-      return db.queryAsync(query, {
+      return this.database.client.queryAsync(query, {
         id: id,
         data: data
       }).then(misc.getResult);
@@ -168,7 +169,7 @@ Node.prototype.save = function (options) {
       query = _query.concat(_setters, _return).join('\n');
 
       data.id = id;
-      return db.queryAsync(query, data).then(misc.getResult);
+      return this.database.client.queryAsync(query, data).then(misc.getResult);
     };
   };
 
@@ -196,7 +197,7 @@ Node.prototype.delete = function () {
                'RETURN count(n) AS count'].join('\n');
 
   var id = this.id;
-  return db.queryAsync(query, { id: id }).then(misc.getCount);
+  return this.database.client.queryAsync(query, { id: id }).then(misc.getCount);
 };
 
 Node.prototype.toString = function () {

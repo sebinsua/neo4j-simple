@@ -1,8 +1,7 @@
 /*jshint -W054 */
 "use strict";
 
-var db = require('./database'),
-    misc = require('./response-parser');
+var misc = require('./response-parser');
 
 var _ = require('lodash'),
     Joi = require('joi'),
@@ -11,8 +10,11 @@ var _ = require('lodash'),
     uuid = require('node-uuid'),
     debug = require('debug')('neo4j-promised:core:relationship');
 
-var relationship = module.exports = {};
+var relationship = module.exports = function (database) {
+  this.database = database;
+};
 
+// @TODO: Move this definition elsewhere.
 relationship.DIRECTION_LEFT = 'L';
 relationship.DIRECTION_RIGHT = 'R';
 relationship.NO_DIRECTION = null;
@@ -146,7 +148,7 @@ Relationship.prototype.save = function (options) {
 
       data.id = uuid.v1();
       data.created = Date.now();
-      return db.queryAsync(query, {
+      return this.database.client.queryAsync(query, {
         aId: ids[0],
         bId: ids[1],
         data: data
@@ -181,7 +183,7 @@ Relationship.prototype.save = function (options) {
 
       data.aId = ids[0];
       data.bId = ids[1];
-      return db.queryAsync(query, data).then(misc.getRelationshipResult);
+      return this.database.client.queryAsync(query, data).then(misc.getRelationshipResult);
     };
   };
 
@@ -205,7 +207,7 @@ Relationship.prototype.delete = function () {
                'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
-  return db.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(misc.getCount);
+  return this.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(misc.getCount);
 };
 
 Relationship.prototype.toString = function () {
