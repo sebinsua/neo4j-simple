@@ -56,26 +56,6 @@ misc.getCount = function (results) {
   }
 };
 
-misc.errorHandler = function (err) {
-  debug(err.message);
-  throw err;
-};
-
-misc.successfulCreateResponse = function (results) {
-  return {
-    id: results.id
-  };
-};
-
-misc.successfulUpdateResponse = function (result) {
-  return result;
-};
-
-misc.allDeleteResponses = function (results) {
-  // We return an empty object when it has been deleted.
-  return {};
-};
-
 misc.getResult = misc.getResultAt('n');
 misc.getResults = misc.getResultsAt('n');
 

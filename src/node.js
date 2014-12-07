@@ -1,7 +1,7 @@
 /*jshint -W054 */
 "use strict";
 
-var misc = require('./response-parser');
+var responseParser = require('./response-parser');
 
 var _ = require('lodash'),
     Joi = require('joi'),
@@ -142,7 +142,7 @@ Node.prototype.save = function (options) {
       return this.database.client.queryAsync(query, {
         id: id,
         data: data
-      }).then(misc.getResult);
+      }).then(responseParser.getResult);
     };
   };
 
@@ -169,7 +169,7 @@ Node.prototype.save = function (options) {
       query = _query.concat(_setters, _return).join('\n');
 
       data.id = id;
-      return this.database.client.queryAsync(query, data).then(misc.getResult);
+      return this.database.client.queryAsync(query, data).then(responseParser.getResult);
     };
   };
 
@@ -197,7 +197,7 @@ Node.prototype.delete = function () {
                'RETURN count(n) AS count'].join('\n');
 
   var id = this.id;
-  return this.database.client.queryAsync(query, { id: id }).then(misc.getCount);
+  return this.database.client.queryAsync(query, { id: id }).then(responseParser.getCount);
 };
 
 Node.prototype.toString = function () {

@@ -1,7 +1,7 @@
 /*jshint -W054 */
 "use strict";
 
-var misc = require('./response-parser');
+var responseParser = require('./response-parser');
 
 var _ = require('lodash'),
     Joi = require('joi'),
@@ -147,7 +147,7 @@ Relationship.prototype.save = function (options) {
         aId: ids[0],
         bId: ids[1],
         data: data
-      }).then(misc.getRelationshipResult);
+      }).then(responseParser.getRelationshipResult);
     };
   };
 
@@ -178,7 +178,7 @@ Relationship.prototype.save = function (options) {
 
       data.aId = ids[0];
       data.bId = ids[1];
-      return this.database.client.queryAsync(query, data).then(misc.getRelationshipResult);
+      return this.database.client.queryAsync(query, data).then(responseParser.getRelationshipResult);
     };
   };
 
@@ -202,7 +202,7 @@ Relationship.prototype.delete = function () {
                'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
-  return this.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(misc.getCount);
+  return this.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(responseParser.getCount);
 };
 
 Relationship.prototype.toString = function () {
