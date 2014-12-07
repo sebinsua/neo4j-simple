@@ -1,8 +1,6 @@
 neo4j-promised
 ==============
 
-**WIP**
-
 A [Neo4j](http://neo4j.com/) API for Node.js that provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) using the [Cypher query langauge](http://neo4j.com/developer/cypher-query-language/).
 
 I know there are plenty of other modules that can be used to do this but when I looked none of them were very good.
@@ -12,21 +10,22 @@ This makes the simple things easy and gets out of your way so you can write your
 Example
 =======
 
-Define [Joi](https://github.com/hapijs/joi) data validatators for your nodes and relationships and then save them using promises.
+Define [Joi](https://github.com/hapijs/joi) data validators for your nodes and relationships and then save them using promises.
 
 ```javascript
+var db = require('neo4j-promised');
 
-var Node = node.generate({
+var Node = db.defineNode({
   label: ['Example'],
   schema: {
-    'id': Joi.string().optional()
+    'id': db.Joi.string().optional()
   }
 });
 
-var Relationship = relationship.generate({
+var Relationship = db.defineRelationship({
   type: 'LOVE',
   schema: {
-    'description': Joi.string()
+    'description': db.Joi.string()
   }
 });
 
@@ -42,7 +41,7 @@ var example3 = new Node({
 
 var exampleRelationship = new Relationship({
   description: "It's true",
-}, [example1.id, example2.id], relationship.DIRECTION_RIGHT);
+}, [example1.id, example2.id], db.DIRECTION.RIGHT);
 
 Q.all([
   example1.save(),

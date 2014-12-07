@@ -14,11 +14,6 @@ var relationship = module.exports = function (database) {
   this.database = database;
 };
 
-// @TODO: Move this definition elsewhere.
-relationship.DIRECTION_LEFT = 'L';
-relationship.DIRECTION_RIGHT = 'R';
-relationship.NO_DIRECTION = null;
-
 relationship.generate = function (relationshipDefinition) {
   var type = relationshipDefinition.type || '',
       name  = type + Relationship.name;
@@ -60,7 +55,7 @@ var Relationship = function Relationship(data, ids, direction) {
 
   this.data = data;
   this.ids = ids;
-  this.direction = direction || relationship.NO_DIRECTION;
+  this.direction = direction || this.database.direction.NONE;
 
   this.isValid = false;
   this._initialisePromise();

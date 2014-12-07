@@ -17,6 +17,12 @@ module.exports = function (url) {
 
   var db = {};
 
+  db.DIRECTION = {
+    LEFT: 'L',
+    RIGHT: 'R',
+    NONE: null
+  };
+
   db.url = url;
   db.client = new neo4j.GraphDatabase(url);
 
