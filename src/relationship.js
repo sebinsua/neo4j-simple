@@ -123,14 +123,14 @@ Relationship.prototype.save = function (options) {
   var getRelationship = function (type, direction) {
     var relationshipType = '-[r' + (type ? ':' + type : '') + ']-';
     switch (direction) {
-      case relationship.DIRECTION_LEFT:
+      case this.database.DIRECTION.LEFT:
         relationshipType = '<' + relationshipType;
         break;
-      case relationship.DIRECTION_RIGHT:
+      case this.database.DIRECTION.RIGHT:
         relationshipType = relationshipType + '>';
         break;
       default:
-      case relationship.DIRECTION_NONE:
+      case this.database.DIRECTION.NONE:
         break;
     }
 
