@@ -29,6 +29,8 @@ module.exports = function (url) {
 
   db.Joi = Joi;
 
+  db.query = db.client.queryAsync.bind(db.client);
+
   db.getNodes = function (ids) {
     if (!ids || ids.length === 0) {
       var emptyResponse = [];
