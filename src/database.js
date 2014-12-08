@@ -23,7 +23,7 @@ module.exports = function (url) {
     NONE: null
   };
 
-  db.url = url;
+  db.url = url || "http://localhost:7474/";
   db.client = new neo4j.GraphDatabase(url);
 
   db.Joi = Joi;

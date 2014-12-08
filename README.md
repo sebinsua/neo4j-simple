@@ -13,7 +13,7 @@ Example
 Define [Joi](https://github.com/hapijs/joi) data validators for your nodes and relationships and then save them using promises.
 
 ```javascript
-var db = require('neo4j-promised');
+var db = require('neo4j-promised')("http://localhost:7474");
 
 var Node = db.defineNode({
   label: ['Example'],
