@@ -8,7 +8,7 @@ var _ = require('lodash'),
     Q = require('bluebird'),
     util = require('util'),
     uuid = require('node-uuid'),
-    debug = require('debug')('neo4j-promised:core:relationship');
+    debug = require('debug')('neo4j-promised:relationship');
 
 var relationship = module.exports = function (database) {
 

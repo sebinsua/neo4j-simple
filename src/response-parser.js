@@ -1,11 +1,11 @@
 "use strict";
 
 var _ = require('lodash'),
-    debug = require('debug')('neo4j-promised:core:misc');
+    debug = require('debug')('neo4j-promised:response-parser');
 
-var misc = module.exports = {};
+var responseParser = module.exports = {};
 
-misc.getResultAt = function (thingIdentifier) {
+responseParser.getResultAt = function (thingIdentifier) {
   return function (results) {
     var result = results[0];
     if (result) {
@@ -16,7 +16,7 @@ misc.getResultAt = function (thingIdentifier) {
   };
 };
 
-misc.getRelationshipResultAt = function (thingIdentifier) {
+responseParser.getRelationshipResultAt = function (thingIdentifier) {
   return function (results) {
     var result = results[0];
     if (result) {
@@ -27,7 +27,7 @@ misc.getRelationshipResultAt = function (thingIdentifier) {
   };
 };
 
-misc.getResultsAt = function (thingIdentifier) {
+responseParser.getResultsAt = function (thingIdentifier) {
   return function (results) {
     return _.map(results, function (result) {
       return result[thingIdentifier]._data.data;
@@ -35,7 +35,7 @@ misc.getResultsAt = function (thingIdentifier) {
   };
 };
 
-misc.getRelationshipResultsAt = function (relationshipThingIdentifier, thingIdentifier) {
+responseParser.getRelationshipResultsAt = function (relationshipThingIdentifier, thingIdentifier) {
   return function (results) {
     return _.map(results, function (result) {
       return {
@@ -46,7 +46,7 @@ misc.getRelationshipResultsAt = function (relationshipThingIdentifier, thingIden
   };
 };
 
-misc.getCount = function (results) {
+responseParser.getCount = function (results) {
   // [ { count: 1 } ]
   var result = results[0];
   if (result && result.count) {
@@ -56,8 +56,8 @@ misc.getCount = function (results) {
   }
 };
 
-misc.getResult = misc.getResultAt('n');
-misc.getResults = misc.getResultsAt('n');
+responseParser.getResult = responseParser.getResultAt('n');
+responseParser.getResults = responseParser.getResultsAt('n');
 
-misc.getRelationshipResult = misc.getRelationshipResultAt('r');
-misc.getRelationshipResults = misc.getRelationshipResultsAt('r', 'm');
+responseParser.getRelationshipResult = responseParser.getRelationshipResultAt('r');
+responseParser.getRelationshipResults = responseParser.getRelationshipResultsAt('r', 'm');

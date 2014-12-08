@@ -8,7 +8,7 @@ var node = require('./node'),
 var _ = require('lodash'),
     neo4j = require('neo4j'),
     Q = require('bluebird'),
-    debug = require('debug')('neo4j-promised:core:database');
+    debug = require('debug')('neo4j-promised:database');
 
 // This create *Async promise-returning versions of all of the standard node-style callback-returning methods.
 Q.promisifyAll(neo4j.GraphDatabase.prototype);
