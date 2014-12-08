@@ -12,7 +12,7 @@ var _ = require('lodash'),
 
 var node = module.exports = function (database) {
 
-  var node = {}
+  var node = {};
 
   node.database = database;
 
