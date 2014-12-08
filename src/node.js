@@ -50,6 +50,8 @@ var node = module.exports = function (database) {
   };
 
   node.Node = Node;
+
+  return node;
 };
 
 var Node = function Node(data, id) {
