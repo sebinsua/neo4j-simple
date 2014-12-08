@@ -11,43 +11,46 @@ var _ = require('lodash'),
     debug = require('debug')('neo4j-promised:core:node');
 
 var node = module.exports = function (database) {
-  this.database = database;
-};
 
-node.generate = function (nodeDefinition) {
-  var label = _.isArray(nodeDefinition.label) ?
-      _.first(nodeDefinition.label) : nodeDefinition.label || '',
-      name = label + Node.name;
+  var node = {}
 
-  var ChildNode;
-  var _ChildNodeGenerator = function (nodeEnvironment) {
-    // Depending on process.env.NODE_ENV to switch between
-    //        eval version and the faster version.
-    nodeEnvironment = nodeEnvironment || 'development';
+  node.database = database;
+
+  node.generate = function (nodeDefinition) {
+    var label = _.isArray(nodeDefinition.label) ?
+    _.first(nodeDefinition.label) : nodeDefinition.label || '',
+    name = label + Node.name;
 
     var ChildNode;
-    if (nodeEnvironment === 'development') {
-      ChildNode = (new Function(
-        "return function " + name + "(data, id) { " + name + ".super_.apply(this, arguments); }"
-      ))();
-    } else {
-      ChildNode = function Node(data, id) {
-        Node.super_.apply(this, arguments);
-      };
-    }
+    var _ChildNodeGenerator = function (nodeEnvironment) {
+      // Depending on process.env.NODE_ENV to switch between
+      //        eval version and the faster version.
+      nodeEnvironment = nodeEnvironment || 'development';
+
+      var ChildNode;
+      if (nodeEnvironment === 'development') {
+        ChildNode = (new Function(
+          "return function " + name + "(data, id) { " + name + ".super_.apply(this, arguments); }"
+        ))();
+      } else {
+        ChildNode = function Node(data, id) {
+          Node.super_.apply(this, arguments);
+        };
+      }
+
+      return ChildNode;
+    };
+    ChildNode = _ChildNodeGenerator(process.env.NODE_ENV);
+    util.inherits(ChildNode, Node);
+
+    ChildNode.label = nodeDefinition.label;
+    ChildNode.schema = nodeDefinition.schema || {};
 
     return ChildNode;
   };
-  ChildNode = _ChildNodeGenerator(process.env.NODE_ENV);
-  util.inherits(ChildNode, Node);
 
-  ChildNode.label = nodeDefinition.label;
-  ChildNode.schema = nodeDefinition.schema || {};
-
-  return ChildNode;
+  node.Node = Node;
 };
-
-node.Node = Node;
 
 var Node = function Node(data, id) {
   this.data = data;

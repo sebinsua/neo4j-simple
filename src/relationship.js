@@ -11,42 +11,47 @@ var _ = require('lodash'),
     debug = require('debug')('neo4j-promised:core:relationship');
 
 var relationship = module.exports = function (database) {
-  this.database = database;
-};
 
-relationship.generate = function (relationshipDefinition) {
-  var type = relationshipDefinition.type || '',
-      name  = type + Relationship.name;
+  var relationship = {};
 
-  var ChildRelationship;
-  var _ChildRelationshipGenerator = function (nodeEnvironment) {
-    // Depending on process.env.NODE_ENV to switch between
-    // eval version and the faster version.
-    nodeEnvironment = nodeEnvironment || 'development';
+  relationship.database = database;
+
+  relationship.generate = function (relationshipDefinition) {
+    var type = relationshipDefinition.type || '',
+    name  = type + Relationship.name;
 
     var ChildRelationship;
-    if (nodeEnvironment === 'development') {
-      ChildRelationship = (new Function(
-        "return function " + name + "(data, id) { " + name + ".super_.apply(this, arguments); }"
-      ))();
-    } else {
-      ChildRelationship = function Relationship(data, ids, direction) {
-        Relationship.super_.apply(this, arguments);
-      };
-    }
+    var _ChildRelationshipGenerator = function (nodeEnvironment) {
+      // Depending on process.env.NODE_ENV to switch between
+      // eval version and the faster version.
+      nodeEnvironment = nodeEnvironment || 'development';
+
+      var ChildRelationship;
+      if (nodeEnvironment === 'development') {
+        ChildRelationship = (new Function(
+          "return function " + name + "(data, id) { " + name + ".super_.apply(this, arguments); }"
+        ))();
+      } else {
+        ChildRelationship = function Relationship(data, ids, direction) {
+          Relationship.super_.apply(this, arguments);
+        };
+      }
+
+      return ChildRelationship;
+    };
+    ChildRelationship = _ChildRelationshipGenerator(process.env.NODE_ENV);
+    util.inherits(ChildRelationship, Relationship);
+
+    ChildRelationship.type = relationshipDefinition.type;
+    ChildRelationship.schema = relationshipDefinition.schema || {};
 
     return ChildRelationship;
   };
-  ChildRelationship = _ChildRelationshipGenerator(process.env.NODE_ENV);
-  util.inherits(ChildRelationship, Relationship);
 
-  ChildRelationship.type = relationshipDefinition.type;
-  ChildRelationship.schema = relationshipDefinition.schema || {};
+  relationship.Relationship = Relationship;
 
-  return ChildRelationship;
+  return relationship;
 };
-
-relationship.Relationship = Relationship;
 
 var Relationship = function Relationship(data, ids, direction) {
   if (!ids || ids.length !== 2) {
