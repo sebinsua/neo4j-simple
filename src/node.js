@@ -43,6 +43,8 @@ var node = module.exports = function (database) {
     ChildNode = _ChildNodeGenerator(process.env.NODE_ENV);
     util.inherits(ChildNode, Node);
 
+    ChildNode.database = node.database;
+
     ChildNode.label = nodeDefinition.label;
     ChildNode.schema = nodeDefinition.schema || {};
 
@@ -55,12 +57,19 @@ var node = module.exports = function (database) {
 };
 
 var Node = function Node(data, id) {
+
+  this.setDatabase(this.constructor.database);
+
   this.data = data;
   this.id = id;
   this.schema = this.constructor.schema;
 
   this.isValid = false;
   this._initialisePromise();
+};
+
+Node.prototype.setDatabase = function (database) {
+  this.database = database;
 };
 
 Node.prototype._initialisePromise = function () {

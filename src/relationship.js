@@ -42,6 +42,8 @@ var relationship = module.exports = function (database) {
     ChildRelationship = _ChildRelationshipGenerator(process.env.NODE_ENV);
     util.inherits(ChildRelationship, Relationship);
 
+    ChildRelationship.database = relationship.database;
+
     ChildRelationship.type = relationshipDefinition.type;
     ChildRelationship.schema = relationshipDefinition.schema || {};
 
@@ -58,12 +60,18 @@ var Relationship = function Relationship(data, ids, direction) {
     throw new Error("The relationship must be in between two nodes.");
   }
 
+  this.setDatabase(this.constructor.database);
+
   this.data = data;
   this.ids = ids;
   this.direction = direction || this.database.direction.NONE;
 
   this.isValid = false;
   this._initialisePromise();
+};
+
+Relationship.prototype.setDatabase = function (database) {
+  this.database = database;
 };
 
 Relationship.prototype._initialisePromise = function () {
