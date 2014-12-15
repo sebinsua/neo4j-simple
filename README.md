@@ -1,11 +1,13 @@
 neo4j-promised
 ==============
 
+[![Build Status](https://travis-ci.org/sebinsua/neo4j-promised.png)](https://travis-ci.org/sebinsua/neo4j-promised) [![npm version](https://badge.fury.io/js/neo4j-promised.svg)](https://npmjs.org/package/neo4j-promised)
+
 A [Neo4j](http://neo4j.com/) API for Node.js that provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) using the [Cypher query langauge](http://neo4j.com/developer/cypher-query-language/).
 
 I know there are plenty of other modules that can be used to do this but when I looked none of them were very good.
 
-This makes the simple things easy and gets out of your way so you can write your own bespoke Cypher queries unimpeded.
+This makes the simple things easy and gets out of your way so you can write your own bespoke Cypher queries unimpeded through the `query()` method.
 
 Example
 =======
