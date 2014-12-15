@@ -128,17 +128,19 @@ Relationship.prototype._validate = function (data) {
 Relationship.prototype.save = function (options) {
   options = options || {};
 
+  var self = this;
+
   var getRelationship = function (type, direction) {
     var relationshipType = '-[r' + (type ? ':' + type : '') + ']-';
     switch (direction) {
-      case this.database.DIRECTION.LEFT:
+      case self.database.DIRECTION.LEFT:
         relationshipType = '<' + relationshipType;
         break;
-      case this.database.DIRECTION.RIGHT:
+      case self.database.DIRECTION.RIGHT:
         relationshipType = relationshipType + '>';
         break;
       default:
-      case this.database.DIRECTION.NONE:
+      case self.database.DIRECTION.NONE:
         break;
     }
 
@@ -156,7 +158,7 @@ Relationship.prototype.save = function (options) {
 
       data.id = uuid.v1();
       data.created = Date.now();
-      return this.database.client.queryAsync(query, {
+      return self.database.client.queryAsync(query, {
         aId: ids[0],
         bId: ids[1],
         data: data
@@ -191,7 +193,7 @@ Relationship.prototype.save = function (options) {
 
       data.aId = ids[0];
       data.bId = ids[1];
-      return this.database.client.queryAsync(query, data).then(responseParser.getRelationshipResult);
+      return self.database.client.queryAsync(query, data).then(responseParser.getRelationshipResult);
     };
   };
 
@@ -209,13 +211,15 @@ Relationship.prototype.save = function (options) {
 // A relationship is best referred to with the two nodes
 // that are connected by it.
 Relationship.prototype.delete = function () {
+  var self = this;
+
   var query = ['MATCH (a)-[r]-(b)',
                'WHERE a.id = { aId } AND b.id = { bId }',
                'DELETE r',
                'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
-  return this.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(responseParser.getCount);
+  return self.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(responseParser.getCount);
 };
 
 Relationship.prototype.toString = function () {

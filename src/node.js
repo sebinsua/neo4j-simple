@@ -126,6 +126,8 @@ Node.prototype._validate = function (data) {
 Node.prototype.save = function (options) {
   options = options || {};
 
+  var self = this;
+
   var label = this.constructor.label;
 
   var createNode = function (id) {
@@ -136,7 +138,7 @@ Node.prototype.save = function (options) {
                    "SET n.created = timestamp()"].join('\n');
 
       data.id = id;
-      return this.database.client.queryAsync(query, {
+      return self.database.client.queryAsync(query, {
         data: data
       }).then(function (results) {
         return {
@@ -153,7 +155,7 @@ Node.prototype.save = function (options) {
                    "RETURN n"].join('\n');
 
       data.id = id;
-      return this.database.client.queryAsync(query, {
+      return self.database.client.queryAsync(query, {
         id: id,
         data: data
       }).then(responseParser.getResult);
@@ -183,7 +185,7 @@ Node.prototype.save = function (options) {
       query = _query.concat(_setters, _return).join('\n');
 
       data.id = id;
-      return this.database.client.queryAsync(query, data).then(responseParser.getResult);
+      return self.database.client.queryAsync(query, data).then(responseParser.getResult);
     };
   };
 
@@ -205,13 +207,15 @@ Node.prototype.save = function (options) {
 
 // This method requires `node_auto_index` to be setup, as the `id` key must be indexed.
 Node.prototype.delete = function () {
+  var self = this;
+
   var query = ['START n=node:node_auto_index(id={ id })',
                'OPTIONAL MATCH n-[r]->()',
                'DELETE n',
                'RETURN count(n) AS count'].join('\n');
 
   var id = this.id;
-  return this.database.client.queryAsync(query, { id: id }).then(responseParser.getCount);
+  return self.database.client.queryAsync(query, { id: id }).then(responseParser.getCount);
 };
 
 Node.prototype.toString = function () {
