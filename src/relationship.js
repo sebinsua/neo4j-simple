@@ -10,6 +10,25 @@ var _ = require('lodash'),
     uuid = require('node-uuid'),
     debug = require('debug')('neo4j-promised:relationship');
 
+var uppercaseCamelCaseIdentifier = function (identifier) {
+  var newIdentifier = identifier,
+      parts = identifier.split('_');
+
+  var capitaliseWords = function (part) {
+    var word = part.toLowerCase();
+    return word.charAt(0).toUpperCase() + word.substr(1);
+  }, concatenate = function (sofar, word) {
+    return sofar + word;
+  };
+
+  newIdentifier = _.chain(parts).
+                    map(capitaliseWords).
+                    reduce(concatenate, '').
+                    value();
+
+  return newIdentifier;
+};
+
 var relationship = module.exports = function (database) {
 
   var relationship = {};
@@ -18,7 +37,7 @@ var relationship = module.exports = function (database) {
 
   relationship.generate = function (relationshipDefinition) {
     var type = relationshipDefinition.type || '',
-    name  = type + Relationship.name;
+    name = uppercaseCamelCaseIdentifier(type) + Relationship.name;
 
     var ChildRelationship;
     var _ChildRelationshipGenerator = function (nodeEnvironment) {
