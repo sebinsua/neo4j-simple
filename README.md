@@ -15,6 +15,7 @@ Example
 Define [Joi](https://github.com/hapijs/joi) data validators for your nodes and relationships and then save them using promises.
 
 ```javascript
+var Q = require('bluebird');
 var db = require('neo4j-promised')("http://localhost:7474");
 
 var Node = db.defineNode({
