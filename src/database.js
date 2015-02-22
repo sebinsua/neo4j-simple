@@ -6,13 +6,13 @@ var node = require('./node'),
     relationship = require('./relationship');
 
 var _ = require('lodash'),
-    neo4j = require('neo4j'),
+    Neo4j = require('rainbird-neo4j'),
     Q = require('bluebird'),
     debug = require('debug')('neo4j-promised:database');
 
 // This create *Async promise-returning versions of all of the standard
 // node-style callback-returning methods.
-Q.promisifyAll(neo4j.GraphDatabase.prototype);
+Q.promisifyAll(Neo4j.prototype);
 
 module.exports = function (url) {
 
@@ -25,7 +25,7 @@ module.exports = function (url) {
   };
 
   db.url = url || "http://localhost:7474/";
-  db.client = new neo4j.GraphDatabase(db.url);
+  db.client = new Neo4j(db.url);
 
   db.Joi = Joi;
 

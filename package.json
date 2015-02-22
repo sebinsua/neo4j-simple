@@ -1,6 +1,6 @@
 {
   "name": "neo4j-promised",
-  "version": "0.0.11",
+  "version": "0.1.0-beta1",
   "description": "A Neo4j API that provides nodes and relationships in the form of promises on top of Cypher.",
   "main": "index.js",
   "scripts": {
@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/sebinsua/neo4j-promised",
   "dependencies": {
-    "neo4j": "^1.1.1",
-    "joi": "^4.7.0",
     "bluebird": "^2.3.6",
+    "debug": "^2.1.0",
+    "joi": "^4.7.0",
     "lodash": "^2.4.1",
     "node-uuid": "^1.4.1",
-    "debug": "^2.1.0"
+    "rainbird-neo4j": "^0.2.2"
   },
   "devDependencies": {
     "jshint": "latest",
