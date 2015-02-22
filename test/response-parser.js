@@ -11,21 +11,183 @@ describe("response-parser", function () {
 
   describe('#getCount', function () {
 
+    it('should be able to successfully parse a response', function () {
+      var response = [
+        [
+          [
+            {
+              'count(n)': 1
+            }
+          ]
+        ],
+        {}
+      ];
+
+      expect(responseParser.getCount(response)).to.equal(1);
+    });
+
+    it('should be able to parse an empty response', function () {
+      var response = [
+        [
+          [
+            {
+              'count(n)': 0
+            }
+          ]
+        ],
+        {}
+      ];
+
+      expect(responseParser.getCount(response)).to.equal(0);
+    });
+
   });
 
   describe('#getResult', function () {
+
+    it('should be able to successfully parse a response', function () {
+      var response = [
+        [
+          [
+            {
+              'n': {
+                'hello': 'world'
+              }
+            }
+          ]
+        ],
+        {}
+      ];
+
+      expect(responseParser.getResult(response)).to.eql({
+        'hello': 'world'
+      });
+    });
+
+    it('should be able to parse an empty response', function () {
+      var response = [
+        [
+          []
+        ],
+        {}
+      ];
+
+      expect(function () {
+        responseParser.getResult(response)
+      }).to.throw(Error, "Node with `id` was not found.");
+    });
 
   });
 
   describe('#getResults', function () {
 
+    it('should be able to successfully parse a response', function () {
+      var response = [
+        [
+          [
+            {
+              'n': {
+                'hello': 'world'
+              }
+            }
+          ]
+        ],
+        {}
+      ];
+
+      expect(responseParser.getResults(response)).to.eql([
+        {
+          'hello': 'world'
+        }
+      ]);
+    });
+
+    it('should be able to parse an empty response', function () {
+      var response = [
+        [
+          []
+        ],
+        {}
+      ];
+
+      expect(responseParser.getResults(response)).to.eql([]);
+    });
+
   });
 
   describe('#getRelationshipResult', function () {
 
+    it('should be able to successfully parse a response', function () {
+      var response = [
+        [
+          [
+            {
+              'n': {
+                'a': 'bc'
+              },
+              'r': {
+                'd': 'ef'
+              },
+              'm': {
+                'g': 'hi'
+              }
+            }
+          ]
+        ],
+        {}
+      ];
+
+      expect(responseParser.getRelationshipResult(response)).to.eql({
+        'subject': {
+          'a': 'bc'
+        },
+        'relationship': {
+          'd': 'ef'
+        },
+        'object': {
+          'g': 'hi'
+        }
+      });
+    });
+
   });
 
   describe('#getRelationshipResults', function () {
+
+    it('should be able to successfully parse a response', function () {
+      var response = [
+        [
+          [
+            {
+              'n': {
+                'a': 'bc'
+              },
+              'r': {
+                'd': 'ef'
+              },
+              'm': {
+                'g': 'hi'
+              }
+            }
+          ]
+        ],
+        {}
+      ];
+
+      expect(responseParser.getRelationshipResults(response)).to.eql([
+        {
+          'subject': {
+            'a': 'bc'
+          },
+          'relationship': {
+            'd': 'ef'
+          },
+          'object': {
+            'g': 'hi'
+          }
+        }
+      ]);
+    });
 
   });
 

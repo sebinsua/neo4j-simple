@@ -6,21 +6,29 @@ var _ = require('lodash'),
 var responseParser = module.exports = {};
 
 responseParser.getResultAt = function (thingIdentifier) {
-  return function (results) {
-    var result = results[0];
+  return function (response) {
+    var queries = response[0];
+    var firstQueryResults = queries[0] || [];
+    var result = firstQueryResults[0];
     if (result) {
-      return result[thingIdentifier]._data.data;
+      return result[thingIdentifier];
     } else {
       throw new Error("Node with `id` was not found.");
     }
   };
 };
 
-responseParser.getRelationshipResultAt = function (thingIdentifier) {
-  return function (results) {
-    var result = results[0];
+responseParser.getRelationshipResultAt = function (relationship, subject, object) {
+  return function (response) {
+    var queries = response[0];
+    var firstQueryResults = queries[0] || [];
+    var result = firstQueryResults[0];
     if (result) {
-      return result[thingIdentifier]._data.data;
+      return {
+        "relationship": result[relationship],
+        "subject": result[subject],
+        "object": result[object]
+      };
     } else {
       throw new Error("Relationship with `id` was not found.");
     }
@@ -28,36 +36,46 @@ responseParser.getRelationshipResultAt = function (thingIdentifier) {
 };
 
 responseParser.getResultsAt = function (thingIdentifier) {
-  return function (results) {
-    return _.map(results, function (result) {
-      return result[thingIdentifier]._data.data;
+  return function (response) {
+    var queries = response[0];
+    var firstQueryResults = queries[0] || [];
+    return _.map(firstQueryResults, function (result) {
+      return result[thingIdentifier];
     });
   };
 };
 
-responseParser.getRelationshipResultsAt = function (relationshipThingIdentifier, thingIdentifier) {
-  return function (results) {
-    return _.map(results, function (result) {
+responseParser.getRelationshipResultsAt = function (relationship, subject, object) {
+  return function (response) {
+    var queries = response[0];
+    var firstQueryResults = queries[0] || [];
+    return _.map(firstQueryResults, function (result) {
       return {
-        "relationship": result[relationshipThingIdentifier]._data.data,
-        "with": result[thingIdentifier]._data.data
+        "relationship": result[relationship],
+        "subject": result[subject],
+        "object": result[object]
       };
     });
   };
 };
 
-responseParser.getCount = function (results) {
-  // [ { count: 1 } ]
-  var result = results[0];
-  if (result && result.count) {
-    return result.count > 0;
-  } else {
-    throw new Error("Node with `id` was not found.");
-  }
+responseParser.getCountAt = function (thingIdentifier) {
+  return function (response) {
+    // [ { count: 1 } ]
+    var queries = response[0];
+    var firstQueryResults = queries[0] || [];
+    var result = firstQueryResults[0];
+    if (result && result[thingIdentifier] !== false) {
+      return result[thingIdentifier];
+    } else {
+      throw new Error("Count of `" + thingIdentifier + "` was not found.");
+    }
+  };
 };
 
 responseParser.getResult = responseParser.getResultAt('n');
 responseParser.getResults = responseParser.getResultsAt('n');
+responseParser.getCount = responseParser.getCountAt('count(n)');
 
-responseParser.getRelationshipResult = responseParser.getRelationshipResultAt('r');
-responseParser.getRelationshipResults = responseParser.getRelationshipResultsAt('r', 'm');
+responseParser.getRelationshipResult = responseParser.getRelationshipResultAt('r', 'n', 'm');
+responseParser.getRelationshipResults = responseParser.getRelationshipResultsAt('r', 'n', 'm');
