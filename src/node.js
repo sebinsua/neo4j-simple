@@ -61,7 +61,9 @@ var Node = function Node(data, id) {
   this.setDatabase(this.constructor.database);
 
   this.data = data;
-  this.id = id;
+  this.id = id || data.id || uuid.v1();
+  this.isUpdate = id ? true : false;
+
   this.schema = this.constructor.schema;
 
   this.isValid = false;
@@ -189,19 +191,20 @@ Node.prototype.save = function (options) {
     };
   };
 
-  var id = this.id, data = this.data;
-  if (!id) {
+  var isUpdate = this.isUpdate,
+      id = this.id,
+      data = this.data;
+  if (!isUpdate) {
     // No id, so this is a create operation.
-    id = uuid.v1();
-    return this._validate(data).__savePromise
-    .then(createNode(id));
+    return this._validate(data).__savePromise.
+                then(createNode(id));
   } else {
     // Id, so this is an update operation.
     options.replace = options.replace || false;
 
     var performUpdate = options.replace ? resetNode : updateNode;
-    return this._validate(data).__savePromise
-    .then(performUpdate(id));
+    return this._validate(data).__savePromise.
+                then(performUpdate(id));
   }
 };
 
