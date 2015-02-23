@@ -49,10 +49,8 @@ var exampleRelationship = new Relationship({
 Q.all([
   example1.save(),
   example2.save(),
-  example3.save(),
-  exampleRelationship.save()
-]).then(function () {
-  console.log("Nodes and relationship saved successfully.");
+  example3.save()
+]).then(function (response) {
+  return exampleRelationship.save();
 });
-
 ```
