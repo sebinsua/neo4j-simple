@@ -15,6 +15,7 @@ Example
 Define [Joi](https://github.com/hapijs/joi) data validators for your nodes and relationships and then save them using promises.
 
 ```javascript
+var Q = require('bluebird');
 var db = require('neo4j-promised')("http://localhost:7474");
 
 var Node = db.defineNode({
@@ -48,10 +49,8 @@ var exampleRelationship = new Relationship({
 Q.all([
   example1.save(),
   example2.save(),
-  example3.save(),
-  exampleRelationship.save()
-]).then(function () {
-  console.log("Nodes and relationship saved successfully.");
+  example3.save()
+]).then(function (response) {
+  return exampleRelationship.save();
 });
-
 ```
