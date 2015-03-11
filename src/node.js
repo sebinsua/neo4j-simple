@@ -111,7 +111,7 @@ Node.prototype._validate = function (data) {
       validationErrors = Joi.validate(data, schema, validationOptions);
 
   if (validationErrors.error) {
-    debug("There was an error validating the node: %s", validationErrors.message);
+    debug("There was an error validating the node: %s", validationErrors.error.message);
 
     this.isValid = false;
     deferred.reject(validationErrors);
