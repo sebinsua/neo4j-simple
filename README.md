@@ -9,6 +9,11 @@ I know there are plenty of other modules that can be used to do this but when I 
 
 This makes the simple things easy and gets out of your way so you can write your own bespoke Cypher queries unimpeded through the `query()` method.
 
+TODO
+----
+
+- [ ] A better, cleaner way of doing edit and create schemas. Effectively 'schema' is the 'defaultSchema'. You can create a schema for each operation. By default an operation is passed in through `options.operation` when you use `save()`, etc. However by default an operation would be the internal operation itself: for example 'create' or 'update' or 'remove'. Consider making some kind of `operation(name)` helper. Obviously an operation will fallback to the default schema if in doubt.
+
 Example
 =======
 
