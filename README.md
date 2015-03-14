@@ -9,20 +9,6 @@ I know there are plenty of other modules that can be used to do this but when I 
 
 This makes the simple things easy and gets out of your way so you can write your own bespoke Cypher queries unimpeded through the `query()` method.
 
-TODO
-----
-
-- [ ] Remove this:
-```javascript
-// I am setting this up despite it being a little unhealthy as this was the
-// default bluebird behavior before a recent update.
-Q.onPossiblyUnhandledRejection(function (error) {
-  if (error.message !== INVALID_MESSAGE) {
-    debug(error);
-  }
-});
-```
-
 Example
 =======
 
@@ -32,11 +18,18 @@ Define [Joi](https://github.com/hapijs/joi) data validators for your nodes and r
 var Q = require('bluebird');
 var db = require('neo4j-promised')("http://localhost:7474");
 
+// `schema` is the same as `schemas.default`.
+// Pass in more schemas if you need different ones for different operations.
 var Node = db.defineNode({
   label: ['Example'],
-  schema: {
-    'id': db.Joi.string().optional()
-  }
+  schemas: {
+    'default': {
+      'id': db.Joi.string().optional()
+    },
+    'saveWithName': {
+      'id': db.Joi.string().optional(),
+      'name': db.Joi.string().required()
+    }
 });
 
 var Relationship = db.defineRelationship({
@@ -47,23 +40,30 @@ var Relationship = db.defineRelationship({
 });
 
 var example1 = new Node({
-  id: "some-id-goes-here-1"
+  id: "some-id-goes-here-1",
+  name: "Example 1"
 });
 var example2 = new Node({
   id: "some-id-goes-here-2"
 });
 var example3 = new Node({
-  id: "some-id-goes-here-3"
+  id: "some-id-goes-here-3",
+  name: "Example 3"
 });
 
 var exampleRelationship = new Relationship({
   description: "It's true",
 }, [example1.id, example2.id], db.DIRECTION.RIGHT);
 
+// It is possible to pass in a particular operation that should be the schema lookup.
+// Otherwise it will default to the default schema.
+// It will try to intelligently select a schema for the operation it detects is happening, too.
+// For example: create, replace, update.
+// Similarly schemas should automatically create method aliases that call save.
 Q.all([
-  example1.save(),
+  example1.save( { operation: 'saveWithName' } ),
   example2.save(),
-  example3.save()
+  example3.saveWithName()
 ]).then(function (response) {
   return exampleRelationship.save();
 });

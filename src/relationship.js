@@ -109,11 +109,15 @@ Relationship.prototype.setDatabase = function (database) {
 
 Relationship.prototype._initialisePromise = function () {
   var INVALID_MESSAGE = "Relationship needs to be validated.";
-  // I am setting this up despite it being a little unhealthy as this was the
-  // default bluebird behavior before a recent update.
+
+  // This was added into bluebird after I had created the library.
+  // Because we're overwriting a promise in some cases we have a legitimate need
+  // for ignoring this sometimes. I realise it's a code-smell but oh well.
   Q.onPossiblyUnhandledRejection(function (error) {
     if (error.message !== INVALID_MESSAGE) {
       debug(error);
+    } else {
+      throw error;
     }
   });
 
