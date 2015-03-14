@@ -58,12 +58,15 @@ var node = module.exports = function (database) {
 
 var Node = function Node(data, id) {
 
-  this.setDatabase(this.constructor.database);
+  var database = this.constructor.database;
+  this.setDatabase(database);
+  this.idName = database.idName || 'id';
 
   this.data = data;
-  this.id = id || data.id || uuid.v1();
+  this.id = id || data[this.idName] || uuid.v1();
   this.isUpdate = id ? true : false;
 
+  this.label = this.constructor.label;
   this.schema = this.constructor.schema;
 
   this.isValid = false;
@@ -127,10 +130,11 @@ Node.prototype._validate = function (data) {
 
 Node.prototype.save = function (options) {
   options = options || {};
+  options.operation = options.operation || 'default';
 
   var self = this;
 
-  var label = this.constructor.label;
+  var label = this.label;
 
   var createNode = function (id) {
     return function createNodeOfLabelAndId(data) {
@@ -139,7 +143,7 @@ Node.prototype.save = function (options) {
           query = ["CREATE (n" + labelsString + " {data})",
                    "SET n.created = timestamp()"].join('\n');
 
-      data.id = id;
+      data[self.idName] = id;
       return self.database.client.queryAsync(query, {
         data: data
       }).then(function (results) {
@@ -152,11 +156,11 @@ Node.prototype.save = function (options) {
 
   var resetNode = function (id) {
     return function resetNodeOfId(data) {
-      var query = ["MATCH (n { id: { id } }) ",
+      var query = ["MATCH (n { " + self.idName + ": { id } }) ",
                    "SET n = { data }",
                    "RETURN n"].join('\n');
 
-      data.id = id;
+      data[self.idName] = id;
       return self.database.client.queryAsync(query, {
         id: id,
         data: data
@@ -181,12 +185,12 @@ Node.prototype.save = function (options) {
         return [setters];
       };
 
-      var _query = ["MATCH (n { id: { id } }) "],
+      var _query = ["MATCH (n { " + self.idName + ": { id } }) "],
       _setters = _getSetters(data),
       _return = ["RETURN n"],
       query = _query.concat(_setters, _return).join('\n');
 
-      data.id = id;
+      data[self.idName] = id;
       return self.database.client.queryAsync(query, data).then(responseParser.getResult);
     };
   };
@@ -209,16 +213,16 @@ Node.prototype.save = function (options) {
 };
 
 // This method requires `node_auto_index` to be setup, as the `id` key must be indexed.
-Node.prototype.delete = function () {
-  var self = this;
+Node.prototype.delete = function (options) {
+  options = options || {};
 
-  var query = ['START n=node:node_auto_index(id={ id })',
+  var query = ['START n=node:node_auto_index(' + this.idName + '={ id })',
                'OPTIONAL MATCH n-[r]->()',
                'DELETE n',
                'RETURN count(n) AS count'].join('\n');
 
   var id = this.id;
-  return self.database.client.queryAsync(query, { id: id }).then(responseParser.getCount);
+  return this.database.client.queryAsync(query, { id: id }).then(responseParser.getCount);
 };
 
 Node.prototype.toString = function () {

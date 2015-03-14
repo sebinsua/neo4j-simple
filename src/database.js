@@ -14,7 +14,9 @@ var _ = require('lodash'),
 // node-style callback-returning methods.
 Q.promisifyAll(Neo4j.prototype);
 
-module.exports = function (url) {
+module.exports = function (url, options) {
+  options = options || {};
+  options.idName = options.idName || 'id';
 
   var db = {};
 
@@ -26,6 +28,7 @@ module.exports = function (url) {
 
   db.url = url || "http://localhost:7474/";
   db.client = new Neo4j(db.url);
+  db.idName = options.idName;
 
   db.Joi = Joi;
 
@@ -37,10 +40,13 @@ module.exports = function (url) {
       return Q.resolve(emptyResponse);
     }
 
+    var nodeName = 'n';
     var listOfIds = _.map(ids, function (id) { return '"' + id + '"'; }).join(", ");
-    return this.client.queryAsync("MATCH (n) WHERE n.id IN [" + listOfIds + "] RETURN n").then(function (nodesResponse) {
-      return _.map(nodesResponse, function (nr) {
-        return nr.n._data.data;
+    return this.client.queryAsync("MATCH (" + nodeName + ") WHERE " + nodeName + "." + this.idName + " IN [" + listOfIds + "] RETURN " + nodeName).then(function (response) {
+      var queries = response[0];
+      var firstQueryResults = queries[0] || [];
+      return _.map(firstQueryResults, function (nr) {
+        return nr[nodeName];
       });
     });
   };

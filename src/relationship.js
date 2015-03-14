@@ -48,7 +48,7 @@ var relationship = module.exports = function (database) {
       var ChildRelationship;
       if (nodeEnvironment === 'development') {
         ChildRelationship = (new Function(
-          "return function " + name + "(data, id) { " + name + ".super_.apply(this, arguments); }"
+          "return function " + name + "(data, ids, direction) { " + name + ".super_.apply(this, arguments); }"
         ))();
       } else {
         ChildRelationship = function Relationship(data, ids, direction) {
@@ -79,11 +79,16 @@ var Relationship = function Relationship(data, ids, direction) {
     throw new Error("The relationship must be in between two nodes.");
   }
 
-  this.setDatabase(this.constructor.database);
+  var database = this.constructor.database;
+  this.setDatabase(database);
+  this.idName = database.idName || 'id';
 
   this.data = data;
   this.ids = ids;
-  this.direction = direction || this.database.direction.NONE;
+  this.direction = direction || database.direction.NONE;
+
+  this.type = this.constructor.type;
+  this.schema = this.constructor.schema;
 
   this.isValid = false;
   this._initialisePromise();
@@ -105,7 +110,7 @@ Relationship.prototype._initialisePromise = function () {
 
   var deferred = Q.defer();
 
-  var data = this.data, schema = this.constructor.schema;
+  var data = this.data, schema = this.schema;
   // When there is no schema always assume valid.
   if (_.isEmpty(schema)) {
     this.isValid = true;
@@ -123,7 +128,7 @@ Relationship.prototype._initialisePromise = function () {
 Relationship.prototype._validate = function (data) {
   data = data || this.data;
 
-  var schema = this.constructor.schema;
+  var schema = this.schema;
 
   var deferred = Q.defer(),
       validationOptions = { stripUnknown: true },
@@ -146,6 +151,7 @@ Relationship.prototype._validate = function (data) {
 
 Relationship.prototype.save = function (options) {
   options = options || {};
+  options.operation = options.operation || 'default';
 
   var self = this;
 
@@ -169,13 +175,13 @@ Relationship.prototype.save = function (options) {
   var resetRelationship = function (ids, type, direction) {
     return function resetRelationshipOfId(data) {
       var _relationship = getRelationship(type, direction);
-      var query = ['START a=node:node_auto_index(id={ aId }),',
-                   '      b=node:node_auto_index(id={ bId })',
+      var query = ['START a=node:node_auto_index(' + self.idName + '={ aId }),',
+                   '      b=node:node_auto_index(' + self.idName + '={ bId })',
                    'CREATE UNIQUE a' + _relationship + 'b',
                    'SET r = { data }',
                    'RETURN r'].join('\n');
 
-      data.id = uuid.v1();
+      data[self.idName] = uuid.v1();
       data.created = Date.now();
       return self.database.client.queryAsync(query, {
         aId: ids[0],
@@ -203,8 +209,8 @@ Relationship.prototype.save = function (options) {
       };
 
       var _relationship = getRelationship(type, direction);
-      var _query = ['START a=node:node_auto_index(id={ aId }),',
-                    '      b=node:node_auto_index(id={ bId })',
+      var _query = ['START a=node:node_auto_index(' + self.idName + '={ aId }),',
+                    '      b=node:node_auto_index(' + self.idName + '={ bId })',
                     'CREATE UNIQUE a' + _relationship + 'b'],
           _setters = _getSetters(data),
           _return = ["RETURN r"],
@@ -217,7 +223,7 @@ Relationship.prototype.save = function (options) {
   };
 
   var ids = this.ids,
-      type = this.constructor.type,
+      type = this.type,
       direction = this.direction,
       data = this.data;
       options.replace = options.replace || false;
@@ -229,16 +235,16 @@ Relationship.prototype.save = function (options) {
 
 // A relationship is best referred to with the two nodes
 // that are connected by it.
-Relationship.prototype.delete = function () {
-  var self = this;
+Relationship.prototype.delete = function (options) {
+  options = options || {};
 
   var query = ['MATCH (a)-[r]-(b)',
-               'WHERE a.id = { aId } AND b.id = { bId }',
+               'WHERE a.' + this.idName + ' = { aId } AND b.' + this.idName + ' = { bId }',
                'DELETE r',
                'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
-  return self.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(responseParser.getCount);
+  return this.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(responseParser.getCount);
 };
 
 Relationship.prototype.toString = function () {
