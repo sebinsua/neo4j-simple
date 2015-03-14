@@ -7,7 +7,7 @@ A [Neo4j](http://neo4j.com/) API for Node.js that provides nodes and relationshi
 
 This makes the simple things easy.
 
-And you can write your own bespoke Cypher queries unimpeded through the `query()` method. Additionally the neo4j client itself is exposed on `module.client`, and you can call `module.client.query()` or `module.client.queryAsync()` through this depending on whether you prefer callbacks or promises.
+Additonally, you can write your own bespoke Cypher queries unimpeded through the `query()` method, and the neo4j client itself is exposed on `module.client` so you can call `module.client.query()` or `module.client.queryAsync()` to query the database directly (depending on whether you prefer callbacks or promises.)
 
 Example
 =======
