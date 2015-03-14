@@ -94,8 +94,6 @@ Node.prototype._initialisePromise = function () {
   // for ignoring this sometimes. I realise it's a code-smell but oh well.
   Q.onPossiblyUnhandledRejection(function (error) {
     if (error.message !== INVALID_MESSAGE) {
-      debug(error);
-    } else {
       throw error;
     }
   });
