@@ -74,7 +74,7 @@ describe("response-parser", function () {
 
       expect(function () {
         responseParser.getResult(response)
-      }).to.throw(Error, "Node with `id` was not found.");
+      }).to.throw(Error, "Node was not found.");
     });
 
   });

@@ -165,7 +165,7 @@ Relationship.prototype._validate = function (data, options) {
   return this;
 };
 
-Relationship.prototype.save = function (options) {
+Relationship.prototype._save = function (options) {
   options = options || {};
 
   var self = this;
@@ -258,7 +258,7 @@ Relationship.prototype.save = function (options) {
 
 // A relationship is best referred to with the two nodes
 // that are connected by it.
-Relationship.prototype.delete = function (options) {
+Relationship.prototype._delete = function (options) {
   options = options || {};
 
   var query = ['MATCH (a)-[r]-(b)',
@@ -268,6 +268,14 @@ Relationship.prototype.delete = function (options) {
 
   var ids = this.ids;
   return this.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(responseParser.getCount);
+};
+
+Relationship.prototype.save = function (options, callback) {
+  return this._save(options).nodeify(callback);
+};
+
+Relationship.prototype.remove = Relationship.prototype.delete = function (options, callback) {
+  return this._delete(options).nodeify(callback);
 };
 
 Relationship.prototype.toString = function () {

@@ -13,7 +13,7 @@ responseParser.getResultAt = function (thingIdentifier) {
     if (result) {
       return result[thingIdentifier];
     } else {
-      throw new Error("Node with `id` was not found.");
+      throw new Error("Node was not found.");
     }
   };
 };
@@ -30,7 +30,7 @@ responseParser.getRelationshipResultAt = function (relationship, subject, object
         "object": result[object]
       };
     } else {
-      throw new Error("Relationship with `id` was not found.");
+      throw new Error("Relationship was not found.");
     }
   };
 };

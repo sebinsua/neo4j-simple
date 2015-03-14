@@ -34,7 +34,7 @@ module.exports = function (url, options) {
 
   db.query = db.client.queryAsync.bind(db.client);
 
-  db.getNodes = function (ids) {
+  db._getNodes = function (ids) {
     if (!ids || ids.length === 0) {
       var emptyResponse = [];
       return Q.resolve(emptyResponse);
@@ -49,6 +49,10 @@ module.exports = function (url, options) {
         return nr[nodeName];
       });
     });
+  };
+
+  db.getNodes = function (ids, callback) {
+    return this._getNodes(ids).nodeify(callback);
   };
 
   db.defineNode = function (nodeDefinition) {

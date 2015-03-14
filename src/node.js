@@ -144,7 +144,7 @@ Node.prototype._validate = function (data, options) {
   return this;
 };
 
-Node.prototype.save = function (options) {
+Node.prototype._save = function (options) {
   options = options || {};
 
   var self = this;
@@ -237,7 +237,7 @@ Node.prototype.save = function (options) {
 };
 
 // This method requires `node_auto_index` to be setup, as the `id` key must be indexed.
-Node.prototype.delete = function (options) {
+Node.prototype._delete = function (options) {
   options = options || {};
 
   var query = ['START n=node:node_auto_index(' + this.idName + '={ id })',
@@ -247,6 +247,14 @@ Node.prototype.delete = function (options) {
 
   var id = this.id;
   return this.database.client.queryAsync(query, { id: id }).then(responseParser.getCount);
+};
+
+Node.prototype.save = function (options, callback) {
+  return this._save(options).nodeify(callback);
+};
+
+Node.prototype.remove = Node.prototype.delete = function (options, callback) {
+  return this._delete(options).nodeify(callback);
 };
 
 Node.prototype.toString = function () {
