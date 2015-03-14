@@ -5,9 +5,9 @@ neo4j-promised
 
 A [Neo4j](http://neo4j.com/) API for Node.js that provides nodes and relationships in [the form of promises)](https://github.com/petkaantonov/bluebird) using the [Cypher query language](http://neo4j.com/developer/cypher-query-language/).
 
-This makes the simple things easy and gets out of your way so you can write your own bespoke Cypher queries unimpeded through the `query()` method.
+This makes the simple things easy.
 
-The neo4j client itself is exposed on `module.client`, and you can call `module.client.query()` or `module.client.queryAsync()` through this depending on whether you prefer callbacks or promises.
+And you can write your own bespoke Cypher queries unimpeded through the `query()` method. Additionally the neo4j client itself is exposed on `module.client`, and you can call `module.client.query()` or `module.client.queryAsync()` through this depending on whether you prefer callbacks or promises.
 
 Example
 =======
