@@ -142,7 +142,7 @@ Relationship.prototype._validate = function (data, options) {
   var schemaName = options.operation;
   var schema = this.schemas[schemaName] || this.schemas[defaultSchemaName];
 
-  debug("Validating using the ");
+  debug("Validating using the " + (!!this.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
   var deferred = Q.defer(),
       validationOptions = { stripUnknown: true },
