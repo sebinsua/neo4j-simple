@@ -1,7 +1,8 @@
 /*jshint -W054 */
 "use strict";
 
-var responseParser = require('./response-parser');
+var responseParser = require('./response-parser'),
+    setupOperations = require('./setup-operations');
 
 var _ = require('lodash'),
     Joi = require('joi'),
@@ -64,9 +65,15 @@ var relationship = module.exports = function (database) {
     ChildRelationship.database = relationship.database;
 
     ChildRelationship.type = relationshipDefinition.type;
-    ChildRelationship.schemas = {
-      'default': relationshipDefinition.schema || {}
-    };
+
+    var defaultSchema = relationshipDefinition.schema || {};
+    var schemas = relationshipDefinition.schemas || {};
+    ChildRelationship.schemas = _.extend({
+      'default': defaultSchema
+    }, schemas);
+
+    var operations = _.keys(ChildRelationship.schemas);
+    ChildRelationship = setupOperations(ChildRelationship, operations);
 
     return ChildRelationship;
   };
@@ -101,7 +108,7 @@ Relationship.prototype.setDatabase = function (database) {
 };
 
 Relationship.prototype._initialisePromise = function () {
-  var INVALID_MESSAGE = "Relationship not yet validated.";
+  var INVALID_MESSAGE = "Relationship needs to be validated.";
   // I am setting this up despite it being a little unhealthy as this was the
   // default bluebird behavior before a recent update.
   Q.onPossiblyUnhandledRejection(function (error) {
@@ -112,25 +119,30 @@ Relationship.prototype._initialisePromise = function () {
 
   var deferred = Q.defer();
 
-  var data = this.data, schema = this.schemas['default'];
+  var data = this.data;
+  var hasEmptyDefaultSchema = _.isEmpty(this.schemas.default),
+      numberOfSchemas = _.keys(this.schemas).length;
   // When there is no schema always assume valid.
-  if (_.isEmpty(schema)) {
+  if (hasEmptyDefaultSchema && numberOfSchemas === 1) {
     this.isValid = true;
     deferred.resolve(data);
-
-    this.__savePromise = deferred.promise;
   } else {
     this.isValid = false;
     deferred.reject(new Error(INVALID_MESSAGE));
-
-    this.__savePromise = deferred.promise;
   }
+
+  this.__savePromise = deferred.promise;
 };
 
-Relationship.prototype._validate = function (data) {
+Relationship.prototype._validate = function (data, options) {
   data = data || this.data;
+  options = options || {};
 
-  var schema = this.schemas['default'];
+  var defaultSchemaName = 'default';
+  var schemaName = options.operation;
+  var schema = this.schemas[schemaName] || this.schemas[defaultSchemaName];
+
+  debug("Validating using the ");
 
   var deferred = Q.defer(),
       validationOptions = { stripUnknown: true },
@@ -153,7 +165,6 @@ Relationship.prototype._validate = function (data) {
 
 Relationship.prototype.save = function (options) {
   options = options || {};
-  options.operation = options.operation || 'default';
 
   var self = this;
 
@@ -230,8 +241,16 @@ Relationship.prototype.save = function (options) {
       data = this.data;
       options.replace = options.replace || false;
 
-  var performUpdate = options.replace ? resetRelationship : updateRelationship;
-  return this._validate(data).__savePromise
+  var performUpdate;
+  if (options.replace) {
+    performUpdate = resetRelationship;
+    options.operation = options.operation || 'replace';
+  } else {
+    performUpdate = updateRelationship;
+    options.operation = options.operation || 'update';
+  }
+
+  return this._validate(data, options).__savePromise
              .then(performUpdate(ids, type, direction));
 };
 

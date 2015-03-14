@@ -1,7 +1,8 @@
 /*jshint -W054 */
 "use strict";
 
-var responseParser = require('./response-parser');
+var responseParser = require('./response-parser'),
+    setupOperations = require('./setup-operations');
 
 var _ = require('lodash'),
     Joi = require('joi'),
@@ -46,9 +47,15 @@ var node = module.exports = function (database) {
     ChildNode.database = node.database;
 
     ChildNode.label = nodeDefinition.label;
-    ChildNode.schemas = {
-      'default': nodeDefinition.schema || {}
-    };
+
+    var defaultSchema = nodeDefinition.schema || {};
+    var schemas = nodeDefinition.schemas || {};
+    ChildNode.schemas = _.extend({
+      'default': defaultSchema
+    }, schemas);
+
+    var operations = _.keys(ChildNode.schemas);
+    ChildNode = setupOperations(ChildNode, operations);
 
     return ChildNode;
   };
@@ -80,7 +87,7 @@ Node.prototype.setDatabase = function (database) {
 };
 
 Node.prototype._initialisePromise = function () {
-  var INVALID_MESSAGE = "Node not yet validated.";
+  var INVALID_MESSAGE = "Node needs to be validated.";
   // I am setting this up despite it being a little unhealthy as this was the
   // default bluebird behavior before a recent update.
   Q.onPossiblyUnhandledRejection(function (error) {
@@ -91,25 +98,30 @@ Node.prototype._initialisePromise = function () {
 
   var deferred = Q.defer();
 
-  var data = this.data, schema = this.schemas['default'];
+  var data = this.data;
+  var hasEmptyDefaultSchema = _.isEmpty(this.schemas.default),
+      numberOfSchemas = _.keys(this.schemas).length;
   // When there is no schema always assume valid.
-  if (_.isEmpty(schema)) {
+  if (hasEmptyDefaultSchema && numberOfSchemas === 1) {
     this.isValid = true;
     deferred.resolve(data);
-
-    this.__savePromise = deferred.promise;
   } else {
     this.isValid = false;
     deferred.reject(new Error(INVALID_MESSAGE));
-
-    this.__savePromise = deferred.promise;
   }
+
+  this.__savePromise = deferred.promise;
 };
 
-Node.prototype._validate = function (data) {
+Node.prototype._validate = function (data, options) {
   data = data || this.data;
+  options = options || {};
 
-  var schema = this.schemas['default'];
+  var defaultSchemaName = 'default';
+  var schemaName = options.operation;
+  var schema = this.schemas[schemaName] || this.schemas[defaultSchemaName];
+
+  debug("Validating using the " + (!!this.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
   var deferred = Q.defer(),
       validationOptions = { stripUnknown: true },
@@ -132,7 +144,6 @@ Node.prototype._validate = function (data) {
 
 Node.prototype.save = function (options) {
   options = options || {};
-  options.operation = options.operation || 'default';
 
   var self = this;
 
@@ -200,16 +211,25 @@ Node.prototype.save = function (options) {
   var isUpdate = this.isUpdate,
       id = this.id,
       data = this.data;
+
   if (!isUpdate) {
     // No id, so this is a create operation.
-    return this._validate(data).__savePromise.
+    options.operation = options.operation || 'create';
+    return this._validate(data, options).__savePromise.
                 then(createNode(id));
   } else {
     // Id, so this is an update operation.
     options.replace = options.replace || false;
 
-    var performUpdate = options.replace ? resetNode : updateNode;
-    return this._validate(data).__savePromise.
+    var performUpdate;
+    if (options.replace) {
+      performUpdate = resetNode;
+      options.operation = options.operation || 'replace';
+    } else {
+      performUpdate = updateNode;
+      options.operation = options.operation || 'update';
+    }
+    return this._validate(data, options).__savePromise.
                 then(performUpdate(id));
   }
 };
