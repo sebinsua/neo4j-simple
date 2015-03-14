@@ -46,7 +46,9 @@ var node = module.exports = function (database) {
     ChildNode.database = node.database;
 
     ChildNode.label = nodeDefinition.label;
-    ChildNode.schema = nodeDefinition.schema || {};
+    ChildNode.schemas = {
+      'default': nodeDefinition.schema || {}
+    };
 
     return ChildNode;
   };
@@ -67,9 +69,7 @@ var Node = function Node(data, id) {
   this.isUpdate = id ? true : false;
 
   this.label = this.constructor.label;
-  this.schemas = {
-    'default': this.constructor.schema
-  };
+  this.schemas = this.constructor.schemas;
 
   this.isValid = false;
   this._initialisePromise();

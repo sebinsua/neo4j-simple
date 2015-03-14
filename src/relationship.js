@@ -64,7 +64,9 @@ var relationship = module.exports = function (database) {
     ChildRelationship.database = relationship.database;
 
     ChildRelationship.type = relationshipDefinition.type;
-    ChildRelationship.schema = relationshipDefinition.schema || {};
+    ChildRelationship.schemas = {
+      'default': relationshipDefinition.schema || {}
+    };
 
     return ChildRelationship;
   };
@@ -88,9 +90,7 @@ var Relationship = function Relationship(data, ids, direction) {
   this.direction = direction || database.direction.NONE;
 
   this.type = this.constructor.type;
-  this.schemas = {
-    'default': this.constructor.schema
-  };
+  this.schemas = this.constructor.schemas;
 
   this.isValid = false;
   this._initialisePromise();
