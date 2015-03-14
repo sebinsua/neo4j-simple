@@ -67,7 +67,9 @@ var Node = function Node(data, id) {
   this.isUpdate = id ? true : false;
 
   this.label = this.constructor.label;
-  this.schema = this.constructor.schema;
+  this.schemas = {
+    'default': this.constructor.schema
+  };
 
   this.isValid = false;
   this._initialisePromise();
@@ -89,7 +91,7 @@ Node.prototype._initialisePromise = function () {
 
   var deferred = Q.defer();
 
-  var data = this.data, schema = this.schema;
+  var data = this.data, schema = this.schemas['default'];
   // When there is no schema always assume valid.
   if (_.isEmpty(schema)) {
     this.isValid = true;
@@ -107,7 +109,7 @@ Node.prototype._initialisePromise = function () {
 Node.prototype._validate = function (data) {
   data = data || this.data;
 
-  var schema = this.schema;
+  var schema = this.schemas['default'];
 
   var deferred = Q.defer(),
       validationOptions = { stripUnknown: true },
