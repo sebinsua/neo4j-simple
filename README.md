@@ -12,12 +12,6 @@ This makes the simple things easy and gets out of your way so you can write your
 TODO
 ----
 
-- [x] Search code for _data and expel it.
-- [x] A way of setting the default id key.
-- [x] A better, cleaner way of doing edit and create schemas. Effectively 'schema' is the 'defaultSchema'. You can create a schema for each operation. By default an operation is passed in through `options.operation` when you use `save()`, etc.
-- [x] However by default an operation would be the internal operation itself: for example 'create' or 'update' or 'remove'.
-- [x] Always fallback to 'default'.
-- [x] Consider making some kind of `operation(name)` helper. Obviously an operation will fallback to the default schema if in doubt.
 - [ ] Remove this:
 ```javascript
 // I am setting this up despite it being a little unhealthy as this was the
