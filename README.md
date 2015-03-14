@@ -16,7 +16,9 @@ Define [Joi](https://github.com/hapijs/joi) data validators for your nodes and r
 
 ```javascript
 var Q = require('bluebird');
-var db = require('neo4j-promised')("http://localhost:7474");
+var db = require('neo4j-promised')("http://localhost:7474", {
+  idName: 'id' // By default this is 'id' which means you should have an `audo_index` on this field for both nodes and relationships.
+});
 
 // `schema` is the same as `schemas.default`.
 // Pass in more schemas if you need different ones for different operations.
