@@ -1,6 +1,6 @@
 {
   "name": "neo4j-promised",
-  "version": "0.1.1-0",
+  "version": "0.1.1-1",
   "description": "A Neo4j API that provides nodes and relationships in the form of promises on top of Cypher.",
   "main": "index.js",
   "scripts": {
