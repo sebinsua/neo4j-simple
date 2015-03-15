@@ -97,6 +97,8 @@ Q.all([
 
 ## API
 
+All of the methods that interact with the database will return a promise but can accept a callback as their last argument. 
+
 ### `defineNode(nodeDefinition)`
 
 ```javascript
@@ -109,7 +111,16 @@ Q.all([
 
 #### `new Node(data, id)`
 
+If an id is specified then the node represents an update or replace operation. If an id is not specified then a uuid will be generated on save and the node represents a create operation.
+
 ##### `save(options)`
+
+```javascript
+{
+  'operation': 'replace',
+  'replace': true
+}
+```
 
 ##### `remove()`
 
@@ -126,6 +137,13 @@ Q.all([
 #### `new Relationship(data, ids, direction)`
 
 ##### `save(options)`
+
+```javascript
+{
+  'operation': 'replace',
+  'replace': true
+}
+```
 
 ##### `remove()`
 
