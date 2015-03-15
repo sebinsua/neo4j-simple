@@ -19,7 +19,7 @@ var node = module.exports = function (database) {
 
   node.generate = function (nodeDefinition) {
     nodeDefinition = nodeDefinition || {};
-    
+
     var label = _.isArray(nodeDefinition.label) ?
     _.first(nodeDefinition.label) : nodeDefinition.label || '',
     name = label + Node.name;
@@ -161,7 +161,7 @@ Node.prototype._save = function (options) {
                    "SET n.created = timestamp()"].join('\n');
 
       data[self.idName] = id;
-      return self.database.client.queryAsync(query, {
+      return self.database.query(query, {
         data: data
       }).then(function (results) {
         return {
@@ -178,10 +178,10 @@ Node.prototype._save = function (options) {
                    "RETURN n"].join('\n');
 
       data[self.idName] = id;
-      return self.database.client.queryAsync(query, {
+      return self.database.query(query, {
         id: id,
         data: data
-      }).then(responseParser.getResult);
+      }).getResult();
     };
   };
 
@@ -208,7 +208,7 @@ Node.prototype._save = function (options) {
       query = _query.concat(_setters, _return).join('\n');
 
       data[self.idName] = id;
-      return self.database.client.queryAsync(query, data).then(responseParser.getResult);
+      return self.database.query(query, data).getResult();
     };
   };
 
@@ -248,7 +248,7 @@ Node.prototype._delete = function (options) {
                'RETURN count(n) AS count'].join('\n');
 
   var id = this.id;
-  return this.database.client.queryAsync(query, { id: id }).then(responseParser.getCount);
+  return this.database.query(query, { id: id }).getCountAt('count');
 };
 
 Node.prototype.save = function (options, callback) {

@@ -200,11 +200,11 @@ Relationship.prototype._save = function (options) {
 
       data[self.idName] = uuid.v1();
       data.created = Date.now();
-      return self.database.client.queryAsync(query, {
+      return self.database.query(query, {
         aId: ids[0],
         bId: ids[1],
         data: data
-      }).then(responseParser.getRelationshipResult);
+      }).getRelationshipResult();
     };
   };
 
@@ -235,7 +235,7 @@ Relationship.prototype._save = function (options) {
 
       data.aId = ids[0];
       data.bId = ids[1];
-      return self.database.client.queryAsync(query, data).then(responseParser.getRelationshipResult);
+      return self.database.query(query, data).getRelationshipResult();
     };
   };
 
@@ -269,7 +269,7 @@ Relationship.prototype._delete = function (options) {
                'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
-  return this.database.client.queryAsync(query, { aId: ids[0], bId: ids[1] }).then(responseParser.getCount);
+  return this.database.query(query, { aId: ids[0], bId: ids[1] }).getCountAt('count');
 };
 
 Relationship.prototype.save = function (options, callback) {
