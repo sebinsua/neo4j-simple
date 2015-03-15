@@ -151,6 +151,8 @@ This method assumes that the query named a relationship as `'r'` and the nodes t
 
 #### `getCount()` or `getCountAt(countAlias)`
 
+This method assumes that the query named the count as `count(n)`.
+
 ### `getNodes(ids)`
 
 This is a method that executes an explicit query for a specific array of ids.
