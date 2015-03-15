@@ -3,7 +3,7 @@
 var _ = require('lodash'),
     debug = require('debug')('neo4j-promised:response-parser');
 
-var responseParser = module.exports = {};
+var responseParser = {};
 
 responseParser.getResultAt = function (thingIdentifier) {
   return function (response) {
@@ -79,3 +79,17 @@ responseParser.getCount = responseParser.getCountAt('count(n)');
 
 responseParser.getRelationshipResult = responseParser.getRelationshipResultAt('r', 'n', 'm');
 responseParser.getRelationshipResults = responseParser.getRelationshipResultsAt('r', 'n', 'm');
+
+responseParser.responsifyPromises = function (target) {
+
+  _.each(responseParser, function (method, methodName) {
+    target[methodName] = function () {
+      var rpFn = method.apply(responseParser, arguments);
+      return target.then(rpFn);
+    };
+  });
+
+  return target;
+};
+
+module.exports = responseParser;

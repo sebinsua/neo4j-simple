@@ -11,6 +11,10 @@ var node = require('./node'),
     relationship = require('./relationship'),
     responseParser = require('./response-parser');
 
+// This adds extra methods to the promises returned by Bluebird so that
+// we can use these in place of `then()`.
+responseParser.responsifyPromises(Q.prototype);
+
 // This create *Async promise-returning versions of all of the standard
 // node-style callback-returning methods.
 Q.promisifyAll(Neo4j.prototype);
@@ -45,7 +49,7 @@ module.exports = function (url, options) {
     var nodeName = 'n';
     var listOfIds = _.map(ids, function (id) { return '"' + id + '"'; }).join(", ");
     var getNodesQuery = "MATCH (" + nodeName + ") WHERE " + nodeName + "." + this.idName + " IN [" + listOfIds + "] RETURN " + nodeName;
-    return this.client.queryAsync(getNodesQuery).then(responseParser.getResultsAt(nodeName));
+    return this.query(getNodesQuery).then(responseParser.getResultsAt(nodeName));
   };
 
   db.getNodes = function (ids, callback) {
