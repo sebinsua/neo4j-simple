@@ -97,6 +97,8 @@ Q.all([
 
 ## API
 
+All of the methods that interact with the database will return a promise but can accept a callback as their last argument. 
+
 ### `defineNode(nodeDefinition)`
 
 ```javascript
@@ -109,7 +111,16 @@ Q.all([
 
 #### `new Node(data, id)`
 
+If an id is specified then the node represents an update or replace operation. If an id is not specified then a uuid will be generated on save and the node represents a create operation.
+
 ##### `save(options)`
+
+```javascript
+{
+  'operation': 'replace',
+  'replace': true
+}
+```
 
 ##### `remove()`
 
@@ -127,11 +138,20 @@ Q.all([
 
 ##### `save(options)`
 
+```javascript
+{
+  'operation': 'replace',
+  'replace': true
+}
+```
+
 ##### `remove()`
 
 ### `query(...)`
 
-This is an alias of Rainbird's `query()` but will return a promise, with the following extra methods:
+This is an alias of Rainbird's `query()` but will return a promise. See also `begin()`, `commit()`, `rollback()`, etc. 
+
+Rainbird supports multiple queries and can return multiple result sets. In our case `then()` will receive all of these results, however we supply a set of helper methods against the promise that make it easy to parse the results for the simpler case of one query.
 
 #### `getResult()` or `getResultAt(nodeAlias)`
 

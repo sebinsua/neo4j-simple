@@ -38,7 +38,13 @@ module.exports = function (url, options) {
   db.Joi = Joi;
   db.responseParser = responseParser;
 
+  db._begin = db.client.beginAsync.bind(db.client);
   db._query = db.client.queryAsync.bind(db.client);
+  db._commit = db.client.commitAsync.bind(db.client);
+  db._rollback = db.client.rollbackAsync.bind(db.client);
+  db._resetTimeout = db.client.resetTimeoutAsync.bind(db.client);
+  db._compose = Q.promisify(Neo4j.compose).bind(Neo4j);
+  db.escape = Neo4j.escape.bind(Neo4j);
 
   db._getNodes = function (ids) {
     if (!ids || ids.length === 0) {
@@ -52,6 +58,16 @@ module.exports = function (url, options) {
     return this.query(getNodesQuery).getResultsAt(nodeName);
   };
 
+  db.begin = function (/* arguments */) {
+    var argumentsArray = Array.prototype.slice.call(arguments);
+
+    var callback;
+    if (_.isFunction(_.last(argumentsArray))) {
+      callback = argumentsArray.pop();
+    }
+    return this._begin.apply(this, argumentsArray).nodeify(callback);
+  };
+
   db.query = function (/* arguments */) {
     var argumentsArray = Array.prototype.slice.call(arguments);
 
@@ -60,6 +76,46 @@ module.exports = function (url, options) {
       callback = argumentsArray.pop();
     }
     return this._query.apply(this, argumentsArray).nodeify(callback);
+  };
+
+  db.commit = function (/* arguments */) {
+    var argumentsArray = Array.prototype.slice.call(arguments);
+
+    var callback;
+    if (_.isFunction(_.last(argumentsArray))) {
+      callback = argumentsArray.pop();
+    }
+    return this._commit.apply(this, argumentsArray).nodeify(callback);
+  };
+
+  db.rollback = function (/* arguments */) {
+    var argumentsArray = Array.prototype.slice.call(arguments);
+
+    var callback;
+    if (_.isFunction(_.last(argumentsArray))) {
+      callback = argumentsArray.pop();
+    }
+    return this._rollback.apply(this, argumentsArray).nodeify(callback);
+  };
+
+  db.resetTimeout = function (/* arguments */) {
+    var argumentsArray = Array.prototype.slice.call(arguments);
+
+    var callback;
+    if (_.isFunction(_.last(argumentsArray))) {
+      callback = argumentsArray.pop();
+    }
+    return this._resetTimeout.apply(this, argumentsArray).nodeify(callback);
+  };
+
+  db.compose = function (/* arguments */) {
+    var argumentsArray = Array.prototype.slice.call(arguments);
+
+    var callback;
+    if (_.isFunction(_.last(argumentsArray))) {
+      callback = argumentsArray.pop();
+    }
+    return this._compose.apply(this, argumentsArray).nodeify(callback);
   };
 
   db.getNodes = function (ids, callback) {

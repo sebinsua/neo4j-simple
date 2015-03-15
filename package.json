@@ -29,7 +29,7 @@
     "joi": "^4.7.0",
     "lodash": "^2.4.1",
     "node-uuid": "^1.4.1",
-    "rainbird-neo4j": "^0.2.2"
+    "rainbird-neo4j": "^0.3.0"
   },
   "devDependencies": {
     "jshint": "latest",
