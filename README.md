@@ -3,11 +3,11 @@ neo4j-promised
 
 [![Build Status](https://travis-ci.org/sebinsua/neo4j-promised.png)](https://travis-ci.org/sebinsua/neo4j-promised) [![npm version](https://badge.fury.io/js/neo4j-promised.svg)](https://npmjs.org/package/neo4j-promised)
 
-A [Neo4j](http://neo4j.com/) API for Node.js that provides nodes and relationships in [the form of promises)](https://github.com/petkaantonov/bluebird) using the [Cypher query langauge](http://neo4j.com/developer/cypher-query-language/).
+A [Neo4j](http://neo4j.com/) API for Node.js that provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) with [Joi](https://github.com/hapijs/joi) validators and implemented using the [Cypher query language](http://neo4j.com/developer/cypher-query-language/).
 
-This makes the simple things easy and gets out of your way so you can write your own bespoke Cypher queries unimpeded through the `query()` method.
+This makes the simple things easy.
 
-The neo4j client itself is exposed on `module.client`, and you can call `module.client.query()` or `module.client.queryAsync()` through this depending on whether you prefer callbacks or promises.
+Additonally, you can write your own bespoke Cypher queries unimpeded through the `query()` method, and the neo4j client itself is exposed on `module.client` so you can call `module.client.query()` or `module.client.queryAsync()` to query the database directly (depending on whether you prefer callbacks or promises.)
 
 Example
 =======
@@ -16,7 +16,9 @@ Define [Joi](https://github.com/hapijs/joi) data validators for your nodes and r
 
 ```javascript
 var Q = require('bluebird');
-var db = require('neo4j-promised')("http://localhost:7474");
+var db = require('neo4j-promised')("http://localhost:7474", {
+  idName: 'id' // By default this is 'id' which means you should have an `audo_index` on this field for both nodes and relationships.
+});
 
 // `schema` is the same as `schemas.default`.
 // Pass in more schemas if you need different ones for different operations.
