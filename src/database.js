@@ -2,13 +2,14 @@
 
 var Joi = require('joi');
 
-var node = require('./node'),
-    relationship = require('./relationship');
-
 var _ = require('lodash'),
     Neo4j = require('rainbird-neo4j'),
     Q = require('bluebird'),
     debug = require('debug')('neo4j-promised:database');
+
+var node = require('./node'),
+    relationship = require('./relationship'),
+    responseParser = require('./response-parser');
 
 // This create *Async promise-returning versions of all of the standard
 // node-style callback-returning methods.
@@ -31,6 +32,7 @@ module.exports = function (url, options) {
   db.idName = options.idName;
 
   db.Joi = Joi;
+  db.responseParser = responseParser;
 
   db.query = db.client.queryAsync.bind(db.client);
 
@@ -42,13 +44,8 @@ module.exports = function (url, options) {
 
     var nodeName = 'n';
     var listOfIds = _.map(ids, function (id) { return '"' + id + '"'; }).join(", ");
-    return this.client.queryAsync("MATCH (" + nodeName + ") WHERE " + nodeName + "." + this.idName + " IN [" + listOfIds + "] RETURN " + nodeName).then(function (response) {
-      var queries = response[0];
-      var firstQueryResults = queries[0] || [];
-      return _.map(firstQueryResults, function (nr) {
-        return nr[nodeName];
-      });
-    });
+    var getNodesQuery = "MATCH (" + nodeName + ") WHERE " + nodeName + "." + this.idName + " IN [" + listOfIds + "] RETURN " + nodeName;
+    return this.client.queryAsync(getNodesQuery).then(responseParser.getResultsAt(nodeName));
   };
 
   db.getNodes = function (ids, callback) {
