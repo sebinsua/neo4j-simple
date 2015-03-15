@@ -149,7 +149,9 @@ If an id is specified then the node represents an update or replace operation. I
 
 ### `query(...)`
 
-This is an alias of Rainbird's `query()` but will return a promise, with the following extra methods:
+This is an alias of Rainbird's `query()` but will return a promise.
+
+Rainbird supports multiple queries and can return multiple result sets. In our case `then()` will receive all of these results, however we supply a set of helper methods against the promise that make it easy to parse the results for the simpler case of one query.
 
 #### `getResult()` or `getResultAt(nodeAlias)`
 
