@@ -1,5 +1,4 @@
-neo4j-promised
-==============
+# neo4j-promised
 
 [![Build Status](https://travis-ci.org/sebinsua/neo4j-promised.png)](https://travis-ci.org/sebinsua/neo4j-promised) [![npm version](https://badge.fury.io/js/neo4j-promised.svg)](https://npmjs.org/package/neo4j-promised)
 
@@ -9,8 +8,7 @@ The library provides nodes and relationships in [the form of promises](https://g
 
 It is built on top of the excellent Neo4j library [rainbird-neo4j](https://github.com/RainBirdAi/rainbird-neo4j) which is exposed on the `.client` property, and there are also some helpful aliases created for its methods that are described in the API.
 
-Example
--------
+## Example
 
 ```javascript
 var db = require('neo4j-promised')("http://localhost:7474");
@@ -97,5 +95,22 @@ Q.all([
 });
 ```
 
-Example
--------
+## API
+
+### `defineNode`
+
+### `defineRelationship`
+
+### `query`
+
+#### `getResultAt`
+
+#### `getResultsAt`
+
+#### `getRelationshipResultAt`
+
+#### `getRelationshipResultsAt`
+
+#### `getCountAt`
+
+### `getNodes`
