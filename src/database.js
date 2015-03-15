@@ -49,7 +49,7 @@ module.exports = function (url, options) {
     var nodeName = 'n';
     var listOfIds = _.map(ids, function (id) { return '"' + id + '"'; }).join(", ");
     var getNodesQuery = "MATCH (" + nodeName + ") WHERE " + nodeName + "." + this.idName + " IN [" + listOfIds + "] RETURN " + nodeName;
-    return this.query(getNodesQuery).then(responseParser.getResultsAt(nodeName));
+    return this.query(getNodesQuery).getResultsAt(nodeName);
   };
 
   db.getNodes = function (ids, callback) {

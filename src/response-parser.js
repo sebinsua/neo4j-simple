@@ -83,9 +83,12 @@ responseParser.getRelationshipResults = responseParser.getRelationshipResultsAt(
 responseParser.responsifyPromises = function (target) {
 
   _.each(responseParser, function (method, methodName) {
+    if (methodName === 'responsifyPromises') {
+      return false;
+    }
+
     target[methodName] = function () {
-      var rpFn = method.apply(responseParser, arguments);
-      return target.then(rpFn);
+      return this.then(method);
     };
   });
 
