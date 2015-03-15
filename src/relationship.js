@@ -37,6 +37,8 @@ var relationship = module.exports = function (database) {
   relationship.database = database;
 
   relationship.generate = function (relationshipDefinition) {
+    relationshipDefinition = relationshipDefinition || {};
+
     var type = relationshipDefinition.type || '',
     name = uppercaseCamelCaseIdentifier(type) + Relationship.name;
 

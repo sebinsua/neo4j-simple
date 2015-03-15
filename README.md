@@ -97,20 +97,60 @@ Q.all([
 
 ## API
 
-### `defineNode`
+### `defineNode(nodeDefinition)`
 
-### `defineRelationship`
+```javascript
+{
+  'label': [''], // Optional. Takes either a single string or array of labels.
+  'schema': {}, // Optional. A default schema.
+  'schemas': {}, // Optional. A key-value object of schemas can be passed in.
+}
+```
 
-### `query`
+#### `new Node(data, id)`
 
-#### `getResultAt`
+##### `save(options)`
 
-#### `getResultsAt`
+##### `remove()`
 
-#### `getRelationshipResultAt`
+### `defineRelationship(relationshipDefinition)`
 
-#### `getRelationshipResultsAt`
+```javascript
+{
+  'type': '', // Optional. Takes a single string.
+  'schema': {}, // Optional. A default schema.
+  'schemas': {}, // Optional. A key-value object of schemas can be passed in.
+}
+```
 
-#### `getCountAt`
+#### `new Relationship(data, ids, direction)`
 
-### `getNodes`
+##### `save(options)`
+
+##### `remove()`
+
+### `query(...)`
+
+This is an alias of Rainbird's `query()` but will return a promise, with the following extra methods:
+
+#### `getResult()` or `getResultAt(nodeAlias)`
+
+This method assumes that the query named a node as `'n'`.
+
+#### `getResults()` or `getResultsAt(nodeAlias)`
+
+This method assumes that the query named a node as `'n'`.
+
+#### `getRelationshipResult` or  `getRelationshipResultAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
+
+This method assumes that the query named a relationship as `'r'` and the nodes that this was between as `'n'` and `'m'`.
+
+#### `getRelationshipResults()` or `getRelationshipResultsAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
+
+This method assumes that the query named a relationship as `'r'` and the nodes that this was between as `'n'` and `'m'`.
+
+#### `getCount()` or `getCountAt(countAlias)`
+
+### `getNodes(ids)`
+
+This is a method that executes an explicit query for a specific array of ids.

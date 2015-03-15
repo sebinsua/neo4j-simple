@@ -18,6 +18,8 @@ var node = module.exports = function (database) {
   node.database = database;
 
   node.generate = function (nodeDefinition) {
+    nodeDefinition = nodeDefinition || {};
+    
     var label = _.isArray(nodeDefinition.label) ?
     _.first(nodeDefinition.label) : nodeDefinition.label || '',
     name = label + Node.name;
