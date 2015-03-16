@@ -117,8 +117,8 @@ If an id is specified as the second argument then the node represents an update 
 
 ```javascript
 {
-  'operation': 'replace',
-  'replace': true
+  'operation': 'replace', // Optional. Pass in when you require a different schema to be tested.
+  'replace': false // Optional. Defaults to false. 
 }
 ```
 
@@ -140,8 +140,8 @@ If an id is specified as the second argument then the node represents an update 
 
 ```javascript
 {
-  'operation': 'replace',
-  'replace': true
+  'operation': 'replace', // Optional. Pass in when you require a different schema to be tested.
+  'replace': false // Optional. Defaults to false.
 }
 ```
 
