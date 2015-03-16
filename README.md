@@ -157,6 +157,10 @@ Rainbird supports multiple queries and can return multiple result sets. In our c
 
 This method assumes that the query named a node as `'n'`.
 
+#### `getResults()` or `getResultsAt(nodeAlias)`
+
+This method assumes that the query named a node as `'n'`.
+
 e.g.
 
 ```javascript
@@ -168,10 +172,6 @@ db.query('MATCH (n:Example) RETURN n LIMIT 100')
   console.log(results);
 });
 ```
-
-#### `getResults()` or `getResultsAt(nodeAlias)`
-
-This method assumes that the query named a node as `'n'`.
 
 #### `getRelationshipResult` or  `getRelationshipResultAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
 
