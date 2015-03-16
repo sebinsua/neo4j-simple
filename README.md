@@ -93,6 +93,12 @@ Q.all([
 ]).then(function (response) {
   return exampleRelationship.save();
 });
+
+db.query('MATCH (n:Example) RETURN n LIMIT 100')
+  .getResults()
+  .then(function (results) {
+  console.log(results);
+});
 ```
 
 ## API
@@ -111,7 +117,7 @@ All of the methods that interact with the database will return a promise but can
 
 #### `new Node(data, id)`
 
-If an id is specified then the node represents an update or replace operation. If an id is not specified then a uuid will be generated on save and the node represents a create operation.
+If an id is specified as the second argument then the node represents an update or replace operation. If this is not the case then the node represents a create operation and the id should either be found in `data.id` or if not a uuid will be generated on `save()`.
 
 ##### `save(options)`
 
