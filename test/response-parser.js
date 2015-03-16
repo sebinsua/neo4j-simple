@@ -176,13 +176,13 @@ describe("response-parser", function () {
 
       expect(responseParser.getRelationshipResults(response)).to.eql([
         {
-          'subject': {
+          'n': {
             'a': 'bc'
           },
-          'relationship': {
+          'r': {
             'd': 'ef'
           },
-          'object': {
+          'm': {
             'g': 'hi'
           }
         }
