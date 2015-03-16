@@ -111,14 +111,14 @@ All of the methods that interact with the database will return a promise but can
 
 #### `new Node(data, id)`
 
-If an id is specified then the node represents an update or replace operation. If an id is not specified then a uuid will be generated on save and the node represents a create operation.
+If an id is specified as the second argument then the node represents an update or replace operation. If this is not the case then the node represents a create operation and the id should either be found in `data.id` or if not a uuid will be generated on `save()`.
 
 ##### `save(options)`
 
 ```javascript
 {
-  'operation': 'replace',
-  'replace': true
+  'operation': 'replace', // Optional. Pass in when you require a different schema to be tested.
+  'replace': false // Optional. Defaults to false. 
 }
 ```
 
@@ -140,8 +140,8 @@ If an id is specified then the node represents an update or replace operation. I
 
 ```javascript
 {
-  'operation': 'replace',
-  'replace': true
+  'operation': 'replace', // Optional. Pass in when you require a different schema to be tested.
+  'replace': false // Optional. Defaults to false.
 }
 ```
 
@@ -160,6 +160,18 @@ This method assumes that the query named a node as `'n'`.
 #### `getResults()` or `getResultsAt(nodeAlias)`
 
 This method assumes that the query named a node as `'n'`.
+
+e.g.
+
+```javascript
+var db = require('neo4j-promised')("http://localhost:7474");
+
+db.query('MATCH (n:Example) RETURN n LIMIT 100')
+  .getResults()
+  .then(function (results) {
+  console.log(results);
+});
+```
 
 #### `getRelationshipResult` or  `getRelationshipResultAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
 
