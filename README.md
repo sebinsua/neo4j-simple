@@ -93,12 +93,6 @@ Q.all([
 ]).then(function (response) {
   return exampleRelationship.save();
 });
-
-db.query('MATCH (n:Example) RETURN n LIMIT 100')
-  .getResults()
-  .then(function (results) {
-  console.log(results);
-});
 ```
 
 ## API
@@ -162,6 +156,18 @@ Rainbird supports multiple queries and can return multiple result sets. In our c
 #### `getResult()` or `getResultAt(nodeAlias)`
 
 This method assumes that the query named a node as `'n'`.
+
+e.g.
+
+```javascript
+var db = require('neo4j-promised')("http://localhost:7474");
+
+db.query('MATCH (n:Example) RETURN n LIMIT 100')
+  .getResults()
+  .then(function (results) {
+  console.log(results);
+});
+```
 
 #### `getResults()` or `getResultsAt(nodeAlias)`
 
