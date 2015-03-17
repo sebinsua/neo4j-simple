@@ -4,9 +4,11 @@
 
 Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
 
-The library provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
+The library provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally *optionally* you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
 
 It is built on top of the excellent Neo4j library [rainbird-neo4j](https://github.com/RainBirdAi/rainbird-neo4j) which is exposed on the `.client` property, and there are also some helpful aliases created for its methods that are described in the API.
+
+**NOTE:** I am using it in an internal project so it is in active development. I will respond to any [issues](https://github.com/sebinsua/neo4j-promised/issues) raised. There will likely be breaking changes happening, however new versions will be released following [semver conventions](http://semver.org/) and over time I hope to increase the unit testing that I have done and to break some of it up into smaller components.
 
 ## Example
 
