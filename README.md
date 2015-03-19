@@ -97,11 +97,11 @@ Q.all([
 });
 ```
 
-## API
+# API
 
 All of the methods that interact with the database will return a promise but can accept a callback as their last argument.
 
-### `defineNode(nodeDefinition)`
+## `defineNode(nodeDefinition)`
 
 ```javascript
 {
@@ -111,11 +111,11 @@ All of the methods that interact with the database will return a promise but can
 }
 ```
 
-#### `new Node(data, id)`
+### `new Node(data, id)`
 
 If an id is specified as the second argument then the node represents an update or replace operation. If this is not the case then the node represents a create operation and the id should either be found in `data.id` or if not a uuid will be generated on `save()`.
 
-##### `save(options)`
+#### `save(options)`
 
 ```javascript
 {
@@ -124,9 +124,9 @@ If an id is specified as the second argument then the node represents an update 
 }
 ```
 
-##### `remove()`
+#### `remove()`
 
-### `defineRelationship(relationshipDefinition)`
+## `defineRelationship(relationshipDefinition)`
 
 ```javascript
 {
@@ -136,9 +136,9 @@ If an id is specified as the second argument then the node represents an update 
 }
 ```
 
-#### `new Relationship(data, ids, direction)`
+### `new Relationship(data, ids, direction)`
 
-##### `save(options)`
+#### `save(options)`
 
 ```javascript
 {
@@ -147,19 +147,19 @@ If an id is specified as the second argument then the node represents an update 
 }
 ```
 
-##### `remove()`
+#### `remove()`
 
-### `query(...)`
+## `query(...)`
 
 This is an alias of Rainbird's `query()` but will return a promise. See also `begin()`, `commit()`, `rollback()`, etc.
 
 Rainbird supports multiple queries and can return multiple result sets. In our case `then()` will receive all of these results, however we supply a set of helper methods against the promise that make it easy to parse the results for the simpler case of one query.
 
-#### `getResult()` or `getResultAt(nodeAlias)`
+### `getResult()` or `getResultAt(nodeAlias)`
 
 This method assumes that the query named a node as `'n'`.
 
-#### `getResults()` or `getResultsAt(nodeAlias)`
+### `getResults()` or `getResultsAt(nodeAlias)`
 
 This method assumes that the query named a node as `'n'`.
 
@@ -175,18 +175,18 @@ db.query('MATCH (n:Example) RETURN n LIMIT 100')
 });
 ```
 
-#### `getRelationshipResult` or  `getRelationshipResultAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
+### `getRelationshipResult` or  `getRelationshipResultAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
 
 This method assumes that the query named a relationship as `'r'` and the nodes that this was between as `'n'` and `'m'`.
 
-#### `getRelationshipResults()` or `getRelationshipResultsAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
+### `getRelationshipResults()` or `getRelationshipResultsAt(relationshipAlias, leftNodeAlias, rightNodeAlias)`
 
 This method assumes that the query named a relationship as `'r'` and the nodes that this was between as `'n'` and `'m'`.
 
-#### `getCount()` or `getCountAt(countAlias)`
+### `getCount()` or `getCountAt(countAlias)`
 
 This method assumes that the query named the count as `count(n)`.
 
-### `getNodes(ids)`
+## `getNodes(ids)`
 
 This is a method that executes an explicit query for a specific array of ids.
