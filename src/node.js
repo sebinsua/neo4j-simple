@@ -9,7 +9,7 @@ var _ = require('lodash'),
     Q = require('bluebird'),
     util = require('util'),
     uuid = require('node-uuid'),
-    debug = require('debug')('neo4j-promised:node');
+    debug = require('debug')('neo4j-simple:node');
 
 var node = module.exports = function (database) {
 

@@ -1,6 +1,6 @@
-# neo4j-promised
+# neo4j-simple
 
-[![Build Status](https://travis-ci.org/sebinsua/neo4j-promised.png)](https://travis-ci.org/sebinsua/neo4j-promised) [![npm version](https://badge.fury.io/js/neo4j-promised.svg)](https://npmjs.org/package/neo4j-promised)
+[![Build Status](https://travis-ci.org/sebinsua/neo4j-simple.png)](https://travis-ci.org/sebinsua/neo4j-simple) [![npm version](https://badge.fury.io/js/neo4j-simple.svg)](https://npmjs.org/package/neo4j-simple)
 
 Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
 
@@ -8,12 +8,12 @@ The library provides nodes and relationships in [the form of promises](https://g
 
 It is built on top of the excellent Neo4j library [rainbird-neo4j](https://github.com/RainBirdAi/rainbird-neo4j) which is exposed on the `.client` property, and there are also some helpful aliases created for its methods that are described in the API.
 
-**NOTE:** I am using it in an internal project so it is in active development. I will respond to any [issues](https://github.com/sebinsua/neo4j-promised/issues) raised. There will likely be breaking changes happening, however new versions will be released following [semver conventions](http://semver.org/) and over time I hope to increase the unit testing that I have done and to break some of it up into smaller components.
+**NOTE:** I am using it in an internal project so it is in active development. I will respond to any [issues](https://github.com/sebinsua/neo4j-simple/issues) raised. There will likely be breaking changes happening, however new versions will be released following [semver conventions](http://semver.org/) and over time I hope to increase the unit testing that I have done and to break some of it up into smaller components.
 
 ## Example
 
 ```javascript
-var db = require('neo4j-promised')("http://localhost:7474");
+var db = require('neo4j-simple')("http://localhost:7474");
 
 var Node = db.defineNode({
   label: ['Example'],
@@ -43,7 +43,7 @@ var Q = require('bluebird');
 // By default the idName passed into the library is 'id'.
 // This means that you should have an `auto_index` on that
 // field for both nodes and relationships.
-var db = require('neo4j-promised')("http://localhost:7474", {
+var db = require('neo4j-simple')("http://localhost:7474", {
   idName: 'id'
 });
 
@@ -99,7 +99,7 @@ Q.all([
 
 ## API
 
-All of the methods that interact with the database will return a promise but can accept a callback as their last argument. 
+All of the methods that interact with the database will return a promise but can accept a callback as their last argument.
 
 ### `defineNode(nodeDefinition)`
 
@@ -120,7 +120,7 @@ If an id is specified as the second argument then the node represents an update 
 ```javascript
 {
   'operation': 'replace', // Optional. Pass in when you require a different schema to be tested.
-  'replace': false // Optional. Defaults to false. 
+  'replace': false // Optional. Defaults to false.
 }
 ```
 
@@ -151,7 +151,7 @@ If an id is specified as the second argument then the node represents an update 
 
 ### `query(...)`
 
-This is an alias of Rainbird's `query()` but will return a promise. See also `begin()`, `commit()`, `rollback()`, etc. 
+This is an alias of Rainbird's `query()` but will return a promise. See also `begin()`, `commit()`, `rollback()`, etc.
 
 Rainbird supports multiple queries and can return multiple result sets. In our case `then()` will receive all of these results, however we supply a set of helper methods against the promise that make it easy to parse the results for the simpler case of one query.
 
@@ -166,7 +166,7 @@ This method assumes that the query named a node as `'n'`.
 e.g.
 
 ```javascript
-var db = require('neo4j-promised')("http://localhost:7474");
+var db = require('neo4j-simple')("http://localhost:7474");
 
 db.query('MATCH (n:Example) RETURN n LIMIT 100')
   .getResults()

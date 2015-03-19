@@ -1,5 +1,5 @@
 {
-  "name": "neo4j-promised",
+  "name": "neo4j-simple",
   "version": "0.5.1",
   "description": "A Neo4j API that provides nodes and relationships in the form of promises on top of Cypher.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/sebinsua/neo4j-promised"
+    "url": "http://github.com/sebinsua/neo4j-simple"
   },
   "keywords": [
     "neo4j",
@@ -20,9 +20,9 @@
   "author": "Seb Insua",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sebinsua/neo4j-promised/issues"
+    "url": "https://github.com/sebinsua/neo4j-simple/issues"
   },
-  "homepage": "https://github.com/sebinsua/neo4j-promised",
+  "homepage": "https://github.com/sebinsua/neo4j-simple",
   "dependencies": {
     "bluebird": "^2.3.6",
     "debug": "^2.1.0",

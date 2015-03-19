@@ -1,7 +1,7 @@
 "use strict";
 
 var _ = require('lodash'),
-    debug = require('debug')('neo4j-promised:response-parser');
+    debug = require('debug')('neo4j-simple:response-parser');
 
 var responseParser = {};
 

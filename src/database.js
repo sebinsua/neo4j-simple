@@ -5,7 +5,7 @@ var Joi = require('joi');
 var _ = require('lodash'),
     Neo4j = require('rainbird-neo4j'),
     Q = require('bluebird'),
-    debug = require('debug')('neo4j-promised:database');
+    debug = require('debug')('neo4j-simple:database');
 
 var node = require('./node'),
     relationship = require('./relationship'),
