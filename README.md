@@ -4,7 +4,7 @@
 
 Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
 
-Previously known as [neo4j-promised](https://www.npmjs.com/package/neo4j-promised) which has been deprecated for a new name that better describes the future of the library.
+**Originally known as [neo4j-promised](https://www.npmjs.com/package/neo4j-promised). A name that has since been deprecated in favor of a name that better describes the direction of the library.**
 
 The library provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally *optionally* you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
 
