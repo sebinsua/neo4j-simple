@@ -4,13 +4,7 @@
 
 Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
 
-*Originally known as [neo4j-promised](https://www.npmjs.com/package/neo4j-promised). A name that has since been deprecated in favor of a name that better describes the direction of the library.*
-
 The library provides nodes and relationships in [the form of promises](https://github.com/petkaantonov/bluebird) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally *optionally* you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
-
-It is built on top of the excellent Neo4j library [rainbird-neo4j](https://github.com/RainBirdAi/rainbird-neo4j) which is exposed on the `.client` property, and there are also some helpful aliases created for its methods that are described in the API.
-
-**NOTE:** I am using it in an internal project so it is in active development. I will respond to any [issues](https://github.com/sebinsua/neo4j-simple/issues) raised. There will likely be breaking changes happening, however new versions will be released following [semver conventions](http://semver.org/) and over time I hope to increase the unit testing that I have done and to break some of it up into smaller components.
 
 ## Example
 
@@ -210,3 +204,7 @@ This method assumes that the query named the count as `count(n)`.
 ## `getNodes(ids)`
 
 This is a method that executes an explicit query for a specific array of ids.
+
+# Support
+
+I am using it in an internal project so it is in active development. I will respond to any [issues](https://github.com/sebinsua/neo4j-simple/issues) raised. There will likely be breaking changes happening, however new versions will be released following [semver conventions](http://semver.org/) and over time I hope to increase the unit testing that I have done and to break some of it up into smaller components.
