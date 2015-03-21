@@ -3,6 +3,8 @@
 var _ = require('lodash'),
     debug = require('debug')('neo4j-simple:response-parser');
 
+// TODO: Remove the lodash methods.
+
 function isNotUndefined(value) {
   return value !== undefined;
 }
@@ -18,7 +20,6 @@ function getFirstQueryResults(response) {
   var firstQueryResults = queries[0] || [];
   return firstQueryResults;
 }
-// TODO: Fix the errors.
 
 function getResultAt(type /* thingIdentifier, ... , thingIdentifierN */) {
   var thingIdentifiers = Array.prototype.slice.call(arguments, 1);
@@ -41,7 +42,7 @@ function getResultAt(type /* thingIdentifier, ... , thingIdentifierN */) {
         return _.pick(result, thingIdentifiers);
       }
     } else {
-      throw new Error(type + "s named " + thingIdentifiers.join(', ') + " was not found.");
+      throw new Error("Nothing was matched with the identifiers (" + thingIdentifiers.join(', ') + ").");
     }
   };
 }
@@ -73,11 +74,81 @@ function getResultsAt(type /* thingIdentifier, ... , thingIdentifierN */) {
 }
 
 var responseParser = {
-  getResult: getResultAt('Node', 'n'),
-  getCount: getResultAt('Count', 'count(n)'),
-  getRelationshipResult: getResultAt('Relationship', 'r', 'n', 'm'),
-  getResults: getResultsAt('Node', 'n'),
-  getRelationshipResults: getResultsAt('Relationship', 'r', 'n', 'm')
+  getResult: function () {
+    var defaultType = 'Node',
+        defaultIdentifiers = ['n'];
+
+    var specifiedIdentifiers = Array.prototype.slice.call(arguments);
+
+    var args;
+    if (specifiedIdentifiers.length) {
+      args = [defaultType].concat(specifiedIdentifiers);
+    } else {
+      args = [defaultType].concat(defaultIdentifiers);
+    }
+
+    return getResultAt.apply(this, args)
+  },
+  getCount: function () {
+    var defaultType = 'Count',
+        defaultIdentifiers = ['count(n)'];
+
+    var specifiedIdentifiers = Array.prototype.slice.call(arguments);
+
+    var args;
+    if (specifiedIdentifiers.length) {
+      args = [defaultType].concat(specifiedIdentifiers);
+    } else {
+      args = [defaultType].concat(defaultIdentifiers);
+    }
+
+    return getResultAt.apply(this, args)
+  },
+  getRelationshipResult: function () {
+    var defaultType = 'Relationship',
+        defaultIdentifiers = ['r', 'n', 'm'];
+
+    var specifiedIdentifiers = Array.prototype.slice.call(arguments);
+
+    var args;
+    if (specifiedIdentifiers.length) {
+      args = [defaultType].concat(specifiedIdentifiers);
+    } else {
+      args = [defaultType].concat(defaultIdentifiers);
+    }
+
+    return getResultAt.apply(this, args)
+  },
+  getResults: function () {
+    var defaultType = 'Node',
+        defaultIdentifiers = ['n'];
+
+    var specifiedIdentifiers = Array.prototype.slice.call(arguments);
+
+    var args;
+    if (specifiedIdentifiers.length) {
+      args = [defaultType].concat(specifiedIdentifiers);
+    } else {
+      args = [defaultType].concat(defaultIdentifiers);
+    }
+
+    return getResultsAt.apply(this, args)
+  },
+  getRelationshipResults: function () {
+    var defaultType = 'Relationship',
+        defaultIdentifiers = ['r', 'n', 'm'];
+
+    var specifiedIdentifiers = Array.prototype.slice.call(arguments);
+
+    var args;
+    if (specifiedIdentifiers.length) {
+      args = [defaultType].concat(specifiedIdentifiers);
+    } else {
+      args = [defaultType].concat(defaultIdentifiers);
+    }
+
+    return getResultsAt.apply(this, args)
+  }
 };
 
 module.exports = responseParser;

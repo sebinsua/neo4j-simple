@@ -21,7 +21,7 @@ var node = module.exports = function (database) {
     nodeDefinition = nodeDefinition || {};
 
     var label = _.isArray(nodeDefinition.label) ?
-    _.first(nodeDefinition.label) : nodeDefinition.label || '',
+                _.first(nodeDefinition.label) : nodeDefinition.label || '',
     name = label + Node.name;
 
     var ChildNode;

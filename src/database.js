@@ -2,8 +2,7 @@
 
 var Joi = require('joi');
 
-var _ = require('lodash'),
-    Neo4j = require('rainbird-neo4j'),
+var Neo4j = require('rainbird-neo4j'),
     Q = require('bluebird'),
     debug = require('debug')('neo4j-simple:database');
 
@@ -12,6 +11,27 @@ var node = require('./node'),
     responseParser = require('./response-parser');
 
 var sourceifyPromises = require('./sourceify-promises');
+
+function isFunction(value) {
+  var funcTag = '[object Function]';
+  var objectProto = Object.prototype;
+  var objToString = objectProto.toString;
+  return objToString.call(value) == funcTag;
+}
+
+function last(array) {
+  var length = array ? array.length : 0;
+  return length ? array[length - 1] : undefined;
+}
+
+function getCallback(argumentsArray) {
+  var callback;
+  if (isFunction(last(argumentsArray))) {
+    callback = argumentsArray.pop();
+  }
+
+  return callback;
+}
 
 // This adds extra methods to the promises returned by Bluebird so that
 // we can use these in place of `then()`.
@@ -55,7 +75,7 @@ module.exports = function (url, options) {
     }
 
     var nodeName = 'n';
-    var listOfIds = _.map(ids, function (id) { return '"' + id + '"'; }).join(", ");
+    var listOfIds = ids.map(function (id) { return '"' + id + '"'; }).join(", ");
     var getNodesQuery = "MATCH (" + nodeName + ") WHERE " + nodeName + "." + this.idName + " IN [" + listOfIds + "] RETURN " + nodeName;
     return this.query(getNodesQuery).getResultsAt(nodeName);
   };
@@ -63,60 +83,48 @@ module.exports = function (url, options) {
   db.begin = function (/* arguments */) {
     var argumentsArray = Array.prototype.slice.call(arguments);
 
-    var callback;
-    if (_.isFunction(_.last(argumentsArray))) {
-      callback = argumentsArray.pop();
-    }
+    var callback = getCallback(argumentsArray);
+
     return this._begin.apply(this, argumentsArray).nodeify(callback);
   };
 
   db.query = function (/* arguments */) {
     var argumentsArray = Array.prototype.slice.call(arguments);
 
-    var callback;
-    if (_.isFunction(_.last(argumentsArray))) {
-      callback = argumentsArray.pop();
-    }
+    var callback = getCallback(argumentsArray);
+
     return this._query.apply(this, argumentsArray).nodeify(callback);
   };
 
   db.commit = function (/* arguments */) {
     var argumentsArray = Array.prototype.slice.call(arguments);
 
-    var callback;
-    if (_.isFunction(_.last(argumentsArray))) {
-      callback = argumentsArray.pop();
-    }
+    var callback = getCallback(argumentsArray);
+
     return this._commit.apply(this, argumentsArray).nodeify(callback);
   };
 
   db.rollback = function (/* arguments */) {
     var argumentsArray = Array.prototype.slice.call(arguments);
 
-    var callback;
-    if (_.isFunction(_.last(argumentsArray))) {
-      callback = argumentsArray.pop();
-    }
+    var callback = getCallback(argumentsArray);
+
     return this._rollback.apply(this, argumentsArray).nodeify(callback);
   };
 
   db.resetTimeout = function (/* arguments */) {
     var argumentsArray = Array.prototype.slice.call(arguments);
 
-    var callback;
-    if (_.isFunction(_.last(argumentsArray))) {
-      callback = argumentsArray.pop();
-    }
+    var callback = getCallback(argumentsArray);
+
     return this._resetTimeout.apply(this, argumentsArray).nodeify(callback);
   };
 
   db.compose = function (/* arguments */) {
     var argumentsArray = Array.prototype.slice.call(arguments);
 
-    var callback;
-    if (_.isFunction(_.last(argumentsArray))) {
-      callback = argumentsArray.pop();
-    }
+    var callback = getCallback(argumentsArray);
+
     return this._compose.apply(this, argumentsArray).nodeify(callback);
   };
 

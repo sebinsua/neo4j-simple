@@ -7,14 +7,7 @@ function sourceifyPromises(promisePrototype, source) {
   _.each(source, function (method, methodName) {
 
     promisePrototype[methodName] = function (/* arguments of a source */) {
-      var fn = method;
-      if (arguments.length) {
-        var methodReturn = method.apply(source, arguments);
-        if (_.isFunction(methodReturn)) {
-          fn = methodReturn;
-        }
-      }
-
+      var fn = method.apply(source, arguments);
       return this.then(fn);
     };
   });
