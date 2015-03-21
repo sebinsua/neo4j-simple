@@ -87,7 +87,7 @@ var responseParser = {
       args = [defaultType].concat(defaultIdentifiers);
     }
 
-    return getResultAt.apply(this, args)
+    return getResultAt.apply(this, args);
   },
   getCount: function () {
     var defaultType = 'Count',
@@ -102,7 +102,7 @@ var responseParser = {
       args = [defaultType].concat(defaultIdentifiers);
     }
 
-    return getResultAt.apply(this, args)
+    return getResultAt.apply(this, args);
   },
   getRelationshipResult: function () {
     var defaultType = 'Relationship',
@@ -117,7 +117,7 @@ var responseParser = {
       args = [defaultType].concat(defaultIdentifiers);
     }
 
-    return getResultAt.apply(this, args)
+    return getResultAt.apply(this, args);
   },
   getResults: function () {
     var defaultType = 'Node',
@@ -132,7 +132,7 @@ var responseParser = {
       args = [defaultType].concat(defaultIdentifiers);
     }
 
-    return getResultsAt.apply(this, args)
+    return getResultsAt.apply(this, args);
   },
   getRelationshipResults: function () {
     var defaultType = 'Relationship',
@@ -147,7 +147,7 @@ var responseParser = {
       args = [defaultType].concat(defaultIdentifiers);
     }
 
-    return getResultsAt.apply(this, args)
+    return getResultsAt.apply(this, args);
   }
 };
 

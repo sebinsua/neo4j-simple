@@ -23,7 +23,7 @@ describe("response-parser", function () {
         {}
       ];
 
-      expect(responseParser.getCount(response)).to.equal(1);
+      expect(responseParser.getCount()(response)).to.equal(1);
     });
 
     it('should be able to parse an empty response', function () {
@@ -38,7 +38,7 @@ describe("response-parser", function () {
         {}
       ];
 
-      expect(responseParser.getCount(response)).to.equal(0);
+      expect(responseParser.getCount()(response)).to.equal(0);
     });
 
   });
@@ -59,7 +59,7 @@ describe("response-parser", function () {
         {}
       ];
 
-      expect(responseParser.getResult(response)).to.eql({
+      expect(responseParser.getResult()(response)).to.eql({
         'hello': 'world'
       });
     });
@@ -73,7 +73,7 @@ describe("response-parser", function () {
       ];
 
       expect(function () {
-        responseParser.getResult(response)
+        responseParser.getResult()(response)
       }).to.throw(Error, "Node was not found.");
     });
 
@@ -95,7 +95,7 @@ describe("response-parser", function () {
         {}
       ];
 
-      expect(responseParser.getResults(response)).to.eql([
+      expect(responseParser.getResults()(response)).to.eql([
         {
           'hello': 'world'
         }
@@ -110,7 +110,7 @@ describe("response-parser", function () {
         {}
       ];
 
-      expect(responseParser.getResults(response)).to.eql([]);
+      expect(responseParser.getResults()(response)).to.eql([]);
     });
 
   });
@@ -137,7 +137,7 @@ describe("response-parser", function () {
         {}
       ];
 
-      expect(responseParser.getRelationshipResult(response)).to.eql({
+      expect(responseParser.getRelationshipResult()(response)).to.eql({
         'n': {
           'a': 'bc'
         },
@@ -174,7 +174,7 @@ describe("response-parser", function () {
         {}
       ];
 
-      expect(responseParser.getRelationshipResults(response)).to.eql([
+      expect(responseParser.getRelationshipResults()(response)).to.eql([
         {
           'n': {
             'a': 'bc'
