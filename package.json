@@ -1,6 +1,6 @@
 {
   "name": "neo4j-simple",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "A Neo4j API that provides nodes and relationships in the form of promises on top of Cypher.",
   "main": "index.js",
   "scripts": {
