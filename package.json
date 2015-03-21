@@ -1,6 +1,6 @@
 {
   "name": "neo4j-simple",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Simple nodes, relations, queries.",
   "main": "index.js",
   "scripts": {
