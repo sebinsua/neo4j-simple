@@ -4,8 +4,8 @@ var _ = require('lodash');
 
 var setupMethods = require('./setup-methods');
 
-function setupOperations(Class, operations) {
-  return setupMethods(Class, operations, {
+function setupOperations(target, operations) {
+  return setupMethods(target, operations, {
     'defaultArguments': function (args, options) {
       args = args || [];
       args[0] = _.extend(args[0] || {}, {

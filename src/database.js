@@ -11,9 +11,11 @@ var node = require('./node'),
     relationship = require('./relationship'),
     responseParser = require('./response-parser');
 
+var sourceifyPromises = require('./sourceify-promises');
+
 // This adds extra methods to the promises returned by Bluebird so that
 // we can use these in place of `then()`.
-responseParser.responsifyPromises(Q.prototype);
+sourceifyPromises(Q.prototype, responseParser);
 
 // This create *Async promise-returning versions of all of the standard
 // node-style callback-returning methods.

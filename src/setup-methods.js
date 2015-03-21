@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 
-function setupMethods(Class, methods, options) {
+function setupMethods(target, methods, options) {
   options = _.extend({
     'blacklist': ['default'],
     'defaultMethod': 'save',
@@ -14,8 +14,8 @@ function setupMethods(Class, methods, options) {
       return false;
     }
 
-    if (!Class.prototype[method]) {
-      Class.prototype[method] = function () {
+    if (!target.prototype[method]) {
+      target.prototype[method] = function () {
         var argumentsArray = Array.prototype.slice.call(arguments);
         argumentsArray = options.defaultArguments(argumentsArray, { method: method });
         this[options.defaultMethod].apply(this, argumentsArray);
@@ -23,7 +23,7 @@ function setupMethods(Class, methods, options) {
     }
   });
 
-  return Class;
+  return target;
 }
 
 module.exports = setupMethods;
