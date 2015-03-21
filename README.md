@@ -195,7 +195,7 @@ db.query('MATCH (n:User)-->(p:Product) RETURN n, p')
   .getResult('n', 'p')
   .then(function (result) {
   console.log(result);
-  // --> [ { n: { properties of n}, p: { properties of p } }]
+  // --> { n: { properties of n}, p: { properties of p } }
 });
 ```
 
