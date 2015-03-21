@@ -157,21 +157,11 @@ This is an alias of Rainbird's `query()` but will return a promise. See also `be
 
 Rainbird supports multiple queries and can return multiple result sets. In our case `then()` will receive all of these results, however we supply a set of helper methods against the promise that make it easy to parse the results for the simpler case of one query.
 
-### `getResult(alias, ..., alias3)`
+### `getResults(alias, ..., alias3)`
 
 This method assumes that the query named a node as `'n'` however the function is variadic and you can pass in as many identifiers as you wish to.
 
 *NOTE: When you pass in multiple aliases, then this means the object returned will be keyed with these aliases and contain each node against the alias it was found at.*
-
-### `getRelationshipResult(alias, ..., alias3)`
-
-This method assumes that the query named a relationship as `'r'` and the nodes that this was between were `'n'` and `'m'`.
-
-*NOTE: When you pass in multiple aliases, then this means the objects returned will be keyed with these aliases and contain each relationship against the alias it was found at.*
-
-### `getResults(alias, ..., alias3)`
-
-This method assumes that the query named a node as `'n'` however the function is variadic and you can pass in as many identifiers as you wish to.
 
 e.g.
 
@@ -182,10 +172,34 @@ db.query('MATCH (n:Example) RETURN n LIMIT 100')
   .getResults()
   .then(function (results) {
   console.log(results);
+  // --> [{ properties of n }, { properties of n }]
 });
 ```
 
 ### `getRelationshipResults(alias, ..., alias3)`
+
+This method assumes that the query named a relationship as `'r'` and the nodes that this was between were `'n'` and `'m'`.
+
+### `getResult(alias, ..., alias3)`
+
+This method assumes that the query named a node as `'n'` however the function is variadic and you can pass in as many identifiers as you wish to.
+
+*NOTE: When you pass in multiple aliases, then this means the object returned will be keyed with these aliases and contain each node against the alias it was found at.*
+
+e.g.
+
+```javascript
+var db = require('neo4j-simple')("http://localhost:7474");
+
+db.query('MATCH (n:User)-->(p:Product) RETURN n, p')
+  .getResult('n', 'p')
+  .then(function (result) {
+  console.log(result);
+  // --> [ { n: { properties of n}, p: { properties of p } }]
+});
+```
+
+### `getRelationshipResult(alias, ..., alias3)`
 
 This method assumes that the query named a relationship as `'r'` and the nodes that this was between were `'n'` and `'m'`.
 
