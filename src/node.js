@@ -253,12 +253,12 @@ Node.prototype._delete = function (options) {
   return this.database.query(query, { id: id }).getCountAt('count');
 };
 
-Node.prototype.save = function (options, callback) {
-  return this._save(options).nodeify(callback);
+Node.prototype.save = function (options) {
+  return this._save(options);
 };
 
-Node.prototype.remove = Node.prototype.delete = function (options, callback) {
-  return this._delete(options).nodeify(callback);
+Node.prototype.remove = Node.prototype.delete = function (options) {
+  return this._delete(options);
 };
 
 Node.prototype.toString = function () {

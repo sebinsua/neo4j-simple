@@ -274,12 +274,12 @@ Relationship.prototype._delete = function (options) {
   return this.database.query(query, { aId: ids[0], bId: ids[1] }).getCountAt('count');
 };
 
-Relationship.prototype.save = function (options, callback) {
-  return this._save(options).nodeify(callback);
+Relationship.prototype.save = function (options) {
+  return this._save(options);
 };
 
-Relationship.prototype.remove = Relationship.prototype.delete = function (options, callback) {
-  return this._delete(options).nodeify(callback);
+Relationship.prototype.remove = Relationship.prototype.delete = function (options) {
+  return this._delete(options);
 };
 
 Relationship.prototype.toString = function () {
