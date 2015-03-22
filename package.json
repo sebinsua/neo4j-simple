@@ -1,6 +1,6 @@
 {
   "name": "neo4j-simple",
-  "version": "0.6.7",
+  "version": "0.7.0",
   "description": "Simple nodes, relations, queries.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "keywords": [
     "neo4j",
-    "cypher",    
+    "cypher",
     "graph",
     "node",
     "relationship",
