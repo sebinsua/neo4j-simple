@@ -206,7 +206,7 @@ Relationship.prototype._save = function (options) {
         aId: ids[0],
         bId: ids[1],
         data: data
-      }).getRelationshipResult();
+      }).getRelationshipResult('r');
     };
   };
 
@@ -237,7 +237,7 @@ Relationship.prototype._save = function (options) {
 
       data.aId = ids[0];
       data.bId = ids[1];
-      return self.database.query(query, data).getRelationshipResult();
+      return self.database.query(query, data).getRelationshipResult('r');
     };
   };
 
