@@ -95,7 +95,7 @@ Q.all([
 
 # API
 
-All of the methods that interact with the database will return a promise but can accept a callback as their last argument.
+All of the methods that interact with the database return a promise.
 
 ## `defineNode(nodeDefinition)`
 

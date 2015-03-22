@@ -6,7 +6,7 @@ var responseParser = require('./response-parser'),
 
 var _ = require('lodash'),
     Joi = require('joi'),
-    Q = require('bluebird'),
+    Promise = require('native-or-bluebird'),
     util = require('util'),
     uuid = require('node-uuid'),
     debug = require('debug')('neo4j-simple:node');
@@ -94,13 +94,15 @@ Node.prototype._initialisePromise = function () {
   // This was added into bluebird after I had created the library.
   // Because we're overwriting a promise in some cases we have a legitimate need
   // for ignoring this sometimes. I realise it's a code-smell but oh well.
-  Q.onPossiblyUnhandledRejection(function (error) {
-    if (error.message !== INVALID_MESSAGE) {
-      throw error;
-    }
-  });
+  if (Promise.onPossiblyUnhandledRejection){
+    Promise.onPossiblyUnhandledRejection(function (error) {
+      if (error.message !== INVALID_MESSAGE) {
+        throw error;
+      }
+    });
+  }
 
-  var deferred = Q.defer();
+  var deferred = Promise.defer();
 
   var data = this.data;
   var hasEmptyDefaultSchema = _.isEmpty(this.schemas.default),
@@ -127,7 +129,7 @@ Node.prototype._validate = function (data, options) {
 
   debug("Validating using the " + (!!this.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
-  var deferred = Q.defer(),
+  var deferred = Promise.defer(),
       validationOptions = { stripUnknown: true },
       validationErrors = Joi.validate(data, schema, validationOptions);
 
