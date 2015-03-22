@@ -15,22 +15,11 @@ var node = require('./node'),
 
 var sourceifyPromises = require('./sourceify-promises');
 
-var _ = require('./helpers');
-
-function getCallback(argumentsArray) {
-  var callback;
-  if (_.isFunction(_.last(argumentsArray))) {
-    callback = argumentsArray.pop();
-  }
-
-  return callback;
-}
-
 // This adds extra methods to the promises returned by Bluebird so that
 // we can use these in place of `then()`.
 sourceifyPromises(Promise.prototype, responseParser);
 
-// This create *Async promise-returning versions of all of the standard
+// This create promise-returning versions of all of the standard
 // node-style callback-returning methods.
 Neo4j.prototype = thenifyAll(Neo4j.prototype);
 
@@ -69,7 +58,7 @@ module.exports = function (url, options) {
     var nodeName = 'n';
     var listOfIds = ids.map(function (id) { return '"' + id + '"'; }).join(", ");
     var getNodesQuery = "MATCH (" + nodeName + ") WHERE " + nodeName + "." + this.idName + " IN [" + listOfIds + "] RETURN " + nodeName;
-    return this.query(getNodesQuery).getResultsAt(nodeName);
+    return this.query(getNodesQuery).getResults(nodeName);
   };
 
   db.defineNode = function (nodeDefinition) {

@@ -31,10 +31,12 @@ If the `name` (as shown above) had not been supplied when generating an instance
 
 The [Joi](https://github.com/hapijs/joi) schema can be passed into `defineNode()` either as `options.schema` or more explicitly as `options.schemas.default`.
 
+**IMPORTANT:** You must have an index on your nodes `'id'` properties (configurable using the `idName` option) in order for the library to work correctly. If you do not, you will receive the error `Relationship was not found` on trying to `save()` a relationship. [Read about schema and legacy indexing here](http://neo4j.com/docs/stable/rest-api-schema-indexes.html).
+
 A more involved example, might look like this:
 
 ```javascript
-var Q = require('bluebird');
+var Promise = require('bluebird');
 
 // By default the idName passed into the library is 'id'.
 // This means that you should have an `auto_index` on that
@@ -68,7 +70,8 @@ var example1 = new Node({
   name: "Example 1"
 });
 var example2 = new Node({
-  id: "some-id-goes-here-2"
+  id: "some-id-goes-here-2",
+  name: "Example 2"
 });
 var example3 = new Node({
   id: "some-id-goes-here-3",
@@ -84,7 +87,7 @@ var exampleRelationship = new Relationship({
 // which if empty will validate successfully.
 // Additionally it will try to intelligently select a schema depending on the
 // operation that is executing. For example: create, replace, update.
-Q.all([
+Promise.all([
   example1.save( { operation: 'saveWithName' } ),
   example2.save(),
   example3.save()

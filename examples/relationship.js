@@ -27,10 +27,6 @@ var exampleRelationship = new Relationship({
   description: "It's true",
 }, [example1.id, example2.id], db.DIRECTION.RIGHT);
 
-// TODO: Consider altering how relationship save works.
-// Why is n and m undefined?
-// Can we just return the r? That would be better.
-
 Promise.all([
   example1.save(),
   example2.save(),
