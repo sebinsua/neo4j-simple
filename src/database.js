@@ -15,21 +15,11 @@ var node = require('./node'),
 
 var sourceifyPromises = require('./sourceify-promises');
 
-function isFunction(value) {
-  var funcTag = '[object Function]';
-  var objectProto = Object.prototype;
-  var objToString = objectProto.toString;
-  return objToString.call(value) == funcTag;
-}
-
-function last(array) {
-  var length = array ? array.length : 0;
-  return length ? array[length - 1] : undefined;
-}
+var _ = require('./helpers');
 
 function getCallback(argumentsArray) {
   var callback;
-  if (isFunction(last(argumentsArray))) {
+  if (_.isFunction(_.last(argumentsArray))) {
     callback = argumentsArray.pop();
   }
 

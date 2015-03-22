@@ -1,6 +1,6 @@
 "use strict";
 
-var _ = require('lodash');
+var _ = require('./helpers');
 
 function setupMethods(target, methods, options) {
   options = _.extend({
@@ -9,7 +9,7 @@ function setupMethods(target, methods, options) {
     'defaultArguments': function (args, options) { return args; }
   }, options || {});
 
-  _.each(methods, function (method) {
+  methods.forEach(function (method) {
     if (options.blacklist.indexOf(method) !== -1) {
       return false;
     }

@@ -4,12 +4,13 @@
 var responseParser = require('./response-parser'),
     setupOperations = require('./setup-operations');
 
-var _ = require('lodash'),
-    Joi = require('joi'),
+var Joi = require('joi'),
     Promise = require('native-or-bluebird'),
     util = require('util'),
     uuid = require('node-uuid'),
     debug = require('debug')('neo4j-simple:node');
+
+var _ = require('./helpers');
 
 var node = module.exports = function (database) {
 
@@ -56,7 +57,7 @@ var node = module.exports = function (database) {
       'default': defaultSchema
     }, schemas);
 
-    var operations = _.keys(ChildNode.schemas);
+    var operations = Object.keys(ChildNode.schemas);
     ChildNode = setupOperations(ChildNode, operations);
 
     return ChildNode;
@@ -106,7 +107,7 @@ Node.prototype._initialisePromise = function () {
 
   var data = this.data;
   var hasEmptyDefaultSchema = _.isEmpty(this.schemas.default),
-      numberOfSchemas = _.keys(this.schemas).length;
+      numberOfSchemas = Object.keys(this.schemas).length;
   // When there is no schema always assume valid.
   if (hasEmptyDefaultSchema && numberOfSchemas === 1) {
     this.isValid = true;
@@ -192,7 +193,7 @@ Node.prototype._save = function (options) {
       var _getSetters = function (data) {
         var setters = '';
 
-        var propertyNames = _.keys(data);
+        var propertyNames = Object.keys(data);
         if (propertyNames.length) {
           var _propertySetters = [];
           for (var ip = 0; ip < propertyNames.length; ip++) {

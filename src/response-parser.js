@@ -1,18 +1,15 @@
 "use strict";
 
-var _ = require('lodash'),
-    debug = require('debug')('neo4j-simple:response-parser');
+var debug = require('debug')('neo4j-simple:response-parser');
 
-// TODO: Remove the lodash methods.
+var _ = require('./helpers');
 
-function isNotUndefined(value) {
-  return value !== undefined;
-}
-
-function propertyOf(object) {
-  return function (key) {
-    return object[key];
+function checkForThingIdentifiers(result, thingIdentifiers) {
+  var isNotUndefined = function (value) {
+    return typeof value !== undefined;
   };
+
+  return _.some(thingIdentifiers.map(_.propertyOf(result)), isNotUndefined);
 }
 
 function getFirstQueryResults(response) {
@@ -34,7 +31,7 @@ function getResultAt(type /* thingIdentifier, ... , thingIdentifierN */) {
       throw new Error(type + " was not found.");
     }
 
-    var hasSomeProperties = _.some(_.map(thingIdentifiers, propertyOf(result)), isNotUndefined);
+    var hasSomeProperties = checkForThingIdentifiers(result, thingIdentifiers);
     if (hasSomeProperties) {
       if (thingIdentifiers.length === 1) {
         return result[thingIdentifiers[0]];
@@ -56,7 +53,7 @@ function getResultsAt(type /* thingIdentifier, ... , thingIdentifierN */) {
   return function (response) {
     var firstQueryResults = getFirstQueryResults(response);
 
-    return _.chain(firstQueryResults).map(function (result) {
+    return firstQueryResults.map(function (result) {
       if (thingIdentifiers.length === 1) {
         return result[thingIdentifiers[0]];
       } else {
@@ -66,10 +63,10 @@ function getResultsAt(type /* thingIdentifier, ... , thingIdentifierN */) {
       if (thingIdentifiers.length === 1) {
         return result !== undefined;
       } else {
-        var hasSomeProperties = _.some(_.map(thingIdentifiers, propertyOf(result)), isNotUndefined);
+        var hasSomeProperties = checkForThingIdentifiers(result, thingIdentifiers);
         return hasSomeProperties;
       }
-    }).value();
+    });
   };
 }
 

@@ -1,6 +1,6 @@
 "use strict";
 
-var _ = require('lodash');
+var _ = require('./helpers');
 
 var setupMethods = require('./setup-methods');
 
