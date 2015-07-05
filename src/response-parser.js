@@ -21,14 +21,18 @@ function getFirstQueryResults(response) {
 function getResultAt(type /* thingIdentifier, ... , thingIdentifierN */) {
   var thingIdentifiers = Array.prototype.slice.call(arguments, 1);
   if (thingIdentifiers.length === 0) {
-    throw new Error("No properties were specified to be matched by the " + type + " response parser.");
+    var error = new Error("No properties were specified to be matched by the " + type + " response parser.");
+    error.name = 'UnspecifedGetResultAtQueryError';
+    throw error;
   }
 
   return function (response) {
     var firstQueryResults = getFirstQueryResults(response);
     var result = firstQueryResults[0];
     if (!result) {
-      throw new Error(type + " was not found.");
+      var notFoundError = new Error(type + " was not found.");
+      notFoundError.name = 'NotFoundError';
+      throw notFoundError;
     }
 
     var hasSomeProperties = checkForThingIdentifiers(result, thingIdentifiers);
@@ -39,7 +43,9 @@ function getResultAt(type /* thingIdentifier, ... , thingIdentifierN */) {
         return _.pick(result, thingIdentifiers);
       }
     } else {
-      throw new Error("Nothing was matched with the identifiers (" + thingIdentifiers.join(', ') + ").");
+      var error = new Error("Nothing was matched with the identifiers (" + thingIdentifiers.join(', ') + ").");
+      error.name = 'NotFoundError';
+      throw error;
     }
   };
 }
@@ -47,7 +53,9 @@ function getResultAt(type /* thingIdentifier, ... , thingIdentifierN */) {
 function getResultsAt(type /* thingIdentifier, ... , thingIdentifierN */) {
   var thingIdentifiers = Array.prototype.slice.call(arguments, 1);
   if (thingIdentifiers.length === 0) {
-    throw new Error("No properties were specified to be matched by the " + type + " response parser.");
+    var error = new Error("No properties were specified to be matched by the " + type + " response parser.");
+    error.name = 'UnspecifedGetResultsAtQueryError';
+    throw error;
   }
 
   return function (response) {
