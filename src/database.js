@@ -17,7 +17,9 @@ var node = require('./node'),
 var sourceifyPromises = require('./sourceify-promises');
 
 var decorateError = function decorateErrorWithName(error) {
-  var code = error.code;
+  var errorMessage = error.message || '';
+  var matches = /\(([^)]+)\)/.exec(errorMessage);
+  var code = matches[1];
   switch (code) {
     case 'Neo.ClientError.Security.AuthenticationFailed':
     case 'Neo.ClientError.Security.AuthenticationRateLimit':
@@ -29,7 +31,7 @@ var decorateError = function decorateErrorWithName(error) {
       break;
   }
 
-  return error;
+  throw error;
 };
 
 // This adds extra methods to the promises returned by Bluebird so that
