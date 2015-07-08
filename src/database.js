@@ -75,7 +75,7 @@ module.exports = function (url, options) {
   db.begin = db.client.begin.bind(db.client);
   db.query = function query(/* arguments */) {
     var _client = db.client;
-    return _client.query.apply(db.client, arguments).error(decorateError);
+    return _client.query.apply(db.client, arguments).catch(decorateError);
   };
   db.commit = db.client.commit.bind(db.client);
   db.rollback = db.client.rollback.bind(db.client);
