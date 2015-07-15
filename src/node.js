@@ -213,7 +213,7 @@ Node.prototype._save = function (options) {
     options.operation = options.operation || 'create';
     return this.validate(data, options).
                 then(createNode(id)).
-                tap(see(':large_blue_circle: Node with the id (' + id + ') created.'));
+                tap(see(':large_blue_circle: Node with the id (${id}) created.', { ctx: { id: id } }));
   } else {
     // Id, so this is an update operation.
     options.replace = options.replace || false;
@@ -226,9 +226,11 @@ Node.prototype._save = function (options) {
       performUpdate = updateNode;
       options.operation = options.operation || 'update';
     }
+
+    var replace = options.replace ? 'replaced' : 'updated';
     return this.validate(data, options).
                 then(performUpdate(id)).
-                tap(see(':large_blue_circle: Node with the id (' + id + ') ' + (options.replace ? 'replaced' : 'updated') + '.'));
+                tap(see(':large_blue_circle: Node with the id (${id}) ${replace}.', { ctx: { id: id, replace: replace } }));
   }
 };
 
@@ -244,7 +246,7 @@ Node.prototype._delete = function (options) {
   var id = this.id;
   return this.database.
               query(query, { id: id }).
-              tap(see(':red_circle: Node with the id (' + id + ') removed: ${count}.')).
+              tap(see(':red_circle: Node with the id (${id}) removed: ${count}.', { ctx: { id: id } })).
               getCountAt('count');
 };
 

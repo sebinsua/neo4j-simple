@@ -245,9 +245,11 @@ Relationship.prototype._save = function (options) {
     options.operation = options.operation || 'update';
   }
 
+  var idsString = ids.join(', ');
+  var replace = options.replace ? 'replaced' : 'updated';
   return this.validate(data, options).
               then(performUpdate(ids, type, direction)).
-              tap(see(':heavy_minus_sign: Relationship between the two nodes (' + ids.join(', ') + ') ' + (options.replace ? 'replaced' : 'updated') + '.'));
+              tap(see(':heavy_minus_sign: Relationship between the two nodes (${ids}) ${replace}.', { ctx: { ids: idsString, replace: replace } }));
 };
 
 // A relationship is best referred to with the two nodes
@@ -261,9 +263,10 @@ Relationship.prototype._delete = function (options) {
                'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
+  var idsString = ids.join(', ');
   return this.database.
               query(query, { aId: ids[0], bId: ids[1] }).
-              tap(see(':heavy_minus_sign: Relationships between the two nodes (' + ids.join(', ') + ') removed: ${count}.')).
+              tap(see(':heavy_minus_sign: Relationships between the two nodes (${ids}) removed: ${count}.', { ctx: { ids: idsString } })).
               getCountAt('count');
 };
 
