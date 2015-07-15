@@ -53,11 +53,12 @@ var node = module.exports = function (database) {
 
     ChildNode.label = nodeDefinition.label;
 
-    var defaultSchema = nodeDefinition.schema || {};
     var schemas = nodeDefinition.schemas || {};
-    ChildNode.schemas = _.extend({
-      'default': defaultSchema
-    }, schemas);
+    var defaultSchema = nodeDefinition.schema || {};
+    if (defaultSchema) {
+      schemas.default = defaultSchema;
+    }
+    ChildNode.schemas = schemas;
 
     var operations = Object.keys(ChildNode.schemas);
     ChildNode = setupOperations(ChildNode, operations);

@@ -70,11 +70,12 @@ var relationship = module.exports = function (database) {
 
     ChildRelationship.type = relationshipDefinition.type;
 
-    var defaultSchema = relationshipDefinition.schema || {};
     var schemas = relationshipDefinition.schemas || {};
-    ChildRelationship.schemas = _.extend({
-      'default': defaultSchema
-    }, schemas);
+    var defaultSchema = relationshipDefinition.schema || {};
+    if (defaultSchema) {
+      schemas.default = defaultSchema;
+    }
+    ChildRelationship.schemas = schemas;
 
     var operations = Object.keys(ChildRelationship.schemas);
     ChildRelationship = setupOperations(ChildRelationship, operations);

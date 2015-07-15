@@ -52,7 +52,8 @@ function pick(obj, keys) {
 }
 
 function extend(target, source) {
-  target = target || {};
+  var targetDefault = Array.isArray(source) ? [] : {};
+  target = target || targetDefault;
   for (var prop in source) {
     if (typeof source[prop] === 'object') {
       target[prop] = extend(target[prop], source[prop]);
