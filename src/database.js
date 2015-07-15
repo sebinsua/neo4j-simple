@@ -2,8 +2,7 @@
 
 var Joi = require('joi');
 
-var Neo4j = require('rainbird-neo4j'),
-    debug = require('debug')('neo4j-simple:database');
+var Neo4j = require('rainbird-neo4j');
 
 var Promise = require('native-or-bluebird'),
     thenifyAll = require('thenify-all');

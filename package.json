@@ -36,6 +36,7 @@
     "native-or-bluebird": "^1.2.0",
     "node-uuid": "^1.4.2",
     "rainbird-neo4j": "^0.4.0",
+    "tap-debug": "0.0.4",
     "thenify-all": "^1.6.0"
   },
   "devDependencies": {

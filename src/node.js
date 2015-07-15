@@ -7,8 +7,10 @@ var responseParser = require('./response-parser'),
 var Joi = require('joi'),
     Promise = require('native-or-bluebird'),
     util = require('util'),
-    uuid = require('node-uuid'),
-    debug = require('debug')('neo4j-simple:node');
+    uuid = require('node-uuid');
+
+var debug = require('debug')('neo4j-simple:node'),
+    see = require('tap-debug')(debug);
 
 var _ = require('./helpers');
 
@@ -82,7 +84,7 @@ var Node = function Node(data, id) {
   this.schemas = this.constructor.schemas;
 
   this.isValid = false;
-  this._initialisePromise();
+  this.__initPromise = this._initialisePromise();
 };
 
 Node.prototype.setDatabase = function (database) {
@@ -92,61 +94,47 @@ Node.prototype.setDatabase = function (database) {
 Node.prototype._initialisePromise = function () {
   var INVALID_MESSAGE = "Node needs to be validated.";
 
-  // This was added into bluebird after I had created the library.
-  // Because we're overwriting a promise in some cases we have a legitimate need
-  // for ignoring this sometimes. I realise it's a code-smell but oh well.
-  if (Promise.onPossiblyUnhandledRejection){
-    Promise.onPossiblyUnhandledRejection(function (error) {
-      if (error.message !== INVALID_MESSAGE) {
-        throw error;
-      }
-    });
-  }
-
-  var deferred = Promise.defer();
-
-  var data = this.data;
-  var hasEmptyDefaultSchema = _.isEmpty(this.schemas.default),
-      numberOfSchemas = Object.keys(this.schemas).length;
-  // When there is no schema always assume valid.
-  if (hasEmptyDefaultSchema && numberOfSchemas === 1) {
-    this.isValid = true;
-    deferred.resolve(data);
-  } else {
-    this.isValid = false;
-    deferred.reject(new Error(INVALID_MESSAGE));
-  }
-
-  this.__savePromise = deferred.promise;
+  var self = this;
+  return new Promise(function (resolve, reject) {
+    var data = self.data;
+    var hasEmptyDefaultSchema = _.isEmpty(self.schemas.default),
+        numberOfSchemas = Object.keys(self.schemas).length;
+    // When there is no schema always assume valid.
+    if (hasEmptyDefaultSchema && numberOfSchemas === 1) {
+      self.isValid = true;
+      resolve(data);
+    } else {
+      self.isValid = false;
+      reject(new Error(INVALID_MESSAGE));
+    }
+  });
 };
 
 Node.prototype._validate = function (data, options) {
   data = data || this.data;
   options = options || {};
 
-  var defaultSchemaName = 'default';
-  var schemaName = options.operation;
-  var schema = this.schemas[schemaName] || this.schemas[defaultSchemaName];
+  var self = this;
+  return new Promise(function (resolve, reject) {
+    var defaultSchemaName = 'default';
+    var schemaName = options.operation;
+    var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
 
-  debug("Validating using the " + (!!this.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
+    debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
-  var deferred = Promise.defer(),
-      validationOptions = { stripUnknown: true },
-      validationErrors = Joi.validate(data, schema, validationOptions);
+    var validationOptions = { stripUnknown: true },
+        validationErrors = Joi.validate(data, schema, validationOptions);
 
-  if (validationErrors.error) {
-    debug("There was an error validating the node: %s", validationErrors.error.message);
+    if (validationErrors.error) {
+      debug("There was an error validating the node: %s", validationErrors.error.message);
 
-    this.isValid = false;
-    deferred.reject(validationErrors);
-  } else {
-    this.isValid = true;
-    deferred.resolve(data);
-  }
-
-  this.__savePromise = deferred.promise;
-
-  return this;
+      self.isValid = false;
+      reject(validationErrors);
+    } else {
+      self.isValid = true;
+      resolve(data);
+    }
+  });
 };
 
 Node.prototype._save = function (options) {
@@ -222,8 +210,9 @@ Node.prototype._save = function (options) {
   if (!isUpdate) {
     // No id, so this is a create operation.
     options.operation = options.operation || 'create';
-    return this._validate(data, options).__savePromise.
-                then(createNode(id));
+    return this._validate(data, options).
+                then(createNode(id)).
+                tap(see(':large_blue_circle: Node with the id (' + id + ') created.'));
   } else {
     // Id, so this is an update operation.
     options.replace = options.replace || false;
@@ -236,8 +225,9 @@ Node.prototype._save = function (options) {
       performUpdate = updateNode;
       options.operation = options.operation || 'update';
     }
-    return this._validate(data, options).__savePromise.
-                then(performUpdate(id));
+    return this._validate(data, options).
+                then(performUpdate(id)).
+                tap(see(':large_blue_circle: Node with the id (' + id + ') ' + (options.replace ? 'replaced' : 'updated') + '.'));
   }
 };
 
@@ -251,11 +241,16 @@ Node.prototype._delete = function (options) {
                'RETURN count(n) AS count'].join('\n');
 
   var id = this.id;
-  return this.database.query(query, { id: id }).getCountAt('count');
+  return this.database.
+              query(query, { id: id }).
+              tap(see(':red_circle: Node with the id (' + id + ') removed: ${count}.')).
+              getCountAt('count');
 };
 
 Node.prototype.save = function (options) {
-  return this._save(options);
+  return this.__initPromise.then(function () {
+    return this._save(options);
+  });
 };
 
 Node.prototype.remove = Node.prototype.delete = function (options) {
