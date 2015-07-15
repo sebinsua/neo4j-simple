@@ -135,7 +135,10 @@ Relationship.prototype._validate = function (data, options) {
   options = options || {};
 
   var self = this;
-  return new Promise(function (resolve, reject) {
+  return this.__initPromise.then(function (data) {
+    return data;
+  }).catch(function () {
+    return new Promise(function (resolve, reject) {
       var defaultSchemaName = 'default';
       var schemaName = options.operation;
       var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
@@ -154,6 +157,7 @@ Relationship.prototype._validate = function (data, options) {
         self.isValid = true;
         resolve(data);
       }
+    });
   });
 };
 
@@ -267,9 +271,7 @@ Relationship.prototype._delete = function (options) {
 };
 
 Relationship.prototype.save = function (options) {
-  return this.__initPromise.then(function () {
-    return this._save(options);
-  });
+  return this._save(options);
 };
 
 Relationship.prototype.remove = Relationship.prototype.delete = function (options) {

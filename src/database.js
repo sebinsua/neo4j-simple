@@ -14,6 +14,7 @@ var node = require('./node'),
     responseParser = require('./response-parser');
 
 var sourceifyPromises = require('./sourceify-promises');
+var tapifyPromises = require('./tapify-promises');
 
 var decorateError = function decorateErrorWithName(error) {
   var errorMessage = error.message || '';
@@ -36,6 +37,9 @@ var decorateError = function decorateErrorWithName(error) {
 // This adds extra methods to the promises returned by Bluebird so that
 // we can use these in place of `then()`.
 sourceifyPromises(Promise.prototype, responseParser);
+
+// This only does something in the case of ES6 Promises.
+tapifyPromises(Promise.prototype);
 
 // This create promise-returning versions of all of the standard
 // node-style callback-returning methods.

@@ -115,25 +115,29 @@ Node.prototype._validate = function (data, options) {
   options = options || {};
 
   var self = this;
-  return new Promise(function (resolve, reject) {
-    var defaultSchemaName = 'default';
-    var schemaName = options.operation;
-    var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
+  return this.__initPromise.then(function (data) {
+    return data;
+  }).catch(function () {
+    return new Promise(function (resolve, reject) {
+      var defaultSchemaName = 'default';
+      var schemaName = options.operation;
+      var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
 
-    debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
+      debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
-    var validationOptions = { stripUnknown: true },
-        validationErrors = Joi.validate(data, schema, validationOptions);
+      var validationOptions = { stripUnknown: true },
+          validationErrors = Joi.validate(data, schema, validationOptions);
 
-    if (validationErrors.error) {
-      debug("There was an error validating the node: %s", validationErrors.error.message);
+      if (validationErrors.error) {
+        debug("There was an error validating the node: %s", validationErrors.error.message);
 
-      self.isValid = false;
-      reject(validationErrors);
-    } else {
-      self.isValid = true;
-      resolve(data);
-    }
+        self.isValid = false;
+        reject(validationErrors);
+      } else {
+        self.isValid = true;
+        resolve(data);
+      }
+    });
   });
 };
 
@@ -248,9 +252,7 @@ Node.prototype._delete = function (options) {
 };
 
 Node.prototype.save = function (options) {
-  return this.__initPromise.then(function () {
-    return this._save(options);
-  });
+  return this._save(options);
 };
 
 Node.prototype.remove = Node.prototype.delete = function (options) {
