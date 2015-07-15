@@ -7,8 +7,10 @@ var responseParser = require('./response-parser'),
 var Joi = require('joi'),
     Promise = require('native-or-bluebird'),
     util = require('util'),
-    uuid = require('node-uuid'),
-    debug = require('debug')('neo4j-simple:relationship');
+    uuid = require('node-uuid');
+
+var debug = require('debug')('neo4j-simple:relationship'),
+    see = require('tap-debug')(debug);
 
 var _ = require('./helpers');
 
@@ -102,7 +104,7 @@ var Relationship = function Relationship(data, ids, direction) {
   this.schemas = this.constructor.schemas;
 
   this.isValid = false;
-  this._initialisePromise();
+  this.__initPromise = this._initialisePromise();
 };
 
 Relationship.prototype.setDatabase = function (database) {
@@ -112,61 +114,47 @@ Relationship.prototype.setDatabase = function (database) {
 Relationship.prototype._initialisePromise = function () {
   var INVALID_MESSAGE = "Relationship needs to be validated.";
 
-  // This was added into bluebird after I had created the library.
-  // Because we're overwriting a promise in some cases we have a legitimate need
-  // for ignoring this sometimes. I realise it's a code-smell but oh well.
-  if (Promise.onPossiblyUnhandledRejection) {
-    Promise.onPossiblyUnhandledRejection(function (error) {
-      if (error.message !== INVALID_MESSAGE) {
-        throw error;
-      }
-    });
-  }
-
-  var deferred = Promise.defer();
-
-  var data = this.data;
-  var hasEmptyDefaultSchema = _.isEmpty(this.schemas.default),
-      numberOfSchemas = Object.keys(this.schemas).length;
-  // When there is no schema always assume valid.
-  if (hasEmptyDefaultSchema && numberOfSchemas === 1) {
-    this.isValid = true;
-    deferred.resolve(data);
-  } else {
-    this.isValid = false;
-    deferred.reject(new Error(INVALID_MESSAGE));
-  }
-
-  this.__savePromise = deferred.promise;
+  var self = this;
+  return new Promise(function (resolve, reject) {
+    var data = self.data;
+    var hasEmptyDefaultSchema = _.isEmpty(self.schemas.default),
+        numberOfSchemas = Object.keys(self.schemas).length;
+    // When there is no schema always assume valid.
+    if (hasEmptyDefaultSchema && numberOfSchemas === 1) {
+      self.isValid = true;
+      resolve(data);
+    } else {
+      self.isValid = false;
+      reject(new Error(INVALID_MESSAGE));
+    }
+  });
 };
 
 Relationship.prototype._validate = function (data, options) {
   data = data || this.data;
   options = options || {};
 
-  var defaultSchemaName = 'default';
-  var schemaName = options.operation;
-  var schema = this.schemas[schemaName] || this.schemas[defaultSchemaName];
+  var self = this;
+  return new Promise(function (resolve, reject) {
+    var defaultSchemaName = 'default';
+    var schemaName = options.operation;
+    var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
 
-  debug("Validating using the " + (!!this.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
+    debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
-  var deferred = Promise.defer(),
-      validationOptions = { stripUnknown: true },
-      validationErrors = Joi.validate(data, schema, validationOptions);
+    var validationOptions = { stripUnknown: true },
+        validationErrors = Joi.validate(data, schema, validationOptions);
 
-  if (validationErrors.error) {
-    debug("There was an error validating the relationship: %s", validationErrors.error.message);
+    if (validationErrors.error) {
+      debug("There was an error validating the relationship: %s", validationErrors.error.message);
 
-    this.isValid = false;
-    deferred.reject(validationErrors);
-  } else {
-    this.isValid = true;
-    deferred.resolve(data);
-  }
-
-  this.__savePromise = deferred.promise;
-
-  return this;
+      self.isValid = false;
+      reject(validationErrors);
+    } else {
+      self.isValid = true;
+      resolve(data);
+    }
+  });
 };
 
 Relationship.prototype._save = function (options) {
@@ -256,8 +244,9 @@ Relationship.prototype._save = function (options) {
     options.operation = options.operation || 'update';
   }
 
-  return this._validate(data, options).__savePromise
-             .then(performUpdate(ids, type, direction));
+  return this.validate(data, options).
+              then(performUpdate(ids, type, direction)).
+              tap(see(':heavy_minus_sign: Relationship between the two nodes (' + ids.join(', ') + ') ' + (options.replace ? 'replaced' : 'updated') + '.'));
 };
 
 // A relationship is best referred to with the two nodes
@@ -271,7 +260,18 @@ Relationship.prototype._delete = function (options) {
                'RETURN count(r) AS count'].join('\n');
 
   var ids = this.ids;
-  return this.database.query(query, { aId: ids[0], bId: ids[1] }).getCountAt('count');
+  return this.database.
+              query(query, { aId: ids[0], bId: ids[1] }).
+              tap(see(':heavy_minus_sign: Relationships between the two nodes (' + ids.join(', ') + ') removed: ${count}.')).
+              getCountAt('count');
+};
+
+Relationship.prototype.validate = function (data, options) {
+  return this.__initPromise.then(function (data) {
+    return data;
+  }).catch(function () {
+    return this._validate(data, options);
+  });
 };
 
 Relationship.prototype.save = function (options) {

@@ -2,8 +2,7 @@
 
 var Joi = require('joi');
 
-var Neo4j = require('rainbird-neo4j'),
-    debug = require('debug')('neo4j-simple:database');
+var Neo4j = require('rainbird-neo4j');
 
 var Promise = require('native-or-bluebird'),
     thenifyAll = require('thenify-all');
@@ -15,11 +14,12 @@ var node = require('./node'),
     responseParser = require('./response-parser');
 
 var sourceifyPromises = require('./sourceify-promises');
+var tapifyPromises = require('./tapify-promises');
 
 var decorateError = function decorateErrorWithName(error) {
   var errorMessage = error.message || '';
   var matches = /\(([^)]+)\)/.exec(errorMessage);
-  var code = matches[1];
+  var code = matches && matches.length ? matches[1] : undefined;
   switch (code) {
     case 'Neo.ClientError.Security.AuthenticationFailed':
     case 'Neo.ClientError.Security.AuthenticationRateLimit':
@@ -37,6 +37,9 @@ var decorateError = function decorateErrorWithName(error) {
 // This adds extra methods to the promises returned by Bluebird so that
 // we can use these in place of `then()`.
 sourceifyPromises(Promise.prototype, responseParser);
+
+// This only does something in the case of ES6 Promises.
+tapifyPromises(Promise.prototype);
 
 // This create promise-returning versions of all of the standard
 // node-style callback-returning methods.
