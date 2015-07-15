@@ -267,10 +267,11 @@ Relationship.prototype._delete = function (options) {
 };
 
 Relationship.prototype.validate = function (data, options) {
-  return this.__initPromise.then(function (data) {
+  var self = this;
+  return self.__initPromise.then(function (data) {
     return data;
   }).catch(function () {
-    return this._validate(data, options);
+    return self._validate(data, options);
   });
 };
 
