@@ -18,7 +18,7 @@ var sourceifyPromises = require('./sourceify-promises');
 var decorateError = function decorateErrorWithName(error) {
   var errorMessage = error.message || '';
   var matches = /\(([^)]+)\)/.exec(errorMessage);
-  var code = matches[1];
+  var code = matches && matches.length ? matches[1] : undefined;
   switch (code) {
     case 'Neo.ClientError.Security.AuthenticationFailed':
     case 'Neo.ClientError.Security.AuthenticationRateLimit':
