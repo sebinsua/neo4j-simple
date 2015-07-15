@@ -135,29 +135,25 @@ Relationship.prototype._validate = function (data, options) {
   options = options || {};
 
   var self = this;
-  return this.__initPromise.then(function (data) {
-    return data;
-  }).catch(function () {
-    return new Promise(function (resolve, reject) {
-      var defaultSchemaName = 'default';
-      var schemaName = options.operation;
-      var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
+  return new Promise(function (resolve, reject) {
+    var defaultSchemaName = 'default';
+    var schemaName = options.operation;
+    var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
 
-      debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
+    debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
-      var validationOptions = { stripUnknown: true },
-          validationErrors = Joi.validate(data, schema, validationOptions);
+    var validationOptions = { stripUnknown: true },
+        validationErrors = Joi.validate(data, schema, validationOptions);
 
-      if (validationErrors.error) {
-        debug("There was an error validating the relationship: %s", validationErrors.error.message);
+    if (validationErrors.error) {
+      debug("There was an error validating the relationship: %s", validationErrors.error.message);
 
-        self.isValid = false;
-        reject(validationErrors);
-      } else {
-        self.isValid = true;
-        resolve(data);
-      }
-    });
+      self.isValid = false;
+      reject(validationErrors);
+    } else {
+      self.isValid = true;
+      resolve(data);
+    }
   });
 };
 
@@ -248,7 +244,7 @@ Relationship.prototype._save = function (options) {
     options.operation = options.operation || 'update';
   }
 
-  return this._validate(data, options).
+  return this.validate(data, options).
               then(performUpdate(ids, type, direction)).
               tap(see(':heavy_minus_sign: Relationship between the two nodes (' + ids.join(', ') + ') ' + (options.replace ? 'replaced' : 'updated') + '.'));
 };
@@ -268,6 +264,14 @@ Relationship.prototype._delete = function (options) {
               query(query, { aId: ids[0], bId: ids[1] }).
               tap(see(':heavy_minus_sign: Relationships between the two nodes (' + ids.join(', ') + ') removed: ${count}.')).
               getCountAt('count');
+};
+
+Relationship.prototype.validate = function (data, options) {
+  return this.__initPromise.then(function (data) {
+    return data;
+  }).catch(function () {
+    return this._validate(data, options);
+  });
 };
 
 Relationship.prototype.save = function (options) {

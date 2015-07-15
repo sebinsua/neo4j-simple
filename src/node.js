@@ -115,29 +115,25 @@ Node.prototype._validate = function (data, options) {
   options = options || {};
 
   var self = this;
-  return this.__initPromise.then(function (data) {
-    return data;
-  }).catch(function () {
-    return new Promise(function (resolve, reject) {
-      var defaultSchemaName = 'default';
-      var schemaName = options.operation;
-      var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
+  return new Promise(function (resolve, reject) {
+    var defaultSchemaName = 'default';
+    var schemaName = options.operation;
+    var schema = self.schemas[schemaName] || self.schemas[defaultSchemaName];
 
-      debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
+    debug("Validating using the " + (!!self.schemas[schemaName] ? schemaName : defaultSchemaName) + " schema.");
 
-      var validationOptions = { stripUnknown: true },
-          validationErrors = Joi.validate(data, schema, validationOptions);
+    var validationOptions = { stripUnknown: true },
+        validationErrors = Joi.validate(data, schema, validationOptions);
 
-      if (validationErrors.error) {
-        debug("There was an error validating the node: %s", validationErrors.error.message);
+    if (validationErrors.error) {
+      debug("There was an error validating the node: %s", validationErrors.error.message);
 
-        self.isValid = false;
-        reject(validationErrors);
-      } else {
-        self.isValid = true;
-        resolve(data);
-      }
-    });
+      self.isValid = false;
+      reject(validationErrors);
+    } else {
+      self.isValid = true;
+      resolve(data);
+    }
   });
 };
 
@@ -214,7 +210,7 @@ Node.prototype._save = function (options) {
   if (!isUpdate) {
     // No id, so this is a create operation.
     options.operation = options.operation || 'create';
-    return this._validate(data, options).
+    return this.validate(data, options).
                 then(createNode(id)).
                 tap(see(':large_blue_circle: Node with the id (' + id + ') created.'));
   } else {
@@ -229,7 +225,7 @@ Node.prototype._save = function (options) {
       performUpdate = updateNode;
       options.operation = options.operation || 'update';
     }
-    return this._validate(data, options).
+    return this.validate(data, options).
                 then(performUpdate(id)).
                 tap(see(':large_blue_circle: Node with the id (' + id + ') ' + (options.replace ? 'replaced' : 'updated') + '.'));
   }
@@ -249,6 +245,14 @@ Node.prototype._delete = function (options) {
               query(query, { id: id }).
               tap(see(':red_circle: Node with the id (' + id + ') removed: ${count}.')).
               getCountAt('count');
+};
+
+Node.prototype.validate = function (data, options) {
+  return this.__initPromise.then(function (data) {
+    return data;
+  }).catch(function () {
+    return this._validate(data, options);
+  });
 };
 
 Node.prototype.save = function (options) {
