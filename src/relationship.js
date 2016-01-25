@@ -9,8 +9,7 @@ var Joi = require('joi'),
     util = require('util'),
     uuid = require('node-uuid');
 
-var debug = require('debug')('neo4j-simple:relationship'),
-    see = require('tap-debug')(debug);
+var debug = require('debug')('neo4j-simple:relationship');
 
 var _ = require('./helpers');
 
@@ -248,8 +247,7 @@ Relationship.prototype._save = function (options) {
   var idsString = ids.join(', ');
   var replace = options.replace ? 'replaced' : 'updated';
   return this.validate(data, options).
-              then(performUpdate(ids, type, direction)).
-              tap(see(':heavy_minus_sign: Relationship between the two nodes (${ids}) ${replace}.', { ctx: { ids: idsString, replace: replace } }));
+              then(performUpdate(ids, type, direction));
 };
 
 // A relationship is best referred to with the two nodes
@@ -266,7 +264,6 @@ Relationship.prototype._delete = function (options) {
   var idsString = ids.join(', ');
   return this.database.
               query(query, { aId: ids[0], bId: ids[1] }).
-              tap(see(':heavy_minus_sign: Relationships between the two nodes (${ids}) removed: ${count}.', { ctx: { ids: idsString } })).
               getCountAt('count');
 };
 

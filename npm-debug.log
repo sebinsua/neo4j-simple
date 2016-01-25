@@ -1,0 +1,443 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/sbobrov/.nvm/versions/node/v4.2.3/bin/node',
+1 verbose cli   '/Users/sbobrov/.nvm/versions/node/v4.2.3/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'tap-debug',
+1 verbose cli   '--save' ]
+2 info using npm@2.14.7
+3 info using node@v4.2.3
+4 verbose install initial load of /Users/sbobrov/repos/neo4j-simple/package.json
+5 verbose readDependencies loading dependencies from /Users/sbobrov/repos/neo4j-simple/package.json
+6 silly cache add args [ 'tap-debug', null ]
+7 verbose cache add spec tap-debug
+8 silly cache add parsed spec Result {
+8 silly cache add   raw: 'tap-debug',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'tap-debug',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: '*',
+8 silly cache add   type: 'range' }
+9 silly addNamed tap-debug@*
+10 verbose addNamed "*" is a valid semver range for tap-debug
+11 silly addNameRange { name: 'tap-debug', range: '*', hasData: false }
+12 silly mapToRegistry name tap-debug
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm
+15 silly mapToRegistry uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug
+16 verbose addNameRange registry:https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug not in flight; fetching
+17 verbose request uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug
+18 verbose request always-auth set; sending authorization
+19 info attempt registry request try #1 at 6:10:06 AM
+20 verbose request id c07cefd9787a5311
+21 verbose etag 94bacea26287c9825b2346a899c6618516fcc557
+22 http request GET https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug
+23 http 304 https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug
+24 verbose headers { server: 'nginx/1.7.7',
+24 verbose headers   date: 'Mon, 25 Jan 2016 05:08:32 GMT',
+24 verbose headers   connection: 'keep-alive',
+24 verbose headers   'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' }
+25 silly get cb [ 304,
+25 silly get   { server: 'nginx/1.7.7',
+25 silly get     date: 'Mon, 25 Jan 2016 05:08:32 GMT',
+25 silly get     connection: 'keep-alive',
+25 silly get     'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' } ]
+26 verbose etag https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug from cache
+27 verbose get saving tap-debug to /Users/sbobrov/.npm/artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug/.cache.json
+28 silly addNameRange number 2 { name: 'tap-debug', range: '*', hasData: true }
+29 silly addNameRange versions [ 'tap-debug',
+29 silly addNameRange   [ '0.1.1',
+29 silly addNameRange     '0.1.2',
+29 silly addNameRange     '0.1.0',
+29 silly addNameRange     '0.0.1',
+29 silly addNameRange     '0.0.3',
+29 silly addNameRange     '0.0.2',
+29 silly addNameRange     '0.0.5',
+29 silly addNameRange     '0.0.4',
+29 silly addNameRange     '0.1.7',
+29 silly addNameRange     '0.1.5',
+29 silly addNameRange     '0.1.6',
+29 silly addNameRange     '0.1.3',
+29 silly addNameRange     '0.1.4' ] ]
+30 silly addNamed tap-debug@0.1.7
+31 verbose addNamed "0.1.7" is a plain semver version for tap-debug
+32 silly cache afterAdd tap-debug@0.1.7
+33 verbose afterAdd /Users/sbobrov/.npm/tap-debug/0.1.7/package/package.json not in flight; writing
+34 verbose afterAdd /Users/sbobrov/.npm/tap-debug/0.1.7/package/package.json written
+35 silly install resolved [ { name: 'tap-debug',
+35 silly install resolved     description: 'Debug/trace output of a function. For use with the tap() method of promises and functional programming pipelines.',
+35 silly install resolved     version: '0.1.7',
+35 silly install resolved     author: { name: 'Seb Insua', email: 'me@sebinsua.com' },
+35 silly install resolved     homepage: 'https://github.com/sebinsua/tap-debug#readme',
+35 silly install resolved     repository:
+35 silly install resolved      { type: 'git',
+35 silly install resolved        url: 'git+ssh://git@github.com/sebinsua/tap-debug.git' },
+35 silly install resolved     bugs: { url: 'https://github.com/sebinsua/tap-debug/issues' },
+35 silly install resolved     main: 'index.js',
+35 silly install resolved     dist:
+35 silly install resolved      { tarball: 'https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug/-/tap-debug-0.1.7.tgz',
+35 silly install resolved        shasum: '0685dd35f1cd6f0d8ef6585b377c6055858f30fa' },
+35 silly install resolved     dependencies:
+35 silly install resolved      { '@ccheever/crayon': '^5.0.0',
+35 silly install resolved        'es6-template-strings': '^1.0.0',
+35 silly install resolved        pluralize: '^1.1.2',
+35 silly install resolved        'text-hex': '0.0.0',
+35 silly install resolved        'util-inspect': '^0.1.8' },
+35 silly install resolved     devDependencies:
+35 silly install resolved      { chai: '^3.0.0',
+35 silly install resolved        eslint: '^0.24.0',
+35 silly install resolved        mocha: '^2.2.5',
+35 silly install resolved        'promise-shall': '0.0.0',
+35 silly install resolved        sinon: '^1.15.4',
+35 silly install resolved        'sinon-chai': '^2.8.0' },
+35 silly install resolved     peerDependencies: { debug: '2.x', 'node-emoji': '0.x' },
+35 silly install resolved     keywords:
+35 silly install resolved      [ 'debug',
+35 silly install resolved        'debugging',
+35 silly install resolved        'trace',
+35 silly install resolved        'functional',
+35 silly install resolved        'function',
+35 silly install resolved        'look',
+35 silly install resolved        'see',
+35 silly install resolved        'execution',
+35 silly install resolved        'promises' ],
+35 silly install resolved     license: 'MIT',
+35 silly install resolved     maintainers: [ [Object] ],
+35 silly install resolved     directories: {},
+35 silly install resolved     scripts:
+35 silly install resolved      { test: 'npm run lint && npm run unit',
+35 silly install resolved        lint: 'eslint .',
+35 silly install resolved        unit: 'mocha test/spec.*.js --require test/helpers.js' },
+35 silly install resolved     _from: 'tap-debug@*',
+35 silly install resolved     _npmVersion: '2.11.3',
+35 silly install resolved     _npmUser: { name: 'sebinsua', email: 'me@sebinsua.com' },
+35 silly install resolved     _id: 'tap-debug@0.1.7',
+35 silly install resolved     _shasum: '0685dd35f1cd6f0d8ef6585b377c6055858f30fa',
+35 silly install resolved     gitHead: 'd9d8cc7861028ed8337bfa481c04d33e821116ec',
+35 silly install resolved     _nodeVersion: '2.3.1',
+35 silly install resolved     _resolved: 'https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/tap-debug/-/tap-debug-0.1.7.tgz',
+35 silly install resolved     readme: 'ERROR: No README data found!' } ]
+36 info install tap-debug@0.1.7 into /Users/sbobrov/repos/neo4j-simple
+37 info installOne tap-debug@0.1.7
+38 verbose installOne of tap-debug to /Users/sbobrov/repos/neo4j-simple not in flight; installing
+39 verbose lock using /Users/sbobrov/.npm/_locks/tap-debug-4a5a8ea44eb8df72.lock for /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+40 silly install write writing tap-debug 0.1.7 to /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+41 verbose unbuild node_modules/tap-debug
+42 silly gentlyRm /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug is being purged from base /Users/sbobrov/repos/neo4j-simple
+43 verbose gentlyRm don't care about contents; nuking /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+44 verbose tar unpack /Users/sbobrov/.npm/tap-debug/0.1.7/package.tgz
+45 verbose tar unpacking to /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+46 silly gentlyRm /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug is being purged
+47 verbose gentlyRm don't care about contents; nuking /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+48 silly gunzTarPerm modes [ '755', '644' ]
+49 silly gunzTarPerm extractEntry package.json
+50 silly gunzTarPerm extractEntry .npmignore
+51 silly gunzTarPerm extractEntry README.md
+52 silly gunzTarPerm extractEntry examples.js
+53 silly gunzTarPerm extractEntry index.js
+54 silly gunzTarPerm extractEntry .travis.yml
+55 silly gunzTarPerm extractEntry src/colorify.js
+56 silly gunzTarPerm extractEntry src/debug.js
+57 silly gunzTarPerm extractEntry src/emojify.js
+58 silly gunzTarPerm extractEntry src/message.js
+59 silly gunzTarPerm extractEntry src/stringify.js
+60 silly gunzTarPerm extractEntry src/tap-debug.js
+61 silly gunzTarPerm extractEntry src/utils.js
+62 silly gunzTarPerm extractEntry .eslintrc
+63 silly gunzTarPerm extractEntry test/helpers.js
+64 silly gunzTarPerm extractEntry test/spec.tap-debug.js
+65 silly gunzTarPerm extractEntry test/.eslintrc
+66 verbose write writing to /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug/package.json
+67 info preinstall tap-debug@0.1.7
+68 verbose readDependencies loading dependencies from /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug/package.json
+69 silly prepareForInstallMany adding @ccheever/crayon@^5.0.0 from tap-debug dependencies
+70 silly prepareForInstallMany adding es6-template-strings@^1.0.0 from tap-debug dependencies
+71 silly prepareForInstallMany adding pluralize@^1.1.2 from tap-debug dependencies
+72 silly prepareForInstallMany adding text-hex@0.0.0 from tap-debug dependencies
+73 silly prepareForInstallMany adding util-inspect@^0.1.8 from tap-debug dependencies
+74 silly prepareForInstallMany adding debug@2.x from tap-debug peerDependencies
+75 silly prepareForInstallMany adding node-emoji@0.x from tap-debug peerDependencies
+76 warn peerDependencies The peer dependency debug@2.x included from tap-debug will no
+77 warn peerDependencies longer be automatically installed to fulfill the peerDependency
+78 warn peerDependencies in npm 3+. Your application will need to depend on it explicitly.
+79 warn peerDependencies The peer dependency node-emoji@0.x included from tap-debug will no
+80 warn peerDependencies longer be automatically installed to fulfill the peerDependency
+81 warn peerDependencies in npm 3+. Your application will need to depend on it explicitly.
+82 verbose readDependencies loading dependencies from /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug/package.json
+83 silly cache add args [ '@ccheever/crayon@^5.0.0', null ]
+84 verbose cache add spec @ccheever/crayon@^5.0.0
+85 silly cache add args [ 'es6-template-strings@^1.0.0', null ]
+86 verbose cache add spec es6-template-strings@^1.0.0
+87 silly cache add parsed spec Result {
+87 silly cache add   raw: '@ccheever/crayon@^5.0.0',
+87 silly cache add   scope: '@ccheever',
+87 silly cache add   name: '@ccheever/crayon',
+87 silly cache add   rawSpec: '^5.0.0',
+87 silly cache add   spec: '>=5.0.0 <6.0.0',
+87 silly cache add   type: 'range' }
+88 silly addNamed @ccheever/crayon@>=5.0.0 <6.0.0
+89 verbose addNamed ">=5.0.0 <6.0.0" is a valid semver range for @ccheever/crayon
+90 silly addNameRange { name: '@ccheever/crayon',
+90 silly addNameRange   range: '>=5.0.0 <6.0.0',
+90 silly addNameRange   hasData: false }
+91 silly mapToRegistry name @ccheever/crayon
+92 silly mapToRegistry scope (from package name) @ccheever
+93 verbose mapToRegistry no registry URL found in name for scope @ccheever
+94 silly mapToRegistry using default registry
+95 silly mapToRegistry registry https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm
+96 silly mapToRegistry uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/@ccheever%2fcrayon
+97 verbose addNameRange registry:https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/@ccheever%2fcrayon not in flight; fetching
+98 silly cache add parsed spec Result {
+98 silly cache add   raw: 'es6-template-strings@^1.0.0',
+98 silly cache add   scope: null,
+98 silly cache add   name: 'es6-template-strings',
+98 silly cache add   rawSpec: '^1.0.0',
+98 silly cache add   spec: '>=1.0.0 <2.0.0',
+98 silly cache add   type: 'range' }
+99 silly addNamed es6-template-strings@>=1.0.0 <2.0.0
+100 verbose addNamed ">=1.0.0 <2.0.0" is a valid semver range for es6-template-strings
+101 silly addNameRange { name: 'es6-template-strings',
+101 silly addNameRange   range: '>=1.0.0 <2.0.0',
+101 silly addNameRange   hasData: false }
+102 silly mapToRegistry name es6-template-strings
+103 silly mapToRegistry using default registry
+104 silly mapToRegistry registry https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm
+105 silly mapToRegistry uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/es6-template-strings
+106 verbose addNameRange registry:https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/es6-template-strings not in flight; fetching
+107 silly cache add args [ 'pluralize@^1.1.2', null ]
+108 verbose cache add spec pluralize@^1.1.2
+109 silly cache add parsed spec Result {
+109 silly cache add   raw: 'pluralize@^1.1.2',
+109 silly cache add   scope: null,
+109 silly cache add   name: 'pluralize',
+109 silly cache add   rawSpec: '^1.1.2',
+109 silly cache add   spec: '>=1.1.2 <2.0.0',
+109 silly cache add   type: 'range' }
+110 silly addNamed pluralize@>=1.1.2 <2.0.0
+111 verbose addNamed ">=1.1.2 <2.0.0" is a valid semver range for pluralize
+112 silly addNameRange { name: 'pluralize', range: '>=1.1.2 <2.0.0', hasData: false }
+113 silly mapToRegistry name pluralize
+114 silly mapToRegistry using default registry
+115 silly mapToRegistry registry https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm
+116 silly mapToRegistry uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/pluralize
+117 verbose addNameRange registry:https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/pluralize not in flight; fetching
+118 silly cache add args [ 'text-hex@0.0.0', null ]
+119 verbose cache add spec text-hex@0.0.0
+120 silly cache add parsed spec Result {
+120 silly cache add   raw: 'text-hex@0.0.0',
+120 silly cache add   scope: null,
+120 silly cache add   name: 'text-hex',
+120 silly cache add   rawSpec: '0.0.0',
+120 silly cache add   spec: '0.0.0',
+120 silly cache add   type: 'version' }
+121 silly addNamed text-hex@0.0.0
+122 verbose addNamed "0.0.0" is a plain semver version for text-hex
+123 silly mapToRegistry name text-hex
+124 silly mapToRegistry using default registry
+125 silly mapToRegistry registry https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm
+126 silly mapToRegistry uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/text-hex
+127 verbose addNameVersion registry:https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/text-hex not in flight; fetching
+128 silly cache add args [ 'util-inspect@^0.1.8', null ]
+129 verbose cache add spec util-inspect@^0.1.8
+130 silly cache add parsed spec Result {
+130 silly cache add   raw: 'util-inspect@^0.1.8',
+130 silly cache add   scope: null,
+130 silly cache add   name: 'util-inspect',
+130 silly cache add   rawSpec: '^0.1.8',
+130 silly cache add   spec: '>=0.1.8 <0.2.0',
+130 silly cache add   type: 'range' }
+131 silly addNamed util-inspect@>=0.1.8 <0.2.0
+132 verbose addNamed ">=0.1.8 <0.2.0" is a valid semver range for util-inspect
+133 silly addNameRange { name: 'util-inspect', range: '>=0.1.8 <0.2.0', hasData: false }
+134 silly mapToRegistry name util-inspect
+135 silly mapToRegistry using default registry
+136 silly mapToRegistry registry https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm
+137 silly mapToRegistry uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/util-inspect
+138 verbose addNameRange registry:https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/util-inspect not in flight; fetching
+139 verbose request uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/@ccheever%2fcrayon
+140 verbose request always-auth set; sending authorization
+141 info attempt registry request try #1 at 6:10:09 AM
+142 http request GET https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/@ccheever%2fcrayon
+143 verbose request uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/pluralize
+144 verbose request always-auth set; sending authorization
+145 info attempt registry request try #1 at 6:10:09 AM
+146 verbose etag f863fb6b37a3dacb062311cc4fc186326a6f1773
+147 http request GET https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/pluralize
+148 verbose request uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/text-hex
+149 verbose request always-auth set; sending authorization
+150 info attempt registry request try #1 at 6:10:09 AM
+151 verbose etag 10087d6fbf9ef401eb41e5839e55574d8b7023a9
+152 http request GET https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/text-hex
+153 verbose request uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/es6-template-strings
+154 verbose request always-auth set; sending authorization
+155 info attempt registry request try #1 at 6:10:09 AM
+156 verbose etag ee1097b09bfec7af85dcb397d20c30b11359a0f0
+157 http request GET https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/es6-template-strings
+158 verbose request uri https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/util-inspect
+159 verbose request always-auth set; sending authorization
+160 info attempt registry request try #1 at 6:10:09 AM
+161 verbose etag 5c259968e0e741b6f55cb7c440cd9be131d4a9ce
+162 http request GET https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/util-inspect
+163 http 304 https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/text-hex
+164 verbose headers { server: 'nginx/1.7.7',
+164 verbose headers   date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+164 verbose headers   connection: 'keep-alive',
+164 verbose headers   'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' }
+165 silly get cb [ 304,
+165 silly get   { server: 'nginx/1.7.7',
+165 silly get     date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+165 silly get     connection: 'keep-alive',
+165 silly get     'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' } ]
+166 verbose etag https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/text-hex from cache
+167 verbose get saving text-hex to /Users/sbobrov/.npm/artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/text-hex/.cache.json
+168 http 304 https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/es6-template-strings
+169 verbose headers { server: 'nginx/1.7.7',
+169 verbose headers   date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+169 verbose headers   connection: 'keep-alive',
+169 verbose headers   'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' }
+170 silly get cb [ 304,
+170 silly get   { server: 'nginx/1.7.7',
+170 silly get     date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+170 silly get     connection: 'keep-alive',
+170 silly get     'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' } ]
+171 verbose etag https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/es6-template-strings from cache
+172 verbose get saving es6-template-strings to /Users/sbobrov/.npm/artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/es6-template-strings/.cache.json
+173 http 304 https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/util-inspect
+174 verbose headers { server: 'nginx/1.7.7',
+174 verbose headers   date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+174 verbose headers   connection: 'keep-alive',
+174 verbose headers   'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' }
+175 silly get cb [ 304,
+175 silly get   { server: 'nginx/1.7.7',
+175 silly get     date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+175 silly get     connection: 'keep-alive',
+175 silly get     'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' } ]
+176 verbose etag https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/util-inspect from cache
+177 verbose get saving util-inspect to /Users/sbobrov/.npm/artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/util-inspect/.cache.json
+178 http 304 https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/pluralize
+179 verbose headers { server: 'nginx/1.7.7',
+179 verbose headers   date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+179 verbose headers   connection: 'keep-alive',
+179 verbose headers   'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' }
+180 silly get cb [ 304,
+180 silly get   { server: 'nginx/1.7.7',
+180 silly get     date: 'Mon, 25 Jan 2016 05:08:33 GMT',
+180 silly get     connection: 'keep-alive',
+180 silly get     'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' } ]
+181 verbose etag https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/pluralize from cache
+182 verbose get saving pluralize to /Users/sbobrov/.npm/artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/pluralize/.cache.json
+183 silly addNameRange number 2 { name: 'util-inspect', range: '>=0.1.8 <0.2.0', hasData: true }
+184 silly addNameRange versions [ 'util-inspect',
+184 silly addNameRange   [ '0.1.1',
+184 silly addNameRange     '0.1.2',
+184 silly addNameRange     '0.1.0',
+184 silly addNameRange     '0.0.1',
+184 silly addNameRange     '0.1.7',
+184 silly addNameRange     '0.1.8',
+184 silly addNameRange     '0.1.5',
+184 silly addNameRange     '0.1.6',
+184 silly addNameRange     '0.1.3',
+184 silly addNameRange     '0.1.4' ] ]
+185 silly addNamed util-inspect@0.1.8
+186 verbose addNamed "0.1.8" is a plain semver version for util-inspect
+187 silly addNameRange number 2 { name: 'es6-template-strings',
+187 silly addNameRange   range: '>=1.0.0 <2.0.0',
+187 silly addNameRange   hasData: true }
+188 silly addNameRange versions [ 'es6-template-strings',
+188 silly addNameRange   [ '2.0.0', '0.1.0', '0.0.0', '1.0.0' ] ]
+189 silly addNamed es6-template-strings@1.0.0
+190 verbose addNamed "1.0.0" is a plain semver version for es6-template-strings
+191 silly addNameRange number 2 { name: 'pluralize', range: '>=1.1.2 <2.0.0', hasData: true }
+192 silly addNameRange versions [ 'pluralize',
+192 silly addNameRange   [ '1.1.0',
+192 silly addNameRange     '1.1.1',
+192 silly addNameRange     '0.0.10',
+192 silly addNameRange     '1.0.2',
+192 silly addNameRange     '1.0.1',
+192 silly addNameRange     '1.0.0',
+192 silly addNameRange     '0.0.11',
+192 silly addNameRange     '0.0.12',
+192 silly addNameRange     '1.1.6',
+192 silly addNameRange     '1.0.3',
+192 silly addNameRange     '1.1.4',
+192 silly addNameRange     '1.1.5',
+192 silly addNameRange     '1.1.2',
+192 silly addNameRange     '1.1.3',
+192 silly addNameRange     '1.2.1',
+192 silly addNameRange     '0.0.1',
+192 silly addNameRange     '0.0.3',
+192 silly addNameRange     '0.0.2',
+192 silly addNameRange     '0.0.5',
+192 silly addNameRange     '0.0.4',
+192 silly addNameRange     '0.0.7',
+192 silly addNameRange     '0.0.6',
+192 silly addNameRange     '0.0.9',
+192 silly addNameRange     '1.2.0',
+192 silly addNameRange     '0.0.8' ] ]
+193 silly addNamed pluralize@1.2.1
+194 verbose addNamed "1.2.1" is a plain semver version for pluralize
+195 silly cache afterAdd util-inspect@0.1.8
+196 verbose afterAdd /Users/sbobrov/.npm/util-inspect/0.1.8/package/package.json not in flight; writing
+197 silly cache afterAdd text-hex@0.0.0
+198 verbose afterAdd /Users/sbobrov/.npm/text-hex/0.0.0/package/package.json not in flight; writing
+199 silly cache afterAdd es6-template-strings@1.0.0
+200 verbose afterAdd /Users/sbobrov/.npm/es6-template-strings/1.0.0/package/package.json not in flight; writing
+201 silly cache afterAdd pluralize@1.2.1
+202 verbose afterAdd /Users/sbobrov/.npm/pluralize/1.2.1/package/package.json not in flight; writing
+203 verbose afterAdd /Users/sbobrov/.npm/util-inspect/0.1.8/package/package.json written
+204 verbose afterAdd /Users/sbobrov/.npm/es6-template-strings/1.0.0/package/package.json written
+205 verbose afterAdd /Users/sbobrov/.npm/text-hex/0.0.0/package/package.json written
+206 verbose afterAdd /Users/sbobrov/.npm/pluralize/1.2.1/package/package.json written
+207 http 404 https://artifactory.intra.3amlabs.net/artifactory/api/npm/logmein-npm/@ccheever%2fcrayon
+208 verbose headers { server: 'nginx/1.7.7',
+208 verbose headers   date: 'Mon, 25 Jan 2016 05:08:34 GMT',
+208 verbose headers   'content-type': 'application/json',
+208 verbose headers   'transfer-encoding': 'chunked',
+208 verbose headers   connection: 'keep-alive',
+208 verbose headers   'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' }
+209 silly get cb [ 404,
+209 silly get   { server: 'nginx/1.7.7',
+209 silly get     date: 'Mon, 25 Jan 2016 05:08:34 GMT',
+209 silly get     'content-type': 'application/json',
+209 silly get     'transfer-encoding': 'chunked',
+209 silly get     connection: 'keep-alive',
+209 silly get     'x-artifactory-id': '94280fe3ce348457:2d69fd2e:152011c79dd:-8000' } ]
+210 verbose about to build /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+211 verbose unlock done using /Users/sbobrov/.npm/_locks/tap-debug-4a5a8ea44eb8df72.lock for /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+212 verbose stack Error: 404 Not Found: @ccheever/crayon
+212 verbose stack     at makeError (/Users/sbobrov/.nvm/versions/node/v4.2.3/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+212 verbose stack     at CachingRegistryClient.<anonymous> (/Users/sbobrov/.nvm/versions/node/v4.2.3/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:250:14)
+212 verbose stack     at Request._callback (/Users/sbobrov/.nvm/versions/node/v4.2.3/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+212 verbose stack     at Request.self.callback (/Users/sbobrov/.nvm/versions/node/v4.2.3/lib/node_modules/npm/node_modules/request/request.js:198:22)
+212 verbose stack     at emitTwo (events.js:87:13)
+212 verbose stack     at Request.emit (events.js:172:7)
+212 verbose stack     at Request.<anonymous> (/Users/sbobrov/.nvm/versions/node/v4.2.3/lib/node_modules/npm/node_modules/request/request.js:1063:14)
+212 verbose stack     at emitOne (events.js:82:20)
+212 verbose stack     at Request.emit (events.js:169:7)
+212 verbose stack     at IncomingMessage.<anonymous> (/Users/sbobrov/.nvm/versions/node/v4.2.3/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+213 verbose statusCode 404
+214 verbose pkgid @ccheever/crayon
+215 verbose cwd /Users/sbobrov/repos/neo4j-simple
+216 error Darwin 13.4.0
+217 error argv "/Users/sbobrov/.nvm/versions/node/v4.2.3/bin/node" "/Users/sbobrov/.nvm/versions/node/v4.2.3/bin/npm" "install" "tap-debug" "--save"
+218 error node v4.2.3
+219 error npm  v2.14.7
+220 error code E404
+221 error 404 Not Found: @ccheever/crayon
+221 error 404
+221 error 404 '@ccheever/crayon' is not in the npm registry.
+221 error 404 You should bug the author to publish it (or use the name yourself!)
+221 error 404 It was specified as a dependency of 'tap-debug'
+221 error 404
+221 error 404 Note that you can also install from a
+221 error 404 tarball, folder, http url, or git url.
+222 verbose exit [ 1, true ]
+223 verbose unbuild node_modules/tap-debug
+224 info preuninstall tap-debug@0.1.7
+225 info uninstall tap-debug@0.1.7
+226 verbose unbuild rmStuff tap-debug@0.1.7 from /Users/sbobrov/repos/neo4j-simple/node_modules
+227 info postuninstall tap-debug@0.1.7
+228 silly gentlyRm /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug is being purged from base /Users/sbobrov/repos/neo4j-simple
+229 verbose gentlyRm don't care about contents; nuking /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+230 silly vacuum-fs purging /Users/sbobrov/repos/neo4j-simple/node_modules/tap-debug
+231 silly vacuum-fs removing /Users/sbobrov/repos/neo4j-simple/node_modules
+232 silly vacuum-fs finished vacuuming up to /Users/sbobrov/repos/neo4j-simple
