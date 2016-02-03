@@ -5,7 +5,7 @@ var responseParser = require('./response-parser'),
     setupOperations = require('./setup-operations');
 
 var Joi = require('joi'),
-    Promise = require('native-or-bluebird'),
+    Promise = require('any-promise'),
     util = require('util'),
     uuid = require('node-uuid');
 

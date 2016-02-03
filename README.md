@@ -4,7 +4,7 @@
 
 Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
 
-The library provides nodes and relationships in [the form of promises](https://github.com/normalize/native-or-bluebird) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally *optionally* you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
+The library provides nodes and relationships in [the form of promises](https://github.com/kevinbeaty/any-promise) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally *optionally* you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
 
 ## Example
 

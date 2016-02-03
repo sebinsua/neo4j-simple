@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var db = require('../')("http://localhost:7474");
 
 var Node = db.defineNode({

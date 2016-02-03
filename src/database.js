@@ -4,7 +4,7 @@ var Joi = require('joi');
 
 var Neo4j = require('rainbird-neo4j');
 
-var Promise = require('native-or-bluebird'),
+var Promise = require('any-promise'),
     thenifyAll = require('thenify-all');
 
 var thenify = thenifyAll.thenify;
