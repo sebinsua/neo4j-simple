@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var db = require('../')("http://localhost:7474");
 
 var Node = db.defineNode({
@@ -13,4 +15,6 @@ var basicExampleNode = new Node({
 
 basicExampleNode.save().then(function (results) {
   console.log(results);
+}).catch(function (error) {
+  console.log(error);
 });

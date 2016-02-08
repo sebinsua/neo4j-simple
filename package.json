@@ -1,6 +1,6 @@
 {
   "name": "neo4j-simple",
-  "version": "0.7.12",
+  "version": "0.8.0",
   "description": "Simple nodes, relations, queries.",
   "main": "index.js",
   "scripts": {
@@ -31,11 +31,11 @@
   },
   "homepage": "https://github.com/sebinsua/neo4j-simple",
   "dependencies": {
+    "any-promise": "^1.1.0",
     "debug": "^2.2.0",
     "joi": "^6.5.0",
-    "native-or-bluebird": "^1.2.0",
     "node-uuid": "^1.4.3",
-    "rainbird-neo4j": "^0.4.0",
+    "rainbird-neo4j": "^0.4.3",
     "thenify-all": "^1.6.0"
   },
   "devDependencies": {
