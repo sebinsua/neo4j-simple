@@ -2,98 +2,141 @@
 
 [![Build Status](https://travis-ci.org/sebinsua/neo4j-simple.png)](https://travis-ci.org/sebinsua/neo4j-simple) [![npm version](https://badge.fury.io/js/neo4j-simple.svg)](https://npmjs.org/package/neo4j-simple)
 
-Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
+Simple [Neo4j](http://neo4j.com/) bindings for Node.
 
-The library provides nodes and relationships in [the form of promises](https://github.com/kevinbeaty/any-promise) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally *optionally* you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
+The library provides nodes and relationships in [the form of promises](https://github.com/kevinbeaty/any-promise) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). *Optionally* you can restrict database access with validators (out-of-the-box [Joi](https://github.com/hapijs/joi) validators are supported).
+
+## TODO
+
+- [ ] Write the tests for my presumed interface.
+- [ ] Fix the tests.
+- [ ] Remove all of the descriptive comments from `README.md#example`.
 
 ## Example
 
 ```javascript
-var db = require('neo4j-simple')("http://localhost:7474");
+import { defineNode, connect, JoiValidationStrategy } from 'neo4j-simple'
+import Joi from 'joi'
 
-var Node = db.defineNode({
+// The default `validationStrategy` will be JoiValidationStrategy.
+const { save, saveAll } = connect("http://localhost:7474", { validationStrategy: JoiValidationStrategy } )
+// `saveAll` is a `createTransaction(save)`, which is actually:
+// createTransaction(operation) {
+//   return (entity) => {
+//     const entities = [].concat(entity)
+//     const transactionId = beginTransaction()
+//     const operateWithTransaction = withTransaction(transactionId)(operation)
+//     return operateWithTransaction(entities)
+//           .then(() => commitTransaction(transactionId))
+//           .catch(() => rollbackTransaction(transactionId))
+//   }
+// }
+// `withTransaction` creates a function which takes datas and does the required stuffs to do validations, concatenate queries, etc.
+
+// By default the idName passed into the library is 'id'.
+// See: http://blog.armbruster-it.de/2013/12/indexing-in-neo4j-an-overview/
+const Node = defineNode({
+  // By default the default id key is `'id'`
+  id: constants.DEFAULT_ID_KEY,
   label: ['Example'],
+  // Not passing in a schema means the `defaultGuard` is super permissive.
   schema: {
-    'name': db.Joi.string().required()
+    'name': Joi.string().required()
   }
-});
+})
 
-var basicExampleNode = new Node({
+const basicExampleNode = new Node({
   name: "This is a very basic example"
-});
+})
 
-basicExampleNode.save().then(function (results) {
+save(basicExampleNode).then((results) => {
   console.log(results);
-});
+})
+
+saveAll([
+  node,
+  relationship
+])
 ```
 
 If the `name` (as shown above) had not been supplied when generating an instance of the Node class, then on `save()` an error would have been thrown from the promise.
 
 The [Joi](https://github.com/hapijs/joi) schema can be passed into `defineNode()` either as `options.schema` or more explicitly as `options.schemas.default`.
 
-**IMPORTANT:** You must have an index on your nodes `'id'` properties (configurable using the `idName` option) in order for the library to work correctly. If you do not, you will receive the error `Relationship was not found` on trying to `save()` a relationship. [Read about schema and legacy indexing here](http://neo4j.com/docs/stable/rest-api-schema-indexes.html).
-
-A more involved example, might look like this:
+A more involved example might look like this:
 
 ```javascript
-var Promise = require('bluebird');
+import Promise from 'bluebird'
+import { defineNode, connect, constants } from 'neo4j-simple'
+import Joi from 'joi'
 
-// By default the idName passed into the library is 'id'.
-// This means that you should have an `auto_index` on that
-// field for both nodes and relationships.
-var db = require('neo4j-simple')("http://localhost:7474", {
-  idName: 'id'
-});
+const { save, update } = connect("http://localhost:7474")
+
+// Other operations include: create, update, replace
+// More can be created with `createOperation(operationName)`.
+// Note: `save` can call `update` or `create` dependent on the existence of an id or not.
+
+const { defineNode, defineRelationship } = connect("http://localhost:7474")
 
 // Multiple schemas can be passed in like so.
-var Node = db.defineNode({
+const Node = defineNode({
   label: ['Example'],
   schemas: {
-    'default': {
-      'id': db.Joi.string().optional()
+    default: {
+      id: Joi.string().optional(),
+      type: Joi.string().required()
     },
-    'saveWithName': {
-      'id': db.Joi.string().optional(),
-      'name': db.Joi.string().required()
+    update: {
+      id: Joi.string().required(),
+      type: Joi.string().optional(),
+      name: Joi.string().optional()
     }
-});
-
-var Relationship = db.defineRelationship({
-  type: 'LOVE',
-  schema: {
-    'description': db.Joi.string()
   }
-});
+})
 
-var example1 = new Node({
+// Schemas create guards with `createGuard(operationName, schema)` which outputs a `guard` function.
+// Therefore: `schema` is a definition of a `defaultGuard`.
+// Node and Relationship can contain `operationGuards`.
+
+const Relationship = defineRelationship({
+  type: 'LOVE',
+  // 'schema' creates an inner 'default' guard using `createGuard(operationName, schema)`.
+  schema: {
+    description: Joi.string()
+  }
+})
+
+const example1 = new Node({
   id: "some-id-goes-here-1",
+  type: "example",
   name: "Example 1"
-});
-var example2 = new Node({
+})
+const example2 = new Node({
   id: "some-id-goes-here-2",
+  type: "example",
   name: "Example 2"
-});
-var example3 = new Node({
+})
+const example3 = new Node({
   id: "some-id-goes-here-3",
+  type: "example",
   name: "Example 3"
-});
+})
 
-var exampleRelationship = new Relationship({
+// Internally, when given two nodes, we get their id by passing them into an `id(node)`
+
+const exampleRelationship = new Relationship({
   description: "It's true",
-}, [example1.id, example2.id], db.DIRECTION.RIGHT);
+}, [example1, example2], constants.DIRECTION_RIGHT)
 
-// If you explicitly pass in an operation then it will be used on validate for
-// the schema lookup. By default the validator will check for a default schema
+// By default the validator will check for a default guard
 // which if empty will validate successfully.
 // Additionally it will try to intelligently select a schema depending on the
 // operation that is executing. For example: create, replace, update.
-Promise.all([
-  example1.save( { operation: 'saveWithName' } ),
-  example2.save(),
-  example3.save()
-]).then(function (response) {
-  return exampleRelationship.save();
-});
+const saveNodes = [ example1, example2 ].map(save)
+const updateNode = update(example3)
+Promise.all([ ...saveNodes, updateNode ])
+       .then(() => save(exampleRelationship))
+
 ```
 
 # API
@@ -112,18 +155,7 @@ All of the methods that interact with the database return a promise.
 
 ### `new Node(data, id)`
 
-If an id is specified as the second argument then the node represents an update or replace operation. If this is not the case then the node represents a create operation and the id should either be found in `data.id` or a uuid will be automatically generated on `save()`.
-
-#### `save(options)`
-
-```javascript
-{
-  'operation': 'replace', // Optional. Pass in when you require a different schema to be tested.
-  'replace': false // Optional. Defaults to false.
-}
-```
-
-#### `remove()`
+If an id is specified as the second argument then the node represents an `update` or `replace` operation. If this is not the case then the node represents a `create` operation and the id should either be found in `data[id]` or a uuid will be automatically generated.
 
 ## `defineRelationship(relationshipDefinition)`
 
@@ -135,79 +167,46 @@ If an id is specified as the second argument then the node represents an update 
 }
 ```
 
-### `new Relationship(data, ids, direction)`
+### `new Relationship(data, nodes, direction)`
 
-#### `save(options)`
+## `save(Node|Relationship)`
 
-```javascript
-{
-  'operation': 'replace', // Optional. Pass in when you require a different schema to be tested.
-  'replace': false // Optional. Defaults to false.
-}
-```
-
-#### `remove()`
+## `remove(Node|Relationship)`
 
 ## `query(...)`
 
-This is an alias of Rainbird's `query()` but will return a promise. See also `begin()`, `commit()`, `rollback()`, etc.
+This supports multiple queries and can return multiple result sets. In our case `then()` will receive all of these results, however we supply a set of helper methods against the promise that make it easy to parse the results for the simpler case of one query.
 
-Rainbird supports multiple queries and can return multiple result sets. In our case `then()` will receive all of these results, however we supply a set of helper methods against the promise that make it easy to parse the results for the simpler case of one query.
-
-### `getResults(alias, ..., alias3)`
-
-This method assumes that the query named a node as `'n'` however the function is variadic and you can pass in as many identifiers as you wish to.
-
-*NOTE: When you pass in multiple aliases, then this means the object returned will be keyed with these aliases and contain each node against the alias it was found at.*
+We detect `RETURN n, r, m, etc` and will use this to work out a reasonable response.
 
 e.g.
 
 ```javascript
-var db = require('neo4j-simple')("http://localhost:7474");
+import { connect } from 'neo4j-simple'
 
-db.query('MATCH (n:Example) RETURN n LIMIT 100')
-  .getResults()
-  .then(function (results) {
-  console.log(results);
-  // --> [{ properties of n }, { properties of n }]
-});
+const { query } = connect("http://localhost:7474")
+
+query('MATCH (n:Example) RETURN n LIMIT 100').then((results) => {
+  console.log(results) // --> [{ properties of n }, { properties of n }]
+})
+
+query('MATCH (u:User)-->(p:Product) RETURN u.name AS name, p').oneRow().then((result) => {
+  console.log(result) // --> { name, p: { properties of p } }
+})
+
+query('MATCH (n:Example) RETURN count(n) AS count').oneRow().then((result) => {
+  console.log(result) // --> { count }
+})
 ```
 
-### `getRelationshipResults(alias, ..., alias3)`
+## `get(Node|Relationship)(id) === getNode|getRelationship(id)`
 
-This method assumes that the query named a relationship as `'r'` and the nodes that this was between were `'n'` and `'m'`.
+This is a function that executes an explicit query for a specific id.
 
-### `getResult(alias, ..., alias3)`
+## `createTransaction(getNode|getRelationship)(ids) === getNodes|getRelationships(ids)`
 
-This method assumes that the query named a node as `'n'` however the function is variadic and you can pass in as many identifiers as you wish to.
-
-*NOTE: When you pass in multiple aliases, then this means the object returned will be keyed with these aliases and contain each node against the alias it was found at.*
-
-e.g.
-
-```javascript
-var db = require('neo4j-simple')("http://localhost:7474");
-
-db.query('MATCH (n:User)-->(p:Product) RETURN n, p')
-  .getResult('n', 'p')
-  .then(function (result) {
-  console.log(result);
-  // --> { n: { properties of n}, p: { properties of p } }
-});
-```
-
-### `getRelationshipResult(alias, ..., alias3)`
-
-This method assumes that the query named a relationship as `'r'` and the nodes that this was between were `'n'` and `'m'`.
-
-### `getCount()`
-
-This method assumes that the query named the count as `count(n)`.
-
-## `getNodes(ids)`
-
-This is a method that executes an explicit query for a specific array of ids.
+This is a function that executes an explicit query for a specific array of ids.
 
 # Support
 
-I am using it in an internal project so it is in active development. I will respond to any [issues](https://github.com/sebinsua/neo4j-simple/issues) raised. There will likely be breaking changes happening, however new versions will be released following [semver conventions](http://semver.org/) and over time I hope to increase the unit testing that I have done and to break some of it up into smaller components.
+I am using it in an internal project so it is in active development. There will likely be breaking changes happening. I will respond to any [issues](https://github.com/sebinsua/neo4j-simple/issues) raised.
