@@ -19,7 +19,7 @@ import { defineNode, connect, JoiValidationStrategy } from 'neo4j-simple'
 import Joi from 'joi'
 
 // The default `validationStrategy` will be JoiValidationStrategy.
-const { save, saveAll } = connect("http://localhost:7474", { validationStrategy: JoiValidationStrategy } )
+const { save, saveAll } = connect({ url: 'http://localhost:7474', validationStrategy: JoiValidationStrategy } )
 // `saveAll` is a `createTransaction(save)`, which is actually:
 // createTransaction(operation) {
 //   return (entity) => {

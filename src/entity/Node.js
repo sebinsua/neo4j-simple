@@ -1,17 +1,31 @@
-export function generateNodeClass (definition) {
+import { isArrayLike } from 'ramda'
+
+import createGuards from './createGuards'
+import { DEFAULT_ID_KEY } from '../constants'
+
+function getLabelName (label) {
+  const firstLabel = isArrayLike(label) ? label[0] : label
+  return firstLabel ? firstLabel.charAt(0).toUpperCase() + firstLabel.slice(1) : ''
+}
+
+export function createNodeClass ({
+  id = DEFAULT_ID_KEY,
+  label = [],
+  schemas = {}
+}) {
   class Node {
-    static hello = 'there'
-    schema = definition
+    static guards = createGuards(schemas)
 
     constructor (data) {
       this.data = data
     }
   }
 
+  Node.displayName = `${getLabelName(label)}Node`
   return Node
 }
 
-export default generateNodeClass
+export default createNodeClass
 
 /*
 "use strict";
