@@ -1,4 +1,17 @@
-export default () => {}
+export function generateNodeClass (definition) {
+  class Node {
+    static hello = 'there'
+    schema = definition
+
+    constructor (data) {
+      this.data = data
+    }
+  }
+
+  return Node
+}
+
+export default generateNodeClass
 
 /*
 "use strict";

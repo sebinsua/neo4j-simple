@@ -1,4 +1,8 @@
-export default () => {}
+export connect from './connect'
+export defineNode from './defineNode'
+export defineRelationship from './defineRelationship'
+
+export default from './connect'
 /*
 "use strict";
 

@@ -1,1 +1,3 @@
-export default () => {}
+import query from './query'
+
+export { query }

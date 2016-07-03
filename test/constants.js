@@ -1,11 +1,13 @@
 import test from 'ava'
 
-import { connect } from '../src'
+import { constants } from '../src'
 
-// `constants.OUTBOUND`
-// `constants.INBOUND`
-// `constants.ANY`
+test('constants exist', (t) => {
 
-test.skip('no tests written yet', () => {
+  t.is(constants.DEFAULT_ID_KEY, 'id')
+
+  t.is(constanrbewts.OUTBOUND, 'OUTBOUND')
+  t.is(constants.INBOUND, 'INBOUND')
+  t.is(constants.ANY, 'ANY')
 
 })
