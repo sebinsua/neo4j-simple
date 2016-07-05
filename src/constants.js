@@ -1,3 +1,4 @@
+/* @flow */
 export const DEFAULT_ID_KEY = 'id'
 
 export const OUTBOUND = 'OUTBOUND'

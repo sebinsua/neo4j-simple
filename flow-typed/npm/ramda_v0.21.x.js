@@ -619,27 +619,30 @@ declare module 'ramda' {
   */
 
 
-  declare class Ramda mixins
-  RFunction,
-  Composition,
-  RMath,
-  RList,
-  RObject,
-  RString,
-  Chain,
-  Concat,
-  Drop,
-  Take,
-  Filter,
-  Find,
-  Split,
-  RLogic,
-  RRelation,
-  Curry,
-  RType,
-  RMap,
-  RReduce
-  {}
+  declare class Ramda
+    mixins
+      RFunction,
+      Composition,
+      RMath,
+      RList,
+      RObject,
+      RString,
+      Chain,
+      Concat,
+      Drop,
+      Take,
+      Filter,
+      Find,
+      Split,
+      RLogic,
+      RRelation,
+      Curry,
+      RType,
+      RMap,
+      RReduce
+      {}
 
-  declare var exports: Ramda
+  declare export function toPairs(o: Object): Array<[string, any]>;
+
+  declare export default Ramda
 }
