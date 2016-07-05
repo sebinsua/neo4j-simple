@@ -27,7 +27,9 @@
   "babel": {
     "plugins": [
       "ramda",
-      "transform-class-properties"
+      "transform-class-properties",
+      "transform-export-extensions",
+      "transform-flow-strip-types"
     ],
     "presets": [
       "es2015-node"
@@ -45,8 +47,9 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "babel src --out-dir dist",
-    "test": "npm run lint && npm run unit",
+    "test": "npm run lint && npm run flow && npm run unit",
     "lint": "standard --verbose src/**/* | snazzy",
+    "flow": "flow",
     "unit": "ava --verbose test/**/*",
     "unit:watch": "ava --watch test/**/*"
   },
@@ -70,7 +73,10 @@
     "babel-eslint": "^6.1.0",
     "babel-plugin-ramda": "^1.1.5",
     "babel-plugin-transform-class-properties": "^6.10.2",
+    "babel-plugin-transform-export-extensions": "^6.8.0",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
     "babel-preset-es2015-node": "^6.1.0",
+    "flow-bin": "^0.28.0",
     "snazzy": "^4.0.0",
     "testdouble": "^1.4.3"
   }

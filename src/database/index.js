@@ -2,7 +2,7 @@ export connect from './connect'
 export defineNode from './defineNode'
 export defineRelationship from './defineRelationship'
 
-export default from './connect'
+export connect from './connect'
 /*
 "use strict";
 
