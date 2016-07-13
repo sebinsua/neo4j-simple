@@ -8,6 +8,7 @@ The library provides nodes and relationships in [the form of promises](https://g
 
 ## TODO
 
+- [ ] Rewrite the interfaces using [Neo4j](http://neo4j.com/docs/api/javascript-driver/current/class/src/v1/) as a guide.
 - [ ] Write the tests for my presumed interface.
 - [ ] Fix the tests.
 - [ ] Remove all of the descriptive comments from `README.md#example`.
