@@ -676,6 +676,8 @@ declare module ramda {
   // TODO partialRight
   // TODO pipeK
   // TODO pipeP
+  declare function partial(fn: (...args: Array<any>) => any, ...rest: Array<void>): (...args: Array<any>) => any;
+  declare function partial(fn: (...args: Array<any>) => any, ...args: Array<any>): any;
 
   declare function tap<T>(fn: (x: T) => any, ...rest: Array<void>): (x: T) => T;
   declare function tap<T>(fn: (x: T) => any, x: T): T;

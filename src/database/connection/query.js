@@ -1,7 +1,7 @@
 /* @flow */
 
 type QueryClient = {
-  query: function
+  query: Function
 }
 
 function query (client: QueryClient, ...args: Array<any>) {

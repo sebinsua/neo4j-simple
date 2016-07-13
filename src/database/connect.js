@@ -1,17 +1,27 @@
+/* @flow */
 import Neo4j from 'rainbird-neo4j'
-import { is, partial } from 'ramda'
+import { partial } from 'ramda'
 
 import * as connectionOperations from './connection'
 
 const DEFAULT_URL = 'http://localhost:7474'
 
-function connect (options = {
+type ConnectOptions = {
+  url: string,
+  auth?: {
+    username: string,
+    password: string
+  }
+}
+
+function connect (urlOrOptions: string|ConnectOptions = {
   url: DEFAULT_URL
 }) {
-  if (is(String, options)) {
-    options = {
-      url: options
-    }
+  let options
+  if (typeof urlOrOptions === 'string') {
+    options = { url: urlOrOptions }
+  } else {
+    options = urlOrOptions
   }
 
   const { url = DEFAULT_URL } = options

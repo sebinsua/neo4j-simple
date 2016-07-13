@@ -1,10 +1,16 @@
-import { isArrayLike } from 'ramda'
-
+/* @flow */
 import createGuards from './createGuards'
 import { DEFAULT_ID_KEY } from '../constants'
 
-function getLabelName (label) {
-  const firstLabel = isArrayLike(label) ? label[0] : label
+export type NodeDefinition = {
+  id?: string,
+  label?: Array<string>,
+  schema?: { [key: string]: Object },
+  schemas?: { [key: string]: Object }
+}
+
+function getLabelName (label: string|Array<string>) {
+  const firstLabel = Array.isArray(label) ? label[0] : label
   return firstLabel ? firstLabel.charAt(0).toUpperCase() + firstLabel.slice(1) : ''
 }
 
@@ -12,16 +18,18 @@ export function createNodeClass ({
   id = DEFAULT_ID_KEY,
   label = [],
   schemas = {}
-}) {
+}: NodeDefinition) {
   class Node {
+    static displayName = `${getLabelName(label)}Node`
     static guards = createGuards(schemas)
 
-    constructor (data) {
+    data = {}
+
+    constructor (data: { [key: string]: Object }) {
       this.data = data
     }
   }
 
-  Node.displayName = `${getLabelName(label)}Node`
   return Node
 }
 

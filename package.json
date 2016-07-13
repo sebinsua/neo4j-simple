@@ -36,7 +36,10 @@
     ]
   },
   "standard": {
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "plugins": [
+      "flowtype"
+    ]
   },
   "ava": {
     "require": [
@@ -76,6 +79,7 @@
     "babel-plugin-transform-export-extensions": "^6.8.0",
     "babel-plugin-transform-flow-strip-types": "^6.8.0",
     "babel-preset-es2015-node": "^6.1.0",
+    "eslint-plugin-flowtype": "^2.3.0",
     "flow-bin": "^0.28.0",
     "snazzy": "^4.0.0",
     "testdouble": "^1.4.3"
