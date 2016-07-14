@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/sebinsua/neo4j-simple.png)](https://travis-ci.org/sebinsua/neo4j-simple) [![npm version](https://badge.fury.io/js/neo4j-simple.svg)](https://npmjs.org/package/neo4j-simple)
 
+**A new version is being [worked upon here](https://github.com/sebinsua/neo4j-simple/tree/refactor/v1).**
+
 Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
 
 The library provides nodes and relationships in [the form of promises](https://github.com/kevinbeaty/any-promise) and is implemented on top of [Cypher queries](http://neo4j.com/developer/cypher-query-language/). Additionally *optionally* you can restrict database access through usage of [Joi](https://github.com/hapijs/joi) validators.
