@@ -14,6 +14,18 @@ type ConnectOptions = {
   }
 }
 
+// TODO: `connect` --> `createConnection`;
+// the point is that it delegates connecting responsibility to the driver on querying, updating, saving, etc.
+
+// TODO: `createConnection` should use `createDriver` internally.
+// Drivers are reasonably expensive to create.
+// Therefore [create one](http://neo4j.com/docs/api/javascript-driver/current/function/index.html#static-function-driver)
+// and then use it to create sessions. Close them responsibly. This probably means distinguishing between creating
+// a driver and `connect`.
+
+// TODO: validationStrategy: JoiValidationStrategy
+// The default `validationStrategy` will be JoiValidationStrategy.
+
 function connect (urlOrOptions: string|ConnectOptions = {
   url: DEFAULT_URL
 }) {

@@ -1,3 +1,6 @@
+// TODO: `Relationship` will differ a little from both [`Path`](http://neo4j.com/docs/api/javascript-driver/current/class/src/v1/graph-types.js~Path.html), [`PathSegment`](http://neo4j.com/docs/api/javascript-driver/current/class/src/v1/graph-types.js~PathSegment.html) and [`Relationship`](http://neo4j.com/docs/api/javascript-driver/current/class/src/v1/graph-types.js~Relationship.html).
+
+
 export default () => {}
 /*
 "use strict";

@@ -14,11 +14,20 @@ function getLabelName (label: string|Array<string>) {
   return firstLabel ? firstLabel.charAt(0).toUpperCase() + firstLabel.slice(1) : ''
 }
 
+// TODO: [`Node`](http://neo4j.com/docs/api/javascript-driver/current/class/src/v1/graph-types.js~Node.html).
+
+// Schemas create guards with `createGuard(operationName, schema)` which outputs a `guard` function.
+// Therefore: `schema` is a definition of a `defaultGuard`.
+// Both Node and Relationship can contain `operationGuards`.
+// Consider usage of a `withGuards` or `withGuard` on defining `Node` or `Relationship`
+
 export function createNodeClass ({
   id = DEFAULT_ID_KEY,
   label = [],
   schemas = {}
 }: NodeDefinition) {
+  // TODO: `Node.create` and `Relationship.create` to help with mapping within the `README.md#examples`.
+  // Defined with [`R.construct`](http://ramdajs.com/0.22.1/docs/#construct).
   class Node {
     static displayName = `${getLabelName(label)}Node`
     static guards = createGuards(schemas)
