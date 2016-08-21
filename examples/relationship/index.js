@@ -1,40 +1,38 @@
-import { defineNode, defineRelationship, connect, constants } from '../../src'
+import see from 'tap-debug/see'
+import { createConnection, defineNode, defineRelationship, constants } from '../../src'
 import Joi from 'joi'
 
-const { query } = connect("http://localhost:7474")
+const { save } = createConnection('http://localhost:7474')
 
-const Node = defineNode({
+const ExampleNode = defineNode({
   label: ['Example'],
-  schema: {
+  schema: Joi.object().keys({
     name: Joi.string().required()
-  }
+  })
 })
 
-const Relationship = defineRelationship({
+const LoveRelationship = defineRelationship({
   type: 'LOVE',
-  schema: {
+  schema: Joi.object().keys({
     description: Joi.string()
-  }
+  })
 })
 
-const example1 = new Node({
-  id: "some-id-goes-here-1",
-  name: "Example 1"
+const example1 = new ExampleNode({
+  id: 'some-id-goes-here-1',
+  name: 'Example 1'
 })
-const example2 = new Node({
-  id: "some-id-goes-here-2",
-  name: "Example 2"
+const example2 = new ExampleNode({
+  id: 'some-id-goes-here-2',
+  name: 'Example 2'
 })
 
-const exampleRelationship = new Relationship({
+const exampleRelationship = new LoveRelationship({
   description: "It's true",
-}, [example1, example2], constants.DIRECTION_RIGHT)
+}, [ example1, example2 ], constants.DIRECTION_RIGHT)
 
 const saves = [ example1, example2, exampleRelationship ].map(save)
-Promise.all(saves).then((response) => {
-  console.log("success")
-  console.log(response)
-}).catch((error) => {
-  console.log("error")
-  console.log(error)
-})
+
+Promise.all(saves)
+  .then(see('Successfully saved'))
+  .catch(see('There was an error saving'))

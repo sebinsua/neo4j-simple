@@ -1,11 +1,9 @@
-import { connect } from '../../src'
+import see from 'tap-debug/see'
+import { createConnection } from '../../src'
 import Joi from 'joi'
 
-const { query } = connect("http://localhost:7474")
+const { queryOneRow } = createConnection('http://localhost:7474')
 
-const log = console.log.bind(console)
-
-query('MATCH (n) RETURN n LIMIT 100')
-  .oneRow()
-  .then(log)
-  .catch(log)
+queryOneRow('MATCH (n) RETURN n LIMIT 100')
+  .then(see('The results are'))
+  .catch(see('There was an error running the query'))

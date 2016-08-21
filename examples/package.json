@@ -1,0 +1,36 @@
+{
+  "name": "neo4j-simple-examples",
+  "description": "Example code for neo4j-simple",
+  "private": true,
+  "author": "Seb Insua <me@sebinsua.com>",
+  "babel": {
+    "plugins": [
+      "ramda",
+      "transform-class-properties",
+      "transform-export-extensions",
+      "transform-flow-strip-types"
+    ],
+    "presets": [
+      "es2015-node"
+    ]
+  },
+  "scripts": {
+    "create": "./exec-create",
+    "query": "./exec-query",
+    "relationship": "./exec-relationship"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "tap-debug": "^0.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-plugin-ramda": "^1.1.5",
+    "babel-plugin-transform-class-properties": "^6.11.5",
+    "babel-plugin-transform-export-extensions": "^6.8.0",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "babel-preset-es2015-node": "^6.1.0"
+  }
+}

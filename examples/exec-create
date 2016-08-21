@@ -1,2 +1,2 @@
 #!/bin/sh
-../node_modules/.bin/babel-node create
+./node_modules/.bin/babel-node create

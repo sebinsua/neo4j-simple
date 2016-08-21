@@ -1,2 +1,2 @@
 #!/bin/sh
-../node_modules/.bin/babel-node relationship
+./node_modules/.bin/babel-node relationship
