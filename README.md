@@ -16,9 +16,8 @@
 
 - [x] Rewrite the interfaces in the `README.md` using [Neo4j](http://neo4j.com/docs/api/javascript-driver/current/) as a guide.
 - [x] Move the rest of the design comments into the respective files or to GitHub issues if pie-in-sky.
-- [ ] Write the tests for the interface defined within `README.md`.
+- [ ] Write the code for the interfaces defined within `README.md`.
 - [ ] Fix the tests.
-- [ ] Fix: import see from 'tap-debug/see'; and `__value` should work internally.
 - [ ] Examples should have their own `package.json` files. Use `tap-debug` to simplify my examples.
 - [ ] Update packages and flow type definitions. Finesse `README.md`.
 
