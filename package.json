@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/sebinsua/neo4j-simple",
   "dependencies": {
+    "angular": "^1.4.14",
     "any-promise": "^1.1.0",
     "debug": "^2.2.0",
     "joi": "^6.5.0",
