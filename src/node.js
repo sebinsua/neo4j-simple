@@ -7,7 +7,7 @@ var responseParser = require('./response-parser'),
 var Joi = require('joi'),
     Promise = require('any-promise'),
     util = require('util'),
-    uuid = require('node-uuid');
+    uuid = require('uuid');
 
 var debug = require('debug')('neo4j-simple:node'),
     see = require('tap-debug')(debug);

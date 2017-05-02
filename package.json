@@ -34,10 +34,10 @@
     "any-promise": "^1.1.0",
     "debug": "^2.2.0",
     "joi": "^6.5.0",
-    "node-uuid": "^1.4.3",
     "rainbird-neo4j": "^0.4.3",
     "tap-debug": "^0.1.4",
-    "thenify-all": "^1.6.0"
+    "thenify-all": "^1.6.0",
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "jshint": "latest",
