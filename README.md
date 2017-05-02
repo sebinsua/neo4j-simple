@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sebinsua/neo4j-simple.png)](https://travis-ci.org/sebinsua/neo4j-simple) [![npm version](https://badge.fury.io/js/neo4j-simple.svg)](https://npmjs.org/package/neo4j-simple)
 
-**A new version is being [worked upon here](https://github.com/sebinsua/neo4j-simple/tree/refactor/v1).**
+**This is DEPRECATED.**
 
 Simple [Neo4j](http://neo4j.com/) bindings for Node.js.
 
