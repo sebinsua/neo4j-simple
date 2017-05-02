@@ -9,8 +9,7 @@ var Joi = require('joi'),
     util = require('util'),
     uuid = require('node-uuid');
 
-var debug = require('debug')('neo4j-simple:node'),
-    see = require('tap-debug')(debug);
+var debug = require('debug')('neo4j-simple:node');
 
 var _ = require('./helpers');
 
@@ -212,8 +211,7 @@ Node.prototype._save = function (options) {
     // No id, so this is a create operation.
     options.operation = options.operation || 'create';
     return this.validate(data, options).
-                then(createNode(id)).
-                tap(see(':large_blue_circle: Node with the id (${id}) created.', { ctx: { id: id } }));
+                then(createNode(id));
   } else {
     // Id, so this is an update operation.
     options.replace = options.replace || false;
@@ -229,8 +227,7 @@ Node.prototype._save = function (options) {
 
     var replace = options.replace ? 'replaced' : 'updated';
     return this.validate(data, options).
-                then(performUpdate(id)).
-                tap(see(':large_blue_circle: Node with the id (${id}) ${replace}.', { ctx: { id: id, replace: replace } }));
+                then(performUpdate(id));
   }
 };
 
@@ -246,7 +243,6 @@ Node.prototype._delete = function (options) {
   var id = this.id;
   return this.database.
               query(query, { id: id }).
-              tap(see(':red_circle: Node with the id (${id}) removed: ${count}.', { ctx: { id: id } })).
               getCountAt('count');
 };
 
